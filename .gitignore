@@ -1,0 +1,9 @@
+*:Zone.Identifier
+
+# Keep proof materials in DocSend instead of committing private files here.
+assets/proofs/*.pdf
+assets/proofs/**/*.pdf
+assets/proofs/**/*.png
+assets/proofs/**/*.jpg
+assets/proofs/**/*.jpeg
+assets/proofs/**/*.webp
