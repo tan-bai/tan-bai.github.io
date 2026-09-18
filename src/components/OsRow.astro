@@ -1,0 +1,100 @@
+---
+import Icons from './Icons.astro';
+
+/*
+ * 开源项目行：左侧仓库身份，右侧描述 + 子仓库/贡献列表
+ */
+
+interface OsLink {
+  label: string;
+  url: string;
+  icon?: string;
+  note?: string;
+}
+interface Props {
+  repo: {
+    id: string;
+    name: string;
+    tagline: string;
+    role: string;
+    date: string;
+    stars?: string;
+    paras: string[];
+    stats?: { label: string; value: string }[];
+    links?: OsLink[];
+    subs?: { name: string; desc: string; url?: string; stars?: string }[];
+    contributions?: string;
+    Content?: any;
+  };
+}
+const { repo } = Astro.props;
+const { Content } = repo;
+const iconOf = (u: string) => (/github/i.test(u) ? 'github' : /huggingface/i.test(u) ? 'hf' : 'link');
+---
+
+<div class="os-row reveal">
+  <div class="os-side">
+    <h3>{repo.name}</h3>
+    <div class="meta">
+      {repo.tagline}<br />
+      <b>{repo.role}</b> · {repo.date}
+      {repo.stars && <><br />★ {repo.stars}</>}
+    </div>
+    {repo.links && repo.links.length > 0 && (
+      <div class="project-links" style="margin-top:12px;">
+        {repo.links.map((l) => (
+          <a href={l.url} target="_blank" rel="noopener noreferrer">
+            <Icons name={iconOf(l.url)} size={14} />
+            {l.label}
+          </a>
+        ))}
+      </div>
+    )}
+  </div>
+
+  <div class="os-main">
+    {repo.paras.map((t) => <p set:html={t} />)}
+
+    {repo.stats && repo.stats.length > 0 && (
+      <div class="stat-chips">
+        {repo.stats.map((s) => (
+          <span class="chip"><b>{s.value}</b>{s.label}</span>
+        ))}
+      </div>
+    )}
+
+    {repo.subs && repo.subs.length > 0 && (
+      <>
+        {repo.subs.map((s) => (
+          <>
+            <div class="os-sub">
+              {s.url ? (
+                <a href={s.url} target="_blank" rel="noopener noreferrer">{s.name}</a>
+              ) : (
+                s.name
+              )}
+              {s.stars && ` ★ ${s.stars}`}
+            </div>
+            <p style="margin-top:2px;">{s.desc}</p>
+          </>
+        ))}
+      </>
+    )}
+
+    {repo.contributions && (
+      <>
+        <div class="os-sub">社区贡献</div>
+        <p set:html={repo.contributions} />
+      </>
+    )}
+
+    {Content && (
+      <details class="more">
+        <summary>展开详情</summary>
+        <div class="more-body">
+          <Content />
+        </div>
+      </details>
+    )}
+  </div>
+</div>

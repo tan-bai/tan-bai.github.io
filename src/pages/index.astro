@@ -1,0 +1,220 @@
+---
+import Base from '../layouts/Base.astro';
+import ProjectCard from '../components/ProjectCard.astro';
+import OsRow from '../components/OsRow.astro';
+import Icons from '../components/Icons.astro';
+
+/* ---------- 数据装载：src/content/projects/*.md ---------- */
+const mods = import.meta.glob<{ frontmatter: any; Content: any }>('../content/projects/*.md', {
+  eager: true,
+});
+const all = Object.entries(mods).map(([path, m]) => ({
+  ...m.frontmatter,
+  id: path.split('/').pop()!.replace(/\.md$/, ''),
+  Content: m.Content,
+}));
+const byId = Object.fromEntries(all.map((p) => [p.id, p]));
+
+/* ---------- 章节编排 ---------- */
+const groups = [
+  {
+    id: 'sensing',
+    no: '01',
+    name: '端云协同与智能感知',
+    sub: 'Edge–Cloud Sensing',
+    desc: '从嵌入式智能硬件到无人机电力巡检，把视觉模型塞进端侧设备，再让云端大模型完成分析决策。',
+    ids: ['study-lamp', 'powerline-icing'],
+  },
+  {
+    id: 'detection',
+    no: '02',
+    name: '目标检测与网络设计',
+    sub: 'Detection Architecture',
+    desc: '围绕小目标检测的两条路线：红外小目标的曲率先验设计，与无人机航拍的轻量化端到端框架。',
+    ids: ['lcga-net', 'safe-detr'],
+  },
+  {
+    id: 'embodied',
+    no: '03',
+    name: '具身智能与机器人',
+    sub: 'Embodied AI & Robotics',
+    desc: '从仿真环境到真机本体：双足仿真训练、宇树 G1 全栈开发、ZJU FAST-LAB 羽毛球轮足机器人感知。',
+    ids: ['bipedal', 'ros-g1', 'badminton-robot'],
+  },
+  {
+    id: 'llm',
+    no: '04',
+    name: '大模型与 VLA 复现',
+    sub: 'LLM & VLA',
+    desc: '从论文到代码：π0 视觉-语言-动作模型家族复现，Stanford CS336 从零构建语言模型。',
+    ids: ['pi0-vla', 'cs336'],
+  },
+];
+const osIds = ['beatless', 'polaris', 'aerial-vln'];
+
+/* ---------- 荣誉 / 竞赛 / 专利（源自简历模版三） ---------- */
+const honors = [
+  { name: '国家奖学金', note: '教育部' },
+  { name: '上海市奖学金', note: '上海市教育委员会' },
+  { name: '上海市优秀毕业生', note: '上海市教育委员会' },
+];
+const competitions = [
+  { medal: '🏅', name: '上海市级大学生创新创业训练计划', note: '优秀结项 · 第一完成人', date: '2025.11' },
+  { medal: '🥈', name: '全国大学生物联网设计竞赛（华为杯）', note: '全国二等奖 · 第一完成人', date: '2024.08' },
+  { medal: '🥇', name: '「挑战杯」上海市大学生课外学术科技作品竞赛', note: '省级一等奖 · 第一完成人', date: '2025.05' },
+  { medal: '🥈', name: '上海市大学生计算机应用能力大赛', note: '省级二等奖 · 第一完成人', date: '2025.06' },
+  { medal: '🥉', name: '中国机器人与人工智能大赛省级选拔赛', note: '省级三等奖 · 第一完成人', date: '2025.08' },
+  { medal: '🥉', name: '全国大学生节能减排社会实践与科技竞赛', note: '全国三等奖 · 第二完成人', date: '2023.08' },
+  { medal: '🥈', name: '全国大学生集成电路创新创业大赛华东赛区', note: '省级二等奖 · 第二完成人', date: '2024.07' },
+];
+const patents = [
+  { kind: '发明', name: '一种基于增强型对抗运动先验的双足机器人步态生成方法', no: 'CN120595629A · 实审' },
+  { kind: '发明', name: '一种基于改进 YOLOv7 的门框识别方法', no: 'CN120726591A · 实审' },
+  { kind: '发明', name: '一种基于位姿优化网络的 6-DoF 目标位姿估计方法', no: 'CN120747212A · 实审' },
+  { kind: '发明', name: '基于多模态深度学习的帕金森病患智能辅助进食系统', no: 'CN120748020A · 实审' },
+  { kind: '实用新型', name: '一种带有热交换通风孔的摄像头加热防护罩', no: '2025204530867 · 已受理' },
+  { kind: '软著', name: '输电线路覆冰类型检测系统', no: '2025SR0789268 · 已授权' },
+];
+
+const navItems = [
+  ...groups.map((g) => ({ href: `#${g.id}`, label: g.name.replace('与', '·').slice(0, 6) })),
+  { href: '#opensource', label: '开源' },
+  { href: '#honors', label: '荣誉' },
+];
+---
+
+<Base>
+  <!-- ================= 导航 ================= -->
+  <nav class="nav">
+    <div class="wrap nav-inner">
+      <a class="nav-brand" href="#top">房家辉 <small>PROJECTS</small></a>
+      <div class="nav-links">
+        {navItems.map((n) => <a href={n.href}>{n.label}</a>)}
+      </div>
+    </div>
+  </nav>
+
+  <!-- ================= Hero ================= -->
+  <header class="hero" id="top">
+    <div class="wrap">
+      <div class="hero-kicker">Portfolio · 2023 — 2026</div>
+      <h1>
+        房家辉
+        <span class="en">Jiahui Fang · Tanbai 昙柏</span>
+      </h1>
+      <p class="hero-tagline">
+        视觉感知 · 具身智能 · 自动化科研。这里用<em>图片与视频</em>记录每一个真实参与的项目——
+        从端侧检测网络、机器人真机调试，到多智能体科研系统。
+      </p>
+
+      <div class="hero-meta">
+        <span><i class="dot"></i>东南大学 自动化学院 · 硕士（2026 – 至今）</span>
+        <span><i class="dot"></i>上海师范大学 电子信息工程 · 学士（Rank 1/425）</span>
+        <span><i class="dot"></i>Embodied AI / Aerial VLN / AI for AI</span>
+      </div>
+
+      <div class="hero-links">
+        <a href="mailto:jiahui.fang@ieee.org"><Icons name="mail" /> jiahui.fang@ieee.org</a>
+        <a href="https://github.com/20bytes" target="_blank" rel="noopener noreferrer"><Icons name="github" /> GitHub</a>
+        <a href="https://20bytes.top" target="_blank" rel="noopener noreferrer"><Icons name="globe" /> Blog · 20bytes.top</a>
+      </div>
+
+      <div class="stat-strip reveal">
+        <div class="stat-cell"><b>9<i>+</i></b><span>项目实践 · 四大方向</span></div>
+        <div class="stat-cell"><b>3</b><span>开源系统 · 持续维护</span></div>
+        <div class="stat-cell"><b>7</b><span>竞赛奖励 · 五项第一完成人</span></div>
+        <div class="stat-cell"><b>6</b><span>专利软著 · 四项发明专利</span></div>
+      </div>
+    </div>
+  </header>
+
+  <!-- ================= 项目分组 ================= -->
+  {groups.map((g) => (
+    <section id={g.id} class="section">
+      <div class="wrap">
+        <div class="section-head reveal">
+          <span class="section-no">{g.no}</span>
+          <h2>{g.name}</h2>
+          <span class="sub">{g.sub}</span>
+        </div>
+        <p class="section-desc reveal">{g.desc}</p>
+        {g.ids.map((id, i) => {
+          const p = byId[id];
+          return p ? <ProjectCard project={p} index={i + 1} /> : null;
+        })}
+      </div>
+    </section>
+  ))}
+
+  <!-- ================= 开源项目 ================= -->
+  <section id="opensource" class="section">
+    <div class="wrap">
+      <div class="section-head reveal">
+        <span class="section-no">05</span>
+        <h2>开源项目</h2>
+        <span class="sub">Open Source</span>
+      </div>
+      {osIds.map((id) => {
+        const repo = byId[id];
+        return repo ? <OsRow repo={repo} /> : null;
+      })}
+    </div>
+  </section>
+
+  <!-- ================= 荣誉与专利 ================= -->
+  <section id="honors" class="section">
+    <div class="wrap">
+      <div class="section-head reveal">
+        <span class="section-no">06</span>
+        <h2>荣誉 · 竞赛 · 专利</h2>
+        <span class="sub">Honors &amp; Patents</span>
+      </div>
+
+      <div class="reveal" style="margin-bottom: 34px;">
+        {honors.map((h) => (
+          <span class="chip" style="display:inline-flex;margin:0 8px 8px 0;border:1px solid var(--line-strong);border-radius:8px;padding:6px 14px;font-size:13.5px;">
+            🏆 {h.name}
+          </span>
+        ))}
+      </div>
+
+      <div class="award-list reveal">
+        {competitions.map((c) => (
+          <div class="award-item">
+            <span class="medal">{c.medal}</span>
+            <span class="name">{c.name}<small>{c.note}</small></span>
+            <span class="date">{c.date}</span>
+          </div>
+        ))}
+      </div>
+
+      <h3 class="reveal" style="font-family:var(--serif);font-size:19px;margin:44px 0 18px;">专利与软件著作权</h3>
+      <div class="patent-grid reveal">
+        {patents.map((p) => (
+          <div class="patent-item">
+            <span class="kind">{p.kind}</span>
+            <span>{p.name}<br /><small style="font-family:var(--mono);font-size:11.5px;color:var(--muted);">{p.no}</small></span>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= 页脚 ================= -->
+  <footer class="footer">
+    <div class="wrap footer-inner">
+      <div>
+        <div class="zh">昙柏 · 房家辉</div>
+        <div class="contact">
+          <a href="mailto:jiahui.fang@ieee.org">jiahui.fang@ieee.org</a> ·
+          <a href="https://github.com/20bytes" target="_blank" rel="noopener noreferrer">GitHub</a> ·
+          <a href="https://20bytes.top" target="_blank" rel="noopener noreferrer">20bytes.top</a>
+        </div>
+      </div>
+      <div class="colophon">
+        UPDATED 2026.09 · BUILT WITH ASTRO<br />
+        FIRST PRINCIPLES · SEDIMENTATION · RESTRAINT
+      </div>
+    </div>
+  </footer>
+</Base>
