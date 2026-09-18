@@ -1,11 +1,15 @@
 ---
+import Icons from './Icons.astro';
+
 /*
- * 开源项目行：左侧仓库身份，右侧正文 + 子仓库/贡献
+ * 开源项目行：左侧仓库身份，右侧描述 + 子仓库/贡献列表
  */
 
 interface OsLink {
   label: string;
   url: string;
+  icon?: string;
+  note?: string;
 }
 interface Props {
   repo: {
@@ -25,6 +29,7 @@ interface Props {
 }
 const { repo } = Astro.props;
 const { Content } = repo;
+const iconOf = (u: string) => (/github/i.test(u) ? 'github' : /huggingface/i.test(u) ? 'hf' : 'link');
 ---
 
 <div class="os-row reveal">
@@ -32,13 +37,16 @@ const { Content } = repo;
     <h3>{repo.name}</h3>
     <div class="meta">
       {repo.tagline}<br />
-      {repo.role} · {repo.date}
+      <b>{repo.role}</b> · {repo.date}
       {repo.stars && <><br />★ {repo.stars}</>}
     </div>
     {repo.links && repo.links.length > 0 && (
-      <div class="project-links" style="margin-top:10px;">
+      <div class="project-links" style="margin-top:12px;">
         {repo.links.map((l) => (
-          <a href={l.url} target="_blank" rel="noopener noreferrer">{l.label}</a>
+          <a href={l.url} target="_blank" rel="noopener noreferrer">
+            <Icons name={iconOf(l.url)} size={14} />
+            {l.label}
+          </a>
         ))}
       </div>
     )}
@@ -48,12 +56,9 @@ const { Content } = repo;
     {repo.paras.map((t) => <p set:html={t} />)}
 
     {repo.stats && repo.stats.length > 0 && (
-      <div class="figures">
-        {repo.stats.map((s, i) => (
-          <>
-            {i > 0 && <span class="sep">·</span>}
-            <span><b>{s.value}</b>{s.label}</span>
-          </>
+      <div class="stat-chips">
+        {repo.stats.map((s) => (
+          <span class="chip"><b>{s.value}</b>{s.label}</span>
         ))}
       </div>
     )}
@@ -68,7 +73,7 @@ const { Content } = repo;
               ) : (
                 s.name
               )}
-              {s.stars && `　★ ${s.stars}`}
+              {s.stars && ` ★ ${s.stars}`}
             </div>
             <p style="margin-top:2px;">{s.desc}</p>
           </>

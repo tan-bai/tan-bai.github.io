@@ -1,5 +1,11 @@
 ---
 import MediaFrame from './MediaFrame.astro';
+import Icons from './Icons.astro';
+
+/*
+ * 项目条目：媒体 + 信息双栏
+ * frontmatter 契约见 src/content/projects/ 任一文件头部注释。
+ */
 
 interface Stat {
   label: string;
@@ -8,6 +14,7 @@ interface Stat {
 interface Link {
   label: string;
   url: string;
+  icon?: string;
 }
 
 interface Props {
@@ -20,7 +27,7 @@ interface Props {
     org?: string;
     date: string;
     brief: string;
-    Content?: any; // Markdown 正文，渲染在「展开详情」
+    Content?: any; // Markdown 正文组件，渲染在「展开详情」里
     stats?: Stat[];
     tags?: string[];
     outcome?: string;
@@ -30,11 +37,12 @@ interface Props {
     video?: string;
     reverse?: boolean;
   };
+  index: number;
 }
 
-const { project: p } = Astro.props;
+const { project: p, index } = Astro.props;
 const { Content } = p;
-const overline = [p.role, p.org, p.date].filter(Boolean);
+const linkIcon = (l: Link) => l.icon ?? (/github/i.test(l.url + l.label) ? 'github' : /huggingface/i.test(l.url) ? 'hf' : 'link');
 ---
 
 <article class:list={['project', 'reveal', { reverse: p.reverse }]}>
@@ -44,12 +52,10 @@ const overline = [p.role, p.org, p.date].filter(Boolean);
 
   <div class="project-body">
     <div class="overline">
-      {overline.map((part, i) => (
-        <>
-          {i > 0 && <span class="sep">/</span>}
-          {i === 0 ? <span class="role">{part}</span> : part}
-        </>
-      ))}
+      <span class="no">{String(index).padStart(2, '0')}</span>
+      <span class="role">{p.role}</span>
+      {p.org && <span>{p.org}</span>}
+      <span>{p.date}</span>
     </div>
 
     <h3>
@@ -60,30 +66,34 @@ const overline = [p.role, p.org, p.date].filter(Boolean);
     <p class="project-brief">{p.brief}</p>
 
     {p.stats && p.stats.length > 0 && (
-      <div class="figures">
-        {p.stats.map((s, i) => (
-          <>
-            {i > 0 && <span class="sep">·</span>}
-            <span><b>{s.value}</b>{s.label}</span>
-          </>
+      <div class="stat-chips">
+        {p.stats.map((s) => (
+          <span class="chip"><b>{s.value}</b>{s.label}</span>
         ))}
       </div>
     )}
 
     {p.tags && p.tags.length > 0 && (
-      <div class="tags">{p.tags.join('　')}</div>
+      <div class="tags">
+        {p.tags.map((t) => (
+          <span>{t}</span>
+        ))}
+      </div>
     )}
 
     {p.outcome && (
       <div class="outcome">
-        <span class="label">{p.outcomeLabel ?? '成果'}</span>{p.outcome}
+        <b>{p.outcomeLabel ?? '成果'}</b> — {p.outcome}
       </div>
     )}
 
     {p.links && p.links.length > 0 && (
       <div class="project-links">
         {p.links.map((l) => (
-          <a href={l.url} target="_blank" rel="noopener noreferrer">{l.label}</a>
+          <a href={l.url} target="_blank" rel="noopener noreferrer">
+            <Icons name={linkIcon(l)} size={14} />
+            {l.label}
+          </a>
         ))}
       </div>
     )}
