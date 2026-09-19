@@ -9,6 +9,7 @@ brief: 调研主流双足机器人技术路线，基于 Ubuntu 22.04 独立搭�
 tags: [MuJoCo, Isaac Gym, Isaac Sim, PPO, unitree_rl_gym, Ubuntu]
 outcome: 一种基于增强型对抗运动先验的双足机器人步态生成方法，发明专利（排名 3），公开号 CN120595629A
 outcomeLabel: 专利
+video: /media/bipedal.mp4
 ---
 
 - 调研主流机器人公司及双足机器人技术路线，探索稳定站立与行走控制方法；

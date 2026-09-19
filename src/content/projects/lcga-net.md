@@ -13,6 +13,7 @@ stats:
 tags: [红外小目标检测, Hessian 曲率, 显著性聚焦, 高斯径向对齐, IRSTD-1K, NUDT-SIRST]
 outcome: '第一作者工作论文《LCGA-Net: Enhanced Infrared Small Target Perception with Curvature-Guided Features and Gaussian Alignment Loss》（Working Paper）'
 outcomeLabel: 论文
+image: /media/lcga-net.webp
 ---
 
 三个核心设计：

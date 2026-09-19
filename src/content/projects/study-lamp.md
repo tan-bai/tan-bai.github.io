@@ -9,6 +9,7 @@ tags: [ESP32-S3-Box, YOLOv8, OV5640, OCR, Qwen2-7B, ESP-SR, TTS, WS2812, RainMak
 outcome: 2024 年全国大学生物联网设计竞赛（华为杯）全国总决赛二等奖（排名 1）
 outcomeLabel: 获奖
 reverse: true
+image: /media/study-lamp.jpg
 ---
 
 针对电子产品过度使用导致儿童专注力下降、不良坐姿影响脊柱与视力健康等问题，构建以 ESP32-S3-Box 为主控、智能台灯为载体的学习习惯训练助手。

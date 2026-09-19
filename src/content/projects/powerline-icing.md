@@ -15,6 +15,7 @@ outcome: 第十九届「挑战杯」上海市一等奖（排名 1）；主持上
 outcomeLabel: 成果
 links:
   - { label: detection-web, url: https://github.com/20bytes/detection-web }
+image: /media/powerline-icing.webp
 ---
 
 针对我国中西部输电线路冬季覆冰频发、人工巡检高危低效、固定传感器成本高且难覆盖复杂弱网区域的问题，构建端云协同的智能覆冰检测系统。
