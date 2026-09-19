@@ -55,7 +55,8 @@ public/media/powerline-icing.mp4     # 视频（有视频则用播放器替代�
 ```
 
 - 没有媒体的项目显示优雅占位（渐变 + 首字 + 网格纹理），不影响观感
-- 视频建议 mp4 (H.264) ≤ 10MB
+- 视频默认静音自动循环播放（进入视口才播放、滚出暂停）；多媒体项目点击任意媒体可在灯箱中放大查看
+- 仓库内视频建议 mp4 (H.264) ≤ 5MB；更大的视频放 R2 图床外链（零流量费 + CDN，见 log-picture）
 - 也可用外链：`image` / `video` 字段直接填完整 https:// URL（如 log-picture 的 R2 图床）
 
 ## 部署到 GitHub Pages

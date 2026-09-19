@@ -760,3 +760,34 @@ details.more .more-body p:last-child { margin-bottom: 0; }
   .g-body { padding: 52px 12px; }
   .g-prev, .g-next { padding: 12px 6px; }
 }
+
+/* ---------- 自动播放与声音 ---------- */
+
+.g-clickable video { cursor: zoom-in; }
+
+.g-mute {
+  position: absolute;
+  left: 10px;
+  top: 10px;
+  z-index: 2;
+  width: 28px;
+  height: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  background: rgba(28, 27, 24, 0.5);
+  backdrop-filter: blur(6px);
+  border: none;
+  border-radius: 999px;
+  cursor: pointer;
+  opacity: 0.85;
+  transition: opacity 0.2s var(--ease);
+  padding: 0;
+}
+.g-mute:hover { opacity: 1; }
+.g-mute .ic-on,
+.g-mute .ic-off { display: inline-flex; align-items: center; }
+.g-mute .ic-on { display: none; }
+.g-mute[data-muted="0"] .ic-on { display: inline-flex; }
+.g-mute[data-muted="0"] .ic-off { display: none; }

@@ -64,12 +64,21 @@ const isVideo = (src?: string) => !!src && /\.(mp4|webm|mov|m4v)$/i.test(src);
 {items.length === 1 && (
   <div class="media-frame" style={`--tint1:${t1};--tint2:${t2};`}>
     {isVideo(items[0].video) ? (
-      <video src={items[0].video} poster={items[0].image} controls preload="metadata" playsinline />
+      <video
+        src={items[0].video}
+        poster={items[0].image}
+        controls
+        muted
+        loop
+        autoplay
+        playsinline
+        preload="metadata"
+      />
     ) : (
       <img src={items[0].image} alt={title} loading="lazy" />
     )}
     {isVideo(items[0].video) && (
-      <span class="media-badge"><Icons name="video" size={11} />视频</span>
+      <span class="media-badge"><Icons name="video" size={11} />自动循环 · 静音</span>
     )}
     {!isVideo(items[0].video) && items[0].image && (
       <span class="media-badge"><Icons name="image" size={11} />图片</span>
@@ -87,9 +96,22 @@ const isVideo = (src?: string) => !!src && /\.(mp4|webm|mov|m4v)$/i.test(src);
       data-caption={items[0].caption ?? ''}
     >
       {isVideo(items[0].video) ? (
-        <div class="media-frame">
-          <video src={items[0].video} poster={items[0].image} controls preload="metadata" playsinline />
+        <div class="media-frame g-clickable">
+          <video
+            src={items[0].video}
+            poster={items[0].image}
+            muted
+            loop
+            autoplay
+            playsinline
+            preload="metadata"
+          />
           <span class="g-no">1</span>
+          <button class="g-mute" data-muted="1" aria-label="开启声音">
+            <span class="ic-on"><Icons name="volume-on" size={13} /></span>
+            <span class="ic-off"><Icons name="volume-off" size={13} /></span>
+          </button>
+          <span class="g-hint"><Icons name="search" size={13} />点击放大</span>
         </div>
       ) : (
         <button class="g-zoom media-frame" data-index="0" aria-label="放大查看">
@@ -200,6 +222,12 @@ const isVideo = (src?: string) => !!src && /\.(mp4|webm|mov|m4v)$/i.test(src);
       render();
       lb.showModal();
     });
+    // 主媒体是视频时：点击进灯箱（带声音与完整控制条）
+    g.querySelector('.g-main video')?.addEventListener('click', () => {
+      cur = 0;
+      render();
+      lb.showModal();
+    });
 
     const close = () => lb.close();
     lb.querySelector('.g-close')?.addEventListener('click', close);
@@ -220,6 +248,40 @@ const isVideo = (src?: string) => !!src && /\.(mp4|webm|mov|m4v)$/i.test(src);
     lb.addEventListener('keydown', (e) => {
       if (e.key === 'ArrowLeft') lb.querySelector<HTMLButtonElement>('.g-prev')?.click();
       if (e.key === 'ArrowRight') lb.querySelector<HTMLButtonElement>('.g-next')?.click();
+    });
+  });
+
+  // 自动播放：进入视口才播放、滚出即暂停，避免同时拉流多个视频
+  const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const autoplayVideos = document.querySelectorAll<HTMLVideoElement>('video[autoplay]');
+  if (!reduced) {
+    const vio = new IntersectionObserver(
+      (entries) => {
+        for (const e of entries) {
+          const v = e.target as HTMLVideoElement;
+          if (e.isIntersecting) v.play().catch(() => {});
+          else v.pause();
+        }
+      },
+      { threshold: 0.5 }
+    );
+    autoplayVideos.forEach((v) => vio.observe(v));
+  } else {
+    autoplayVideos.forEach((v) => {
+      v.removeAttribute('autoplay');
+      v.controls = true;
+    });
+  }
+
+  // 静音切换（画廊主视频）
+  document.querySelectorAll<HTMLElement>('.g-mute').forEach((btn) => {
+    btn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      const v = btn.closest('.media-frame')?.querySelector('video');
+      if (!v) return;
+      v.muted = !v.muted;
+      btn.dataset.muted = v.muted ? '1' : '0';
+      btn.setAttribute('aria-label', v.muted ? '开启声音' : '静音');
     });
   });
 </script>
