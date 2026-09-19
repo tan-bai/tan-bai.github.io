@@ -35,6 +35,7 @@ interface Props {
     links?: Link[];
     image?: string;
     video?: string;
+    media?: { video?: string; image?: string; caption?: string }[];
     reverse?: boolean;
   };
   index: number;
@@ -47,7 +48,7 @@ const linkIcon = (l: Link) => l.icon ?? (/github/i.test(l.url + l.label) ? 'gith
 
 <article class:list={['project', 'reveal', { reverse: p.reverse }]}>
   <div class="project-media">
-    <MediaFrame title={p.title} group={p.group} image={p.image} video={p.video} />
+    <MediaFrame title={p.title} group={p.group} image={p.image} video={p.video} media={p.media} />
   </div>
 
   <div class="project-body">

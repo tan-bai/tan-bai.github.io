@@ -29,8 +29,11 @@ tags: [YOLOv12, Jetson]  # 技术标签
 outcome: 获奖成果         # 成果行（可选）
 links:                  # 相关链接（可选）
   - { label: GitHub, url: https://github.com/... }
-image: /media/xxx.jpg    # 封面图（可选）
-video: /media/xxx.mp4    # 视频（可选，优先于图片）
+image: /media/xxx.jpg    # 单图（可选）
+video: /media/xxx.mp4    # 单视频（可选，优先于图片）
+media:                   # 多媒体画廊（可选，多于一项时启用）
+  - { video: /media/a.mp4, caption: 图注文字 }
+  - { image: /media/b.jpg, caption: 真机部署现场 }
 ---
 正文写在 frontmatter 之后，渲染进「展开详情」。
 ---
