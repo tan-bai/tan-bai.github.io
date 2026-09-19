@@ -9,6 +9,7 @@ brief: 面向高速来球、短时决策与快速击球的高动态场景，基�
 tags: [轮足机器人, 动捕系统, YOLOv8, TCN, 轨迹预测, MOKKA, PlotJuggler]
 outcome: 部分项目仓库见 Badminton_Robot_Perception-dev（Private）
 outcomeLabel: 仓库
+reverse: true
 ---
 
 - **感知系统**：结合动捕系统、多视角相机、YOLOv8/TCN 与物理约束模型，完成飞行轨迹及落点估计；
