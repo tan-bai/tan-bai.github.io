@@ -18,9 +18,18 @@ const byId = Object.fromEntries(all.map((p) => [p.id, p]));
 /* ---------- 章节编排 ---------- */
 const groups = [
   {
+    id: 'embodied',
+    nav: '机器人',
+    no: '01',
+    name: '具身智能与机器人',
+    sub: 'Embodied AI & Robotics',
+    desc: '从仿真环境到真机本体：双足仿真训练、宇树 G1 全栈开发、ZJU FAST-LAB 羽毛球轮足机器人感知。',
+    ids: ['bipedal', 'ros-g1', 'badminton-robot'],
+  },
+  {
     id: 'sensing',
     nav: '端云',
-    no: '01',
+    no: '02',
     name: '端云协同与智能感知',
     sub: 'Edge–Cloud Sensing',
     desc: '从嵌入式智能硬件到无人机电力巡检，把视觉模型塞进端侧设备，再让云端大模型完成分析决策。',
@@ -29,20 +38,11 @@ const groups = [
   {
     id: 'detection',
     nav: '检测',
-    no: '02',
+    no: '03',
     name: '目标检测与网络设计',
     sub: 'Detection Architecture',
     desc: '围绕小目标检测的两条路线：红外小目标的曲率先验设计，与无人机航拍的轻量化端到端框架。',
     ids: ['lcga-net', 'safe-detr'],
-  },
-  {
-    id: 'embodied',
-    nav: '机器人',
-    no: '03',
-    name: '具身智能与机器人',
-    sub: 'Embodied AI & Robotics',
-    desc: '从仿真环境到真机本体：双足仿真训练、宇树 G1 全栈开发、ZJU FAST-LAB 羽毛球轮足机器人感知。',
-    ids: ['bipedal', 'ros-g1', 'badminton-robot'],
   },
   {
     id: 'llm',
