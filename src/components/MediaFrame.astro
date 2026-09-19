@@ -3,9 +3,10 @@ import Icons from './Icons.astro';
 
 /*
  * 媒体框：单媒体三态 + 多媒体画廊
- *  - media: [{video|image, caption}]  多项 → 主画面 + 缩略图条画廊
+ *  - media: [{video|image, caption}]  多项 → 主媒体 + 网格 + 灯箱放大
  *  - image / video 单项               → 单画面（向后兼容）
  *  - 都没有                           → 安静占位（分组浅色 + 项目首字）
+ * 全部媒体直接可见，无需翻页；点击任意项可在灯箱中全屏查看。
  */
 
 interface MediaItem {
@@ -73,75 +74,152 @@ const isVideo = (src?: string) => !!src && /\.(mp4|webm|mov|m4v)$/i.test(src);
     {!isVideo(items[0].video) && items[0].image && (
       <span class="media-badge"><Icons name="image" size={11} />图片</span>
     )}
-    {items[0].caption && <div class="g-cap">{items[0].caption}</div>}
   </div>
 )}
 
 {isGallery && (
-  <div class="media-gallery" data-gallery tabindex="0" aria-label={`${title} 媒体画廊`}>
-    <div class="media-frame g-stage">
-      {items.map((m, i) => (
-        <div class:list={['g-item', { active: i === 0 }]} data-caption={m.caption ?? ''}>
-          {isVideo(m.video) ? (
-            <video src={m.video} poster={m.image} controls preload={i === 0 ? 'metadata' : 'none'} playsinline />
-          ) : (
-            <img src={m.image} alt={m.caption ?? `${title} ${i + 1}`} loading={i === 0 ? 'eager' : 'lazy'} />
-          )}
+  <div class="media-gallery">
+    <!-- 主媒体：视频直接可播，图片可点击放大 -->
+    <figure
+      class="g-main"
+      data-video={items[0].video ?? ''}
+      data-image={items[0].image ?? ''}
+      data-caption={items[0].caption ?? ''}
+    >
+      {isVideo(items[0].video) ? (
+        <div class="media-frame">
+          <video src={items[0].video} poster={items[0].image} controls preload="metadata" playsinline />
+          <span class="g-no">1</span>
         </div>
-      ))}
-      <span class="g-count">1 / {items.length}</span>
-    </div>
+      ) : (
+        <button class="g-zoom media-frame" data-index="0" aria-label="放大查看">
+          <img src={items[0].image} alt={items[0].caption ?? title} loading="eager" />
+          <span class="g-no">1</span>
+          <span class="g-hint"><Icons name="search" size={13} />点击放大</span>
+        </button>
+      )}
+      {items[0].caption && <figcaption class="g-cap">{items[0].caption}</figcaption>}
+    </figure>
 
-    <div class="media-thumbs" role="tablist">
-      {items.map((m, i) => (
+    <!-- 其余媒体：两列网格，全部可见，点击进灯箱 -->
+    <div class="media-grid">
+      {items.slice(1).map((m, i) => (
         <button
-          class:list={['g-thumb', { active: i === 0 }]}
-          role="tab"
-          aria-label={`媒体 ${i + 1}`}
-          data-index={i}
+          class="g-cell"
+          data-index={i + 1}
+          aria-label={`放大查看媒体 ${i + 2}`}
+          data-video={m.video ?? ''}
+          data-image={m.image ?? ''}
+          data-caption={m.caption ?? ''}
         >
           {isVideo(m.video) ? (
-            <span class="film"><Icons name="video" size={13} />{i + 1}</span>
+            <video src={m.video} preload="metadata" muted playsinline />
           ) : (
-            <img src={m.image} alt="" loading="lazy" />
+            <img src={m.image} alt={m.caption ?? ''} loading="lazy" />
           )}
+          {isVideo(m.video) && (
+            <span class="g-play"><Icons name="video" size={18} /></span>
+          )}
+          <span class="g-no">{i + 2}</span>
         </button>
       ))}
     </div>
 
-    <div class="g-cap"></div>
+    <!-- 灯箱 -->
+    <dialog class="g-lightbox">
+      <button class="g-close" aria-label="关闭">✕</button>
+      <button class="g-prev" aria-label="上一项">←</button>
+      <div class="g-body">
+        <div class="g-media"></div>
+        <div class="g-meta">
+          <span class="g-lbcount"></span>
+          <span class="g-lbcap"></span>
+        </div>
+      </div>
+      <button class="g-next" aria-label="下一项">→</button>
+    </dialog>
   </div>
 )}
 
 <script>
-  // 画廊交互：缩略图/方向键切换，视频切走即暂停
-  document.querySelectorAll<HTMLElement>('[data-gallery]').forEach((g) => {
-    const frames = [...g.querySelectorAll<HTMLElement>('.g-item')];
-    const thumbs = [...g.querySelectorAll<HTMLElement>('.g-thumb')];
-    const cap = g.querySelector<HTMLElement>('.g-cap');
-    const count = g.querySelector<HTMLElement>('.g-count');
-    let cur = 0;
+  // 灯箱：点击网格/主图放大查看，←/→ 切换，Esc/点背景关闭
+  document.querySelectorAll<HTMLElement>('.media-gallery').forEach((g) => {
+    const lb = g.querySelector<HTMLDialogElement>('.g-lightbox');
+    if (!lb) return;
+    const mediaBox = lb.querySelector<HTMLElement>('.g-media');
+    const capEl = lb.querySelector<HTMLElement>('.g-lbcap');
+    const cntEl = lb.querySelector<HTMLElement>('.g-lbcount');
 
-    const show = (i: number) => {
-      cur = (i + frames.length) % frames.length;
-      frames.forEach((f, j) => f.classList.toggle('active', j === cur));
-      thumbs.forEach((t, j) => t.classList.toggle('active', j === cur));
-      frames.forEach((f) => {
-        const v = f.querySelector('video');
-        if (v && !f.classList.contains('active')) v.pause();
-      });
-      // 懒加载：切换到某项时再加载视频元数据
-      const v = frames[cur].querySelector('video');
-      if (v && v.getAttribute('preload') === 'none') v.setAttribute('preload', 'metadata');
-      if (cap) cap.textContent = frames[cur].dataset.caption ?? '';
-      if (count) count.textContent = `${cur + 1} / ${frames.length}`;
+    const cells = [...g.querySelectorAll<HTMLElement>('.g-cell')] as HTMLElement[];
+    const main = g.querySelector<HTMLElement>('.g-main');
+    const mainImg = g.querySelector<HTMLElement>('.g-zoom');
+    const sources = [
+      {
+        video: main?.dataset.video ?? '',
+        image: main?.dataset.image ?? '',
+        caption: main?.dataset.caption ?? '',
+      },
+      ...cells.map((c) => ({
+        video: c.dataset.video ?? '',
+        image: c.dataset.image ?? '',
+        caption: c.dataset.caption ?? '',
+      })),
+    ];
+
+    let cur = 0;
+    const render = () => {
+      const it = sources[cur];
+      mediaBox!.innerHTML = '';
+      if (it.video) {
+        const v = document.createElement('video');
+        v.src = it.video;
+        v.controls = true;
+        v.playsInline = true;
+        v.preload = 'metadata';
+        mediaBox!.appendChild(v);
+        v.play().catch(() => {});
+      } else if (it.image) {
+        const im = document.createElement('img');
+        im.src = it.image;
+        im.alt = it.caption;
+        mediaBox!.appendChild(im);
+      }
+      capEl!.textContent = it.caption;
+      cntEl!.textContent = `${cur + 1} / ${sources.length}`;
     };
 
-    thumbs.forEach((t) => t.addEventListener('click', () => show(Number(t.dataset.index))));
-    g.addEventListener('keydown', (e) => {
-      if (e.key === 'ArrowLeft') show(cur - 1);
-      if (e.key === 'ArrowRight') show(cur + 1);
+    cells.forEach((c) =>
+      c.addEventListener('click', () => {
+        cur = Number(c.dataset.index);
+        render();
+        lb.showModal();
+      })
+    );
+    mainImg?.addEventListener('click', () => {
+      cur = 0;
+      render();
+      lb.showModal();
     });
-    show(0);
+
+    const close = () => lb.close();
+    lb.querySelector('.g-close')?.addEventListener('click', close);
+    lb.querySelector('.g-prev')?.addEventListener('click', () => {
+      cur = (cur - 1 + sources.length) % sources.length;
+      render();
+    });
+    lb.querySelector('.g-next')?.addEventListener('click', () => {
+      cur = (cur + 1) % sources.length;
+      render();
+    });
+    lb.addEventListener('click', (e) => {
+      if (e.target === lb || (e.target as HTMLElement).classList?.contains('g-body')) close();
+    });
+    lb.addEventListener('close', () => {
+      mediaBox!.innerHTML = '';
+    });
+    lb.addEventListener('keydown', (e) => {
+      if (e.key === 'ArrowLeft') lb.querySelector<HTMLButtonElement>('.g-prev')?.click();
+      if (e.key === 'ArrowRight') lb.querySelector<HTMLButtonElement>('.g-next')?.click();
+    });
   });
 </script>
