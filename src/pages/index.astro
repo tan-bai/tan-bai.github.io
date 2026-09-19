@@ -19,6 +19,7 @@ const byId = Object.fromEntries(all.map((p) => [p.id, p]));
 const groups = [
   {
     id: 'sensing',
+    nav: '端云',
     no: '01',
     name: '端云协同与智能感知',
     sub: 'Edge–Cloud Sensing',
@@ -27,6 +28,7 @@ const groups = [
   },
   {
     id: 'detection',
+    nav: '检测',
     no: '02',
     name: '目标检测与网络设计',
     sub: 'Detection Architecture',
@@ -35,6 +37,7 @@ const groups = [
   },
   {
     id: 'embodied',
+    nav: '机器人',
     no: '03',
     name: '具身智能与机器人',
     sub: 'Embodied AI & Robotics',
@@ -43,11 +46,21 @@ const groups = [
   },
   {
     id: 'llm',
+    nav: '大模型',
     no: '04',
     name: '大模型与 VLA 复现',
     sub: 'LLM & VLA',
     desc: '从论文到代码：π0 视觉-语言-动作模型家族复现，Stanford CS336 从零构建语言模型。',
     ids: ['pi0-vla', 'cs336'],
+  },
+  {
+    id: 'hardware',
+    nav: '硬件',
+    no: '05',
+    name: '硬件与电子设计',
+    sub: 'Electronics & Hardware',
+    desc: '画板子与焊板子的工程基本盘：电赛信号系统、电磁循迹小车、FPGA 数字电路与蓝桥杯。',
+    ids: ['signal-system', 'smart-car', 'tw-msd', 'lanqiao'],
   },
 ];
 const osIds = ['beatless', 'polaris', 'aerial-vln'];
@@ -77,7 +90,7 @@ const patents = [
 ];
 
 const navItems = [
-  ...groups.map((g) => ({ href: `#${g.id}`, label: g.name.replace('与', '·').slice(0, 6) })),
+  ...groups.map((g) => ({ href: `#${g.id}`, label: g.nav })),
   { href: '#opensource', label: '开源' },
   { href: '#honors', label: '荣誉' },
 ];
@@ -120,7 +133,7 @@ const navItems = [
       </div>
 
       <div class="stat-strip reveal">
-        <div class="stat-cell"><b>9<i>+</i></b><span>项目实践 · 四大方向</span></div>
+        <div class="stat-cell"><b>13<i>+</i></b><span>项目实践 · 五大方向</span></div>
         <div class="stat-cell"><b>3</b><span>开源系统 · 持续维护</span></div>
         <div class="stat-cell"><b>7</b><span>竞赛奖励 · 五项第一完成人</span></div>
         <div class="stat-cell"><b>6</b><span>专利软著 · 四项发明专利</span></div>
