@@ -8,6 +8,7 @@ date: 2026.7 – 2026.8
 brief: 在智元 X2 人形机器人上打通「人体动作视频 → 骨骼提取与重定向 → RL 策略训练 → 真机部署诊断」的完整链路。
 tags: [智元 X2, 人形机器人, GVHMR, PromptHMR, SMPL/AMASS, 动作重定向, HumanoidPolicyLab, MuJoCo, Isaac, 强化学习, ONNX, 真机部署, AIMDK]
 media:
+  - { video: /media/x2-realrobot.mp4, caption: X2 真机行走与转向——实验室部署现场实录 }
   - { video: /media/x2-internship.mp4, caption: MuJoCo 中 person00 参考动作在 X2 模型上的跟踪回放 }
   - { video: /media/x2-maiguai2.mp4, caption: PromptHMR 骨骼提取——《卖拐》片段 2D 姿态跟踪，重定向管线前端 }
 ---
