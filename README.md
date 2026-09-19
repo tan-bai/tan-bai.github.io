@@ -81,7 +81,7 @@ src/
 ├── styles/global.css      # 设计系统（颜色/字体/组件样式）
 ├── layouts/Base.astro     # HTML 骨架 + 滚动显现/导航高亮脚本
 ├── components/            # ProjectCard / OsRow / MediaFrame / Icons
-├── content/projects/      # ★ 全部项目数据（17 个 md）
+├── content/projects/      # ★ 全部项目数据（19 个 md）
 └── pages/index.astro      # 首页编排（分组/顺序/荣誉/专利）
 public/media/              # 图片与视频投放目录
 ```
