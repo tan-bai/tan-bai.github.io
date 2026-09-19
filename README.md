@@ -19,7 +19,7 @@ pnpm preview   # 本地预览构建产物
 ```yaml
 ---
 title: 项目名称
-group: sensing          # sensing | detection | embodied | llm（项目分组）
+group: sensing          # sensing | detection(计算机视觉) | embodied | llm | agent | hardware（项目分组）
 role: 负责人
 date: 2024.10 – 2025.10
 brief: 一两句话简介（卡片摘要）
