@@ -9,6 +9,7 @@ brief: 在宇树 G1 人形机器人本体上完成全栈开发实践：ROS2 框�
 tags: [ROS2 Humble, Unitree SDK, G1, RealSense, YOLO, Mid360, FAST-LIO, ASR/TTS]
 outcome: 完成人形机器人开发训练营课程，获结业证书
 outcomeLabel: 证书
+reverse: true
 ---
 
 - 熟悉 ROS2 Humble 框架，完成 Unitree C++/Python SDK 开发环境配置，掌握 G1 基础开发流程；
