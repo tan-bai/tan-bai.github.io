@@ -4,7 +4,7 @@ titleEn: Proma · Research Agent Platform
 group: agent
 role: 参赛作品
 org: 挑战杯「揭榜挂帅」· 阿里云榜题
-date: 2026.5 – 至今
+date: 2026.5 – 2026.9
 brief: 挑战杯 2026 揭榜挂帅阿里云榜题「基于国产开源大模型的 AI Scientist 的研发与应用」的参赛作品。Proma 做 Electron 桌面端和会话层，Prime Agent（Pi Agent 0.84.2 的 fork）做执行运行时，模型按赛题要求走 DashScope 调 Qwen；上层用 Research Skills 和 MCP 组织证据链、跑判伪实验，docker compose 一键起。
 tags: [Proma, Prime Agent, Electron, React, TypeScript, Qwen, DashScope, MCP, Docker, AI Scientist]
 video: /media/proma-clip.mp4
