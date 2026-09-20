@@ -791,3 +791,13 @@ details.more .more-body p:last-child { margin-bottom: 0; }
 .g-mute .ic-on { display: none; }
 .g-mute[data-muted="0"] .ic-on { display: inline-flex; }
 .g-mute[data-muted="0"] .ic-off { display: none; }
+
+/* 组织行品牌标志 */
+.org-logo {
+  height: 14px;
+  width: 14px;
+  vertical-align: -2px;
+  margin-right: 5px;
+  color: var(--ink-soft);
+  opacity: 0.85;
+}

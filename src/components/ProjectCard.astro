@@ -55,7 +55,12 @@ const linkIcon = (l: Link) => l.icon ?? (/github/i.test(l.url + l.label) ? 'gith
     <div class="overline">
       <span class="no">{String(index).padStart(2, '0')}</span>
       <span class="role">{p.role}</span>
-      {p.org && <span>{p.org}</span>}
+      {p.org && (
+        <span>
+          {p.orgLogo && <img class="org-logo" src={p.orgLogo} alt="" />}
+          {p.org}
+        </span>
+      )}
       <span>{p.date}</span>
     </div>
 
