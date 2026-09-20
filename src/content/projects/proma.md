@@ -3,6 +3,7 @@ title: Proma · 自动化研究 Agent 平台
 titleEn: Proma · Research Agent Platform
 group: agent
 role: 参赛作品
+brand: 千问
 orgLogo: /icons/qwen-color.svg
 org: 挑战杯「揭榜挂帅」· 阿里云榜题
 date: 2026.5 – 2026.9

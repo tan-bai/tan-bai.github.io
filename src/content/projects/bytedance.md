@@ -3,6 +3,7 @@ title: 明镜 · 证据可审计的研究 Agent
 titleEn: MingJing · Evidence-Admissible Research Runtime
 group: agent
 role: 参赛作品
+brand: 字节跳动
 orgLogo: /icons/bytedance-color.svg
 org: 字节跳动 AI 全栈挑战赛
 date: ""

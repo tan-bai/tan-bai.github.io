@@ -25,6 +25,8 @@ interface Props {
     group: string;
     role: string;
     org?: string;
+    orgLogo?: string;
+    brand?: string;
     date: string;
     brief: string;
     Content?: any; // Markdown 正文组件，渲染在「展开详情」里
@@ -54,13 +56,14 @@ const linkIcon = (l: Link) => l.icon ?? (/github/i.test(l.url + l.label) ? 'gith
   <div class="project-body">
     <div class="overline">
       <span class="no">{String(index).padStart(2, '0')}</span>
-      <span class="role">{p.role}</span>
-      {p.org && (
-        <span>
-          {p.orgLogo && <img class="org-logo" src={p.orgLogo} alt="" />}
-          {p.org}
+      {p.orgLogo && p.brand && (
+        <span class="brand-chip">
+          <img src={p.orgLogo} alt={p.brand} />
+          {p.brand}
         </span>
       )}
+      <span class="role">{p.role}</span>
+      {p.org && <span>{p.org}</span>}
       <span>{p.date}</span>
     </div>
 
