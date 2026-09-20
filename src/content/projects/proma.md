@@ -3,7 +3,7 @@ title: Proma · 自动化研究 Agent 平台
 titleEn: Proma · Research Agent Platform
 group: agent
 role: 参赛作品
-orgLogo: /icons/qwen.svg
+orgLogo: /icons/qwen-color.svg
 org: 挑战杯「揭榜挂帅」· 阿里云榜题
 date: 2026.5 – 2026.9
 brief: 挑战杯 2026 揭榜挂帅阿里云榜题「基于国产开源大模型的 AI Scientist 的研发与应用」的参赛作品。Proma 做 Electron 桌面端和会话层，Prime Agent（Pi Agent 0.84.2 的 fork）做执行运行时，模型按赛题要求走 DashScope 调 Qwen；上层用 Research Skills 和 MCP 组织证据链、跑判伪实验，docker compose 一键起。

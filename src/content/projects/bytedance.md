@@ -3,7 +3,7 @@ title: 明镜 · 证据可审计的研究 Agent
 titleEn: MingJing · Evidence-Admissible Research Runtime
 group: agent
 role: 参赛作品
-orgLogo: /icons/bytedance.svg
+orgLogo: /icons/bytedance-color.svg
 org: 字节跳动 AI 全栈挑战赛
 date: ""
 brief: 字节跳动 AI 全栈挑战赛的参赛作品。明镜是基于 LangGraph 的竞品分析多智能体系统：LLM 只负责提出声明，独立的 QA Agent 用七项确定性规则裁决，引用片段必须是来源原文的逐字子串，否则声明打回、重新采集，证据等级从 weak 一路升到 strong；报告里每条结论都能点回原文出处和 QA 的采纳理由。
