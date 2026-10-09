@@ -124,127 +124,140 @@ img, video { display: block; max-width: 100%; }
 .nav-links a:hover { background: rgba(23, 63, 122, 0.07); color: var(--accent-ink); }
 .nav-links a.active { background: var(--accent-wash); color: var(--accent-ink); font-weight: 500; }
 
-/* ---------- Hero ---------- */
+/* ---------- 个人介绍 ---------- */
 
 .hero {
   position: relative;
-  padding: 88px 0 64px;
+  isolation: isolate;
   overflow: hidden;
 }
-.hero::before {
+.hero-background {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+}
+.hero-background img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center 43%;
+  filter: saturate(0.55);
+  opacity: 0.65;
+}
+.hero-background::after {
   content: "";
   position: absolute;
   inset: 0;
   background:
-    radial-gradient(720px 300px at 82% -8%, rgba(23, 63, 122, 0.07), transparent 70%),
-    radial-gradient(560px 260px at 8% 112%, rgba(138, 109, 31, 0.05), transparent 70%);
-  pointer-events: none;
+    linear-gradient(90deg, var(--paper) 4%, rgba(251, 250, 247, 0.94) 34%, rgba(251, 250, 247, 0.32) 100%),
+    linear-gradient(0deg, var(--paper), rgba(251, 250, 247, 0.18) 68%, rgba(251, 250, 247, 0.12));
 }
-.hero-kicker {
-  font-family: var(--mono);
-  font-size: 12px;
-  letter-spacing: 0.32em;
-  color: var(--muted);
-  text-transform: uppercase;
-  margin-bottom: 18px;
-}
-.hero h1 {
-  font-family: var(--serif);
-  font-size: clamp(44px, 6.4vw, 64px);
-  font-weight: 700;
-  line-height: 1.1;
-  letter-spacing: 0.01em;
-  margin: 0;
-}
-.hero h1 .en {
-  font-size: clamp(15px, 1.8vw, 19px);
-  font-weight: 400;
-  color: var(--muted);
-  letter-spacing: 0.06em;
-  margin-left: 14px;
-}
-.hero-tagline {
-  font-family: var(--serif);
-  font-size: clamp(17px, 2.4vw, 20px);
-  color: var(--ink-soft);
-  margin: 22px 0 0;
-  max-width: var(--w-text);
-  line-height: 1.9;
-}
-.hero-tagline em {
-  font-style: normal;
-  color: var(--accent);
-}
-.hero-meta {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px 28px;
-  margin-top: 26px;
-  font-size: 14px;
-  color: var(--ink-soft);
-}
-.hero-meta span { display: inline-flex; align-items: center; gap: 8px; }
-.hero-meta .dot {
-  width: 4px; height: 4px;
-  border-radius: 50%;
-  background: var(--accent);
-  flex: none;
-}
-
-/* 数据条 —— 编辑风：上下细线，不用卡片 */
-.stat-strip {
+.hero-inner {
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  border-top: 1px solid var(--line-strong);
-  border-bottom: 1px solid var(--line-strong);
-  margin-top: 48px;
-  background: transparent;
+  grid-template-columns: minmax(0, 1fr) 208px;
+  align-items: center;
+  gap: 80px;
+  padding-top: 64px;
+  padding-bottom: 56px;
+  border-bottom: 1px solid var(--line);
 }
-.stat-cell {
-  padding: 20px 24px 20px 0;
+.hero-portrait {
+  width: 208px;
+  height: auto;
+  border: 1px solid rgba(255, 255, 255, 0.85);
+  border-radius: 8px;
+  box-shadow: 0 10px 32px rgba(28, 27, 24, 0.09);
 }
-.stat-cell + .stat-cell { padding-left: 24px; }
-.stat-cell b {
-  display: block;
-  font-family: var(--mono);
-  font-size: 32px;
+.hero-intro { max-width: 640px; }
+.hero h1 {
+  margin: 0;
+  font-family: var(--serif);
+  font-size: clamp(42px, 4.5vw, 56px);
   font-weight: 600;
-  color: var(--ink);
   line-height: 1.2;
+  letter-spacing: 0.025em;
 }
-.stat-cell b i {
-  font-style: normal;
-  font-size: 17px;
-  color: var(--accent);
-  margin-left: 2px;
-}
-.stat-cell span {
-  font-size: 12.5px;
-  color: var(--muted);
+.hero-role-line {
+  margin: 12px 0 0;
+  color: var(--ink-soft);
+  font-size: 15px;
   letter-spacing: 0.04em;
 }
-
-/* 社交链接 */
+.hero-focus {
+  max-width: 34em;
+  margin: 24px 0 0;
+  color: var(--ink-soft);
+  font-size: 18px;
+  line-height: 1.8;
+}
+.hero-focus span { color: var(--ink); }
+.hero-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 12px 32px;
+  margin-top: 26px;
+}
+.hero-project-link {
+  display: inline-flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 22px;
+  min-height: 44px;
+  border-bottom: 1px solid var(--accent);
+  color: var(--accent);
+  font-size: 15px;
+  font-weight: 500;
+}
+.hero-project-link span {
+  display: inline-block;
+  transition: transform 0.2s var(--ease);
+}
+.hero-project-link:hover span { transform: translateY(3px); }
 .hero-links {
   display: flex;
   flex-wrap: wrap;
-  gap: 10px;
-  margin-top: 28px;
+  align-items: center;
+  gap: 8px 22px;
 }
 .hero-links a {
   display: inline-flex;
   align-items: center;
   gap: 7px;
-  font-size: 13.5px;
-  color: var(--ink-soft);
-  background: none;
+  min-height: 44px;
   border: none;
-  padding: 2px 0;
+  color: var(--ink-soft);
+  font-size: 13.5px;
 }
-.hero-links a:hover {
-  color: var(--accent-ink);
+.hero-links a:hover { color: var(--accent); }
+.hero-links svg { width: 14px; height: 14px; flex: none; opacity: 0.7; }
+.hero-actions a:focus-visible,
+.oss-activity summary:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 5px;
+  border-radius: 2px;
 }
-.hero-links svg { width: 14px; height: 14px; flex: none; opacity: 0.75; }
+.hero + .section { padding-top: 48px; }
+
+/* 活跃记录作为开源项目的补充，按需展开 */
+.oss-activity {
+  margin-top: 24px;
+  padding-top: 18px;
+  border-top: 1px solid var(--line);
+  color: var(--ink-soft);
+  font-size: 13px;
+}
+.oss-activity summary {
+  width: fit-content;
+  min-height: 44px;
+  cursor: pointer;
+  line-height: 44px;
+}
+.oss-activity summary:hover { color: var(--accent); }
+.oss-activity figure { max-width: 560px; margin: 16px 0 0; }
+.oss-activity img { width: 100%; }
+.oss-activity figcaption { margin-top: 10px; font-size: 12px; }
 
 /* ---------- 章节头 ---------- */
 
@@ -659,12 +672,10 @@ details.more .more-body p:last-child { margin-bottom: 0; }
   .project { grid-template-columns: 1fr; gap: 24px; padding: 32px 0; }
   .project-media { position: static; order: -1 !important; }
   .os-row { grid-template-columns: 1fr; gap: 14px; }
-  .stat-strip { grid-template-columns: repeat(2, 1fr); }
-  .stat-cell:nth-child(2n) { border-right: none; }
-  .stat-cell:nth-child(-n+2) { border-bottom: 1px solid var(--line); }
-  .stat-cell:nth-child(2n+1) { padding-left: 0; }
   .patent-grid { grid-template-columns: 1fr; }
-  .hero { padding: 56px 0 48px; }
+  .hero-inner { grid-template-columns: minmax(0, 1fr) 160px; gap: 40px; padding-top: 48px; padding-bottom: 36px; }
+  .hero-portrait { width: 160px; }
+  .hero + .section { padding-top: 36px; }
 }
 
 /* ---------- 多媒体画廊：主图 + 网格 + 灯箱 ---------- */
@@ -804,85 +815,24 @@ details.more .more-body p:last-child { margin-bottom: 0; }
   display: block;
 }
 
-
-/* ---------- 首屏自述与热力图 ---------- */
-
-.hero-bio {
-  max-width: 40em;
-  color: var(--muted);
-  font-size: 14.5px;
-  line-height: 2.05;
-  margin: 14px 0 0;
-}
-.hero-hobby {
-  color: var(--muted);
-  font-size: 13.5px;
-}
-.hero-grid {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) 400px;
-  gap: 56px;
-  align-items: end;
-}
-.hero-heatmap {
-  margin: 0 0 2px;
-}
-.hero-heatmap img {
-  width: 100%;
-  display: block;
-}
-.hero-heatmap figcaption {
-  font-size: 11px;
-  color: var(--muted);
-  margin-top: 7px;
-  letter-spacing: 0.02em;
+@media (max-width: 600px) {
+  .hero-inner { grid-template-columns: minmax(0, 1fr) 92px; gap: 20px; }
+  .hero-intro { display: contents; }
+  .hero-heading { grid-column: 1; grid-row: 1; }
+  .hero-portrait { grid-column: 2; grid-row: 1; width: 92px; border-radius: 6px; }
+  .hero .hero-focus { grid-column: 1 / -1; margin: 0; }
+  .hero .hero-actions { grid-column: 1 / -1; margin-top: 0; }
+  .hero-background img { opacity: 0.45; }
+  .hero-role-line { font-size: 14px; }
 }
 
-/* ---------- 首屏角色行与 Lead（参考 tianxingchen intro）---------- */
-
-.hero-roles {
-  display: flex;
-  flex-wrap: wrap;
-  margin-top: 16px;
-}
-.hero-roles .role {
-  display: inline-flex;
-  align-items: baseline;
-  gap: 8px;
-  padding: 2px 16px;
-}
-.hero-roles .role + .role {
-  border-left: 1px solid var(--line-strong);
-}
-.hero-roles .role-title {
-  font-family: var(--mono);
-  font-size: 11.5px;
-  letter-spacing: 0.08em;
-  color: var(--muted);
-}
-.hero-roles .role-org {
-  font-size: 14px;
-  color: var(--ink-soft);
-}
-.hero-lead {
-  font-family: var(--serif);
-  font-size: clamp(19px, 2.6vw, 24px);
-  font-weight: 600;
-  letter-spacing: 0.03em;
-  color: var(--ink);
-  margin: 26px 0 0;
-}
-.hero-grid .hero-intro .hero-bio {
-  margin-top: 16px;
-}
-
-/* 极简首屏：身份行 */
-.hero-role-line {
-  font-size: 15.5px;
-  color: var(--ink-soft);
-  letter-spacing: 0.14em;
-  margin: 18px 0 0;
-}
-.hero-grid .hero-intro .hero-links {
-  margin-top: 30px;
+@media (max-width: 540px) {
+  .hero-inner { padding-top: 40px; }
+  .hero h1 { font-size: 40px; }
+  .hero-focus { margin-top: 20px; font-size: 17px; }
+  .hero-actions { align-items: flex-start; flex-direction: column; gap: 12px; margin-top: 22px; }
+  .hero-links { gap: 8px 20px; }
+  .section-head { gap: 12px; }
+  .section-head h2 { font-size: 24px; }
+  .section-head .sub { display: none; }
 }

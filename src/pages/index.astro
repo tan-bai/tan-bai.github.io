@@ -110,34 +110,31 @@ const navItems = [
     </div>
   </nav>
 
-  <!-- ================= Hero ================= -->
+  <!-- ================= 个人介绍 ================= -->
   <header class="hero" id="top">
-    <div class="wrap">
-      <div class="hero-grid">
-        <div class="hero-intro">
+    <div class="hero-background" aria-hidden="true">
+      <img src="/media/hero-landscape.webp" alt="" width="1800" height="1013" decoding="async" fetchpriority="high" />
+    </div>
+    <div class="wrap hero-inner">
+      <div class="hero-intro">
+        <div class="hero-heading">
           <h1>房家辉</h1>
           <p class="hero-role-line">东南大学 · 研究生在读</p>
+        </div>
+        <p class="hero-focus">专注于 <span>XXX</span></p>
 
-          <div class="hero-links reveal">
-            <a href="mailto:jiahui.fang@ieee.org"><Icons name="mail" /> jiahui.fang@ieee.org</a>
+        <div class="hero-actions">
+          <a class="hero-project-link" href="#embodied">
+            查看项目 <span aria-hidden="true">↓</span>
+          </a>
+          <div class="hero-links" aria-label="联系方式">
+            <a href="mailto:jiahui.fang@ieee.org" title="jiahui.fang@ieee.org"><Icons name="mail" /> Email</a>
             <a href="https://github.com/20bytes" target="_blank" rel="noopener noreferrer"><Icons name="github" /> GitHub</a>
             <a href="https://20bytes.top" target="_blank" rel="noopener noreferrer"><Icons name="globe" /> 20bytes.top</a>
           </div>
         </div>
-
-        <figure class="hero-heatmap reveal">
-          <img src="/media/github-heatmap.svg" alt="GitHub 提交热力图" loading="lazy" />
-          <figcaption>GitHub 提交 · 2026.3 至今 · 787 次贡献 · 120 活跃日</figcaption>
-        </figure>
       </div>
-
-      <div class="stat-strip reveal">
-        <div class="stat-cell"><b>18<i>+</i></b><span>项目实践 · 六大方向</span></div>
-        <div class="stat-cell"><b>3</b><span>开源系统 · 持续维护</span></div>
-        <div class="stat-cell"><b>7</b><span>竞赛奖励 · 五项第一完成人</span></div>
-        <div class="stat-cell"><b>6</b><span>专利软著 · 四项发明专利</span></div>
-      </div>
-
+      <img class="hero-portrait" src="/media/profile-photo.png" alt="房家辉的个人照片" width="295" height="399" decoding="async" />
     </div>
   </header>
 
@@ -171,6 +168,13 @@ const navItems = [
         const repo = byId[id];
         return repo ? <OsRow repo={repo} /> : null;
       })}
+      <details class="oss-activity">
+        <summary>GitHub 活跃记录</summary>
+        <figure>
+          <img src="/media/github-heatmap.svg" alt="GitHub 提交热力图" loading="lazy" />
+          <figcaption>2026.3 至今 · 787 次贡献 · 120 活跃日</figcaption>
+        </figure>
+      </details>
     </div>
   </section>
 
