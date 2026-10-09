@@ -150,11 +150,11 @@ img, video { display: block; max-width: 100%; }
 }
 .hero h1 {
   font-family: var(--serif);
-  font-size: clamp(38px, 6vw, 56px);
+  font-size: clamp(44px, 6.4vw, 64px);
   font-weight: 700;
-  line-height: 1.15;
+  line-height: 1.1;
   letter-spacing: 0.01em;
-  margin: 0 0 6px;
+  margin: 0;
 }
 .hero h1 .en {
   font-size: clamp(15px, 1.8vw, 19px);
@@ -201,11 +201,9 @@ img, video { display: block; max-width: 100%; }
   background: transparent;
 }
 .stat-cell {
-  padding: 22px 24px 22px 0;
-  border-right: 1px solid var(--line);
+  padding: 20px 24px 20px 0;
 }
 .stat-cell + .stat-cell { padding-left: 24px; }
-.stat-cell:last-child { border-right: none; }
 .stat-cell b {
   display: block;
   font-family: var(--mono);
@@ -237,22 +235,16 @@ img, video { display: block; max-width: 100%; }
   display: inline-flex;
   align-items: center;
   gap: 7px;
-  border: 1px solid var(--line-strong);
-  border-radius: 999px;
-  padding: 7px 16px;
   font-size: 13.5px;
   color: var(--ink-soft);
-  background: var(--paper-raised);
-  transition: all 0.2s var(--ease);
+  background: none;
+  border: none;
+  padding: 2px 0;
 }
 .hero-links a:hover {
-  border-color: var(--accent);
   color: var(--accent-ink);
-  background: var(--accent-wash);
-  transform: translateY(-1px);
-  box-shadow: var(--shadow-sm);
 }
-.hero-links svg { width: 15px; height: 15px; flex: none; }
+.hero-links svg { width: 14px; height: 14px; flex: none; opacity: 0.75; }
 
 /* ---------- 章节头 ---------- */
 
@@ -828,20 +820,15 @@ details.more .more-body p:last-child { margin-bottom: 0; }
 }
 .hero-grid {
   display: grid;
-  grid-template-columns: minmax(0, 1fr) 420px;
-  gap: 48px;
-  align-items: center;
+  grid-template-columns: minmax(0, 1fr) 400px;
+  gap: 56px;
+  align-items: end;
 }
 .hero-heatmap {
-  margin: 0;
+  margin: 0 0 2px;
 }
 .hero-heatmap img {
   width: 100%;
-  border: 1px solid var(--line-strong);
-  border-radius: var(--radius);
-  background: #fff;
-  padding: 14px 10px 8px;
-  box-sizing: border-box;
   display: block;
 }
 .hero-heatmap figcaption {
@@ -891,10 +878,10 @@ details.more .more-body p:last-child { margin-bottom: 0; }
 
 /* 极简首屏：身份行 */
 .hero-role-line {
-  font-size: 16px;
+  font-size: 15.5px;
   color: var(--ink-soft);
-  letter-spacing: 0.04em;
-  margin: 14px 0 0;
+  letter-spacing: 0.14em;
+  margin: 18px 0 0;
 }
 .hero-grid .hero-intro .hero-links {
   margin-top: 30px;
