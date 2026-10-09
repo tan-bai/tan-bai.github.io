@@ -1,5 +1,4 @@
-
-    <svg width="719" height="258" viewBox="0 0 719 258" xmlns="http://www.w3.org/2000/svg" role="img">
+<svg xmlns="http://www.w3.org/2000/svg" width="719" height="140" viewBox="0 96 719 140" role="img">
       <style>
         .header {
           font: 600 18px 'Segoe UI', Ubuntu, Sans-Serif;
@@ -53,38 +52,12 @@
         }
       </style>
 
-      <!-- 卡片背景 -->
-      <rect
-        x="0.5"
-        y="0.5"
-        rx="4.5"
-        height="257"
-        width="718"
-        fill="#fffefe"
-        stroke="#e4e2e2"
-        stroke-width="1"
-      />
+      
+      <rect x="0.5" y="0.5" rx="4.5" height="257" width="718" fill="#fffefe" stroke="#e4e2e2" stroke-width="1" />
 
-      <!-- 标题 -->
-      <g data-testid="card-title" transform="translate(30, 35)">
-        <text x="0" y="0" class="header">GitHub Contributions</text>
-      </g>
-
-      <!-- 统计信息 -->
-      <g transform="translate(30, 70)">
-        <g class="stagger" style="animation-delay: 150ms">
-          <text class="stat" x="0" y="0">Total Contributions:</text>
-          <text class="stat bold" x="180" y="0" style="fill: #2f80ed;">787</text>
-        </g>
-        <g class="stagger" style="animation-delay: 300ms" transform="translate(280, 0)">
-          <text class="stat" x="0" y="0">Active Days:</text>
-          <text class="stat bold" x="120" y="0" style="fill: #2f80ed;">120</text>
-        </g>
-      </g>
-
-      <!-- 热力图区域 -->
+      
       <g transform="translate(30, 90)">
-        <!-- 月份标签 -->
+        
         <text x="64" y="15" class="contrib-month">Jan</text>
         <text x="120" y="15" class="contrib-month">Feb</text>
         <text x="176" y="15" class="contrib-month">Mar</text>
@@ -946,14 +919,14 @@
         </rect>
       </g>
 
-      <!-- 图例 -->
+      
       <g transform="translate(569, 228)">
         <text x="0" y="0" class="contrib-legend">Less</text>
-        <rect x="30" y="-8" width="11" height="11" fill="#ebedf0" rx="2" ry="2" class="contrib-square"></rect>
-        <rect x="44" y="-8" width="11" height="11" fill="#9be9a8" rx="2" ry="2" class="contrib-square"></rect>
-        <rect x="58" y="-8" width="11" height="11" fill="#40c463" rx="2" ry="2" class="contrib-square"></rect>
-        <rect x="72" y="-8" width="11" height="11" fill="#30a14e" rx="2" ry="2" class="contrib-square"></rect>
-        <rect x="86" y="-8" width="11" height="11" fill="#216e39" rx="2" ry="2" class="contrib-square"></rect>
+        <rect x="30" y="-8" width="11" height="11" fill="#ebedf0" rx="2" ry="2" class="contrib-square" />
+        <rect x="44" y="-8" width="11" height="11" fill="#9be9a8" rx="2" ry="2" class="contrib-square" />
+        <rect x="58" y="-8" width="11" height="11" fill="#40c463" rx="2" ry="2" class="contrib-square" />
+        <rect x="72" y="-8" width="11" height="11" fill="#30a14e" rx="2" ry="2" class="contrib-square" />
+        <rect x="86" y="-8" width="11" height="11" fill="#216e39" rx="2" ry="2" class="contrib-square" />
         <text x="108" y="0" class="contrib-legend">More</text>
       </g>
     </svg>
