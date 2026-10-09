@@ -813,23 +813,25 @@ details.more .more-body p:last-child { margin-bottom: 0; }
   display: block;
 }
 
-/* ---------- 关于我 ---------- */
 
-.about { padding-top: 70px; }
-.about-text p {
-  max-width: 46em;
-  color: var(--ink-soft);
-  font-size: 15.5px;
-  line-height: 2.1;
-  margin: 0 0 14px;
-}
-.about-text .about-meta {
+/* ---------- 首屏自述与热力图 ---------- */
+
+.hero-bio {
+  max-width: 40em;
   color: var(--muted);
-  font-size: 14px;
-  margin-top: 20px;
+  font-size: 14.5px;
+  line-height: 2.05;
+  margin: 14px 0 0;
 }
-.about-heatmap { margin: 36px 0 0; }
-.about-heatmap img {
+.hero-hobby {
+  color: var(--muted);
+  font-size: 13.5px;
+}
+.hero-heatmap {
+  margin: 40px 0 0;
+  max-width: 760px;
+}
+.hero-heatmap img {
   width: 100%;
   border: 1px solid var(--line-strong);
   border-radius: var(--radius);
@@ -838,7 +840,7 @@ details.more .more-body p:last-child { margin-bottom: 0; }
   box-sizing: border-box;
   display: block;
 }
-.about-heatmap figcaption {
+.hero-heatmap figcaption {
   font-size: 12px;
   color: var(--muted);
   margin-top: 8px;
