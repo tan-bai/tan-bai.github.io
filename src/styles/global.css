@@ -157,12 +157,11 @@ img, video { display: block; max-width: 100%; }
   margin: 0 0 6px;
 }
 .hero h1 .en {
-  display: block;
-  font-size: clamp(17px, 2.2vw, 21px);
+  font-size: clamp(15px, 1.8vw, 19px);
   font-weight: 400;
   color: var(--muted);
   letter-spacing: 0.06em;
-  margin-top: 10px;
+  margin-left: 14px;
 }
 .hero-tagline {
   font-family: var(--serif);
@@ -850,4 +849,42 @@ details.more .more-body p:last-child { margin-bottom: 0; }
   color: var(--muted);
   margin-top: 7px;
   letter-spacing: 0.02em;
+}
+
+/* ---------- 首屏角色行与 Lead（参考 tianxingchen intro）---------- */
+
+.hero-roles {
+  display: flex;
+  flex-wrap: wrap;
+  margin-top: 16px;
+}
+.hero-roles .role {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 8px;
+  padding: 2px 16px;
+}
+.hero-roles .role + .role {
+  border-left: 1px solid var(--line-strong);
+}
+.hero-roles .role-title {
+  font-family: var(--mono);
+  font-size: 11.5px;
+  letter-spacing: 0.08em;
+  color: var(--muted);
+}
+.hero-roles .role-org {
+  font-size: 14px;
+  color: var(--ink-soft);
+}
+.hero-lead {
+  font-family: var(--serif);
+  font-size: clamp(19px, 2.6vw, 24px);
+  font-weight: 600;
+  letter-spacing: 0.03em;
+  color: var(--ink);
+  margin: 26px 0 0;
+}
+.hero-grid .hero-intro .hero-bio {
+  margin-top: 16px;
 }
