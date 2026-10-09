@@ -827,8 +827,14 @@ details.more .more-body p:last-child { margin-bottom: 0; }
   color: var(--muted);
   font-size: 13.5px;
 }
+.hero-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 420px;
+  gap: 48px;
+  align-items: center;
+}
 .hero-heatmap {
-  margin: 38px 0 0;
+  margin: 0;
 }
 .hero-heatmap img {
   width: 100%;
@@ -840,7 +846,8 @@ details.more .more-body p:last-child { margin-bottom: 0; }
   display: block;
 }
 .hero-heatmap figcaption {
-  font-size: 12px;
+  font-size: 11px;
   color: var(--muted);
-  margin-top: 8px;
+  margin-top: 7px;
+  letter-spacing: 0.02em;
 }
