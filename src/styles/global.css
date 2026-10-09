@@ -812,3 +812,34 @@ details.more .more-body p:last-child { margin-bottom: 0; }
   width: 14px;
   display: block;
 }
+
+/* ---------- 关于我 ---------- */
+
+.about { padding-top: 70px; }
+.about-text p {
+  max-width: 46em;
+  color: var(--ink-soft);
+  font-size: 15.5px;
+  line-height: 2.1;
+  margin: 0 0 14px;
+}
+.about-text .about-meta {
+  color: var(--muted);
+  font-size: 14px;
+  margin-top: 20px;
+}
+.about-heatmap { margin: 36px 0 0; }
+.about-heatmap img {
+  width: 100%;
+  border: 1px solid var(--line-strong);
+  border-radius: var(--radius);
+  background: #fff;
+  padding: 12px;
+  box-sizing: border-box;
+  display: block;
+}
+.about-heatmap figcaption {
+  font-size: 12px;
+  color: var(--muted);
+  margin-top: 8px;
+}

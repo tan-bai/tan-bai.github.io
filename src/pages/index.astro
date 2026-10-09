@@ -93,6 +93,7 @@ const patents = [
 ];
 
 const navItems = [
+  { href: '#about', label: '关于' },
   ...groups.map((g) => ({ href: `#${g.id}`, label: g.nav })),
   { href: '#opensource', label: '开源' },
   { href: '#honors', label: '荣誉' },
@@ -143,6 +144,24 @@ const navItems = [
       </div>
     </div>
   </header>
+
+  <!-- ================= 关于我 ================= -->
+  <section id="about" class="section about">
+    <div class="wrap">
+      <div class="section-head reveal">
+        <h2>关于我</h2>
+      </div>
+      <div class="about-text reveal">
+        <p>本科在上海师范大学读电子信息工程，从硬件设计和嵌入式开发起步，在科研和竞赛里逐渐转向视觉感知，之后加入学校的机器人与智能制造实验室，慢慢走近机器人方向。</p>
+        <p>大二下学期开始持续关注具身智能，现在在东南大学自动化学院读硕士，对视觉语言动作（VLA）、视觉语言导航（VLN）和世界模型（World Model）尤感兴趣。希望未来能围绕这些方向，做一些真正 make sense 的工作。</p>
+        <p class="about-meta">📷 摄影爱好者 · 🏸 羽毛球发烧友</p>
+      </div>
+      <figure class="about-heatmap reveal">
+        <img src="/media/github-heatmap.svg" alt="GitHub 提交热力图" loading="lazy" />
+        <figcaption>GitHub 提交记录 · 2024.10 – 2026.10</figcaption>
+      </figure>
+    </div>
+  </section>
 
   <!-- ================= 项目分组 ================= -->
   {groups.map((g) => (
