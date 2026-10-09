@@ -888,3 +888,14 @@ details.more .more-body p:last-child { margin-bottom: 0; }
 .hero-grid .hero-intro .hero-bio {
   margin-top: 16px;
 }
+
+/* 极简首屏：身份行 */
+.hero-role-line {
+  font-size: 16px;
+  color: var(--ink-soft);
+  letter-spacing: 0.04em;
+  margin: 14px 0 0;
+}
+.hero-grid .hero-intro .hero-links {
+  margin-top: 30px;
+}
