@@ -1,8 +1,10 @@
 ---
 import Base from '../layouts/Base.astro';
+import CertificateWall from '../components/CertificateWall.astro';
 import ProjectCard from '../components/ProjectCard.astro';
 import OsRow from '../components/OsRow.astro';
 import Icons from '../components/Icons.astro';
+import { posterOf } from '../lib/media';
 
 /* ---------- 数据装载：src/content/projects/*.md ---------- */
 const mods = import.meta.glob<{ frontmatter: any; Content: any }>('../content/projects/*.md', {
@@ -15,223 +17,350 @@ const all = Object.entries(mods).map(([path, m]) => ({
 }));
 const byId = Object.fromEntries(all.map((p) => [p.id, p]));
 
-/* ---------- 章节编排 ---------- */
+/* ---------- 个人信息（首屏） ---------- */
+const profile = {
+  name: '房家辉',
+  en: 'Jiahui Fang',
+  status: '欢迎实习、全职与科研合作机会',
+  school: '东南大学',
+  program: '电子信息 · 研究生',
+  bio: '<strong>具身智能</strong>方面，关注无人机空中视觉语言导航（Aerial VLN）、视觉-语言-动作模型（VLA）与面向无人机的世界模型；<strong>AI for AI</strong> 方面，研究并构建能够自动化科学研究的大模型 Agent。',
+  email: 'jiahui.fang@ieee.org',
+  github: 'https://github.com/20bytes',
+  site: 'https://20bytes.top',
+};
+
+const facts = [
+  { value: '4', unit: '项', label: '发明专利 · 实审中' },
+  { value: '12', unit: '项', label: '竞赛与项目荣誉' },
+  { value: '15.5', unit: '万', label: 'Polaris 收录顶会论文' },
+  { value: '787', unit: '', label: 'GitHub 贡献 · 2026.3 起' },
+];
+
+/* ---------- 经历（链接到对应项目） ---------- */
+const experience = [
+  { period: '2026.7 – 2026.8', org: '智元机器人 · 上海', desc: '人形机器人 X2 的 RL 策略训练与真机部署', role: '算法实习', href: '#x2-internship' },
+  { period: '2025.8 – 2026.1', org: '浙江大学 FAST-LAB', desc: '羽毛球轮足机器人：多传感感知与来球轨迹预测', role: '科研实习', href: '#badminton-robot' },
+  { period: '2025.7', org: 'ROS 暑期学校 · 宇树科技 × 深蓝学院', desc: 'Unitree G1 人形机器人全栈开发训练营', role: '学员', href: '#ros-g1' },
+  { period: '2024.8 – 2024.9', org: 'SHNU 机器人与智能制造实验室', desc: '双足机器人强化学习仿真训练', role: '进组学习', href: '#bipedal' },
+];
+
+/* ---------- 精选：首屏下方的三个代表作 ---------- */
+const featured = [
+  { id: 'x2-internship', kicker: 'HUMANOID · RL', desc: '从人体视频到真机行走：骨骼提取、动作重定向、策略训练与部署诊断。' },
+  { id: 'pi0-vla', kicker: 'VLA · REPRODUCTION', desc: '独立复现 π0 流匹配动作生成，LIBERO 评测 10 回合 9 成功。' },
+  { id: 'proma', kicker: 'AGENT · AI SCIENTIST', desc: '基于 Qwen 的自动化研究 Agent 平台，挑战杯揭榜挂帅阿里云榜题作品。' },
+];
+const featMedia = (p: any) => p.media?.[0] ?? { video: p.video, image: p.image };
+
+/* ---------- 项目分组 ---------- */
 const groups = [
   {
-    id: 'embodied',
-    nav: '机器人',
-    no: '01',
+    id: 'g-embodied',
+    toc: '机器人',
     name: '具身智能与机器人',
     sub: 'Embodied AI & Robotics',
-    desc: '从仿真环境到真机本体：双足仿真训练、宇树 G1 全栈开发、ZJU FAST-LAB 羽毛球轮足机器人感知。',
-    ids: ['x2-internship', 'ros-g1', 'bipedal', 'badminton-robot'],
-  },  {
-    id: 'agent',
-    nav: 'Agent',
-    no: '02',
-    name: 'Agent 开发',
-    sub: 'Agent Development',
-    desc: '两个比赛中的 Agent 开发实践：挑战杯揭榜挂帅阿里云榜题的 AI Scientist 平台 Proma，与字节跳动 AI 全栈挑战赛的深度研究 Agent 明镜。',
-    ids: ['proma', 'bytedance'],
-  },  {
-    id: 'llm',
-    nav: '大模型',
-    no: '03',
+    desc: '从仿真到真机本体：智元 X2 人形机器人策略训练、宇树 G1 全栈开发、FAST-LAB 羽毛球轮足机器人感知、双足仿真训练。',
+    ids: ['x2-internship', 'badminton-robot', 'ros-g1', 'bipedal'],
+  },
+  {
+    id: 'g-llm',
+    toc: 'VLA / LLM',
     name: '大模型与 VLA 复现',
     sub: 'LLM & VLA',
     desc: '从论文到代码：π0 视觉-语言-动作模型家族复现，Stanford CS336 从零构建语言模型。',
     ids: ['pi0-vla', 'cs336'],
-  },  {
-    id: 'detection',
-    nav: '视觉',
-    no: '04',
+  },
+  {
+    id: 'g-agent',
+    toc: 'Agent',
+    name: 'Agent 开发',
+    sub: 'Agent Systems',
+    desc: '两项竞赛中的 Agent 实践：挑战杯揭榜挂帅阿里云榜题的 AI Scientist 平台 Proma，与字节跳动 AI 全栈挑战赛的深度研究 Agent 明镜。',
+    ids: ['proma', 'bytedance'],
+  },
+  {
+    id: 'g-vision',
+    toc: '视觉',
     name: '计算机视觉',
     sub: 'Computer Vision',
     desc: '围绕小目标检测的两条路线：红外小目标的曲率先验设计，与无人机航拍的轻量化端到端框架。',
     ids: ['lcga-net', 'safe-detr'],
-  },  {
-    id: 'sensing',
-    nav: '端云',
-    no: '05',
+  },
+  {
+    id: 'g-edge',
+    toc: '端云',
     name: '端云协同与智能感知',
     sub: 'Edge–Cloud Sensing',
-    desc: '从嵌入式智能硬件到无人机电力巡检，把视觉模型塞进端侧设备，再让云端大模型完成分析决策。',
-    ids: ['study-lamp', 'powerline-icing'],
-  },  {
-    id: 'hardware',
-    nav: '硬件',
-    no: '06',
+    desc: '把视觉模型放进端侧设备，再让云端大模型完成分析决策。',
+    ids: ['powerline-icing', 'study-lamp'],
+  },
+  {
+    id: 'g-hardware',
+    toc: '硬件',
     name: '硬件与电子设计',
     sub: 'Electronics & Hardware',
-    desc: '从画板子、焊板子到电子系统应用：电赛信号系统、循迹小车、FPGA 数字设计、停车场导航、无障碍辅助与蓝桥杯。',
+    desc: '本科阶段的动手基础：电赛信号系统、循迹小车、FPGA 数字设计、停车场导航、无障碍辅助与蓝桥杯。',
     ids: ['signal-system', 'smart-car', 'tw-msd', 'parking-nav', 'accessibility-aid', 'lanqiao'],
-  },];
+    layout: 'grid',
+  },
+];
 const osIds = ['beatless', 'polaris', 'aerial-vln'];
 
-/* ---------- 荣誉 / 竞赛 / 专利（源自简历模版三） ---------- */
+/* ---------- 荣誉 / 竞赛 / 专利 ---------- */
 const honors = [
   { name: '国家奖学金', note: '教育部' },
   { name: '上海市奖学金', note: '上海市教育委员会' },
   { name: '上海市优秀毕业生', note: '上海市教育委员会' },
 ];
 const competitions = [
-  { medal: '🏅', name: '上海市级大学生创新创业训练计划', note: '优秀结项 · 第一完成人', date: '2025.11' },
-  { medal: '🥈', name: '全国大学生物联网设计竞赛（华为杯）', note: '全国二等奖 · 第一完成人', date: '2024.08' },
-  { medal: '🥇', name: '「挑战杯」上海市大学生课外学术科技作品竞赛', note: '省级一等奖 · 第一完成人', date: '2025.05' },
-  { medal: '🥈', name: '上海市大学生计算机应用能力大赛', note: '省级二等奖 · 第一完成人', date: '2025.06' },
-  { medal: '🥉', name: '中国机器人与人工智能大赛省级选拔赛', note: '省级三等奖 · 第一完成人', date: '2025.08' },
-  { medal: '🥉', name: '全国大学生节能减排社会实践与科技竞赛', note: '全国三等奖 · 第二完成人', date: '2023.08' },
-  { medal: '🥈', name: '全国大学生集成电路创新创业大赛华东赛区', note: '省级二等奖 · 第二完成人', date: '2024.07' },
+  { name: '上海市级大学生创新创业训练计划', result: '优秀结项', role: '第一完成人', date: '2025.11' },
+  { name: '中国机器人与人工智能大赛省级选拔赛', result: '省级三等奖', role: '第一完成人', date: '2025.08' },
+  { name: '中国国际大学生创新大赛（2025）上海赛区', result: '铜奖', role: '', date: '2025.08' },
+  { name: '上海市大学生计算机应用能力大赛', result: '省级二等奖', role: '第一完成人', date: '2025.06' },
+  { name: '「挑战杯」上海市大学生课外学术科技作品竞赛', result: '省级一等奖', role: '第一完成人', date: '2025.05' },
+  { name: '上海市大学生创造杯大赛', result: '省级三等奖', role: '', date: '2024.11' },
+  { name: '全国大学生物联网设计竞赛（华为杯）', result: '全国二等奖', role: '第一完成人', date: '2024.08' },
+  { name: '全国大学生集成电路创新创业大赛华东赛区', result: '省级二等奖', role: '第二完成人', date: '2024.07' },
+  { name: '全国大学生金相技能大赛复赛（上海赛区）', result: '省级三等奖', role: '', date: '2024.05' },
+  { name: '蓝桥杯全国软件和信息技术专业人才大赛上海赛区', result: '省级三等奖', role: '', date: '2024.04' },
+  { name: '全国大学生物联网设计竞赛（华为杯）华东赛区', result: '赛区一等奖', role: '第一完成人', date: '2023.08' },
+  { name: '全国大学生节能减排社会实践与科技竞赛', result: '全国三等奖', role: '第二完成人', date: '2023.08' },
 ];
 const patents = [
-  { kind: '发明', name: '一种基于增强型对抗运动先验的双足机器人步态生成方法', no: 'CN120595629A · 实审' },
-  { kind: '发明', name: '一种基于改进 YOLOv7 的门框识别方法', no: 'CN120726591A · 实审' },
-  { kind: '发明', name: '一种基于位姿优化网络的 6-DoF 目标位姿估计方法', no: 'CN120747212A · 实审' },
-  { kind: '发明', name: '基于多模态深度学习的帕金森病患智能辅助进食系统', no: 'CN120748020A · 实审' },
+  { kind: '发明专利', name: '一种基于增强型对抗运动先验的双足机器人步态生成方法', no: 'CN120595629A · 实审' },
+  { kind: '发明专利', name: '一种基于改进 YOLOv7 的门框识别方法', no: 'CN120726591A · 实审' },
+  { kind: '发明专利', name: '一种基于位姿优化网络的 6-DoF 目标位姿估计方法', no: 'CN120747212A · 实审' },
+  { kind: '发明专利', name: '基于多模态深度学习的帕金森病患智能辅助进食系统', no: 'CN120748020A · 实审' },
   { kind: '实用新型', name: '一种带有热交换通风孔的摄像头加热防护罩', no: '2025204530867 · 已受理' },
-  { kind: '软著', name: '输电线路覆冰类型检测系统', no: '2025SR0789268 · 已授权' },
+  { kind: '软件著作权', name: '输电线路覆冰类型检测系统', no: '2025SR0789268 · 已授权' },
 ];
 
 const navItems = [
-  ...groups.map((g) => ({ href: `#${g.id}`, label: g.nav })),
+  { href: '#experience', label: '经历' },
+  { href: '#projects', label: '项目' },
   { href: '#opensource', label: '开源' },
   { href: '#honors', label: '荣誉' },
+  { href: '#contact', label: '联系' },
 ];
 ---
 
 <Base>
-  <!-- ================= 导航 ================= -->
   <nav class="nav">
-    <div class="wrap nav-inner">
-      <a class="nav-brand" href="#top">房家辉 <small>PROJECTS</small></a>
+    <div class="nav-inner">
+      <a class="nav-logo" href="#top">{profile.name}<span>{profile.en}</span></a>
       <div class="nav-links">
         {navItems.map((n) => <a href={n.href}>{n.label}</a>)}
       </div>
     </div>
   </nav>
 
-  <!-- ================= 个人介绍 ================= -->
-  <header class="hero" id="top">
-    <div class="hero-background" aria-hidden="true">
-      <img src="/media/hero-landscape.webp" alt="" width="1800" height="1013" decoding="async" fetchpriority="high" />
-    </div>
-    <div class="wrap hero-inner">
-      <div class="hero-intro">
-        <div class="hero-heading">
-          <h1>房家辉</h1>
-          <p class="hero-role-line">东南大学 · 研究生在读</p>
-        </div>
-        <p class="hero-focus">专注于 <span>XXX</span></p>
+  <!-- ================= 首屏 ================= -->
+  <header class="intro" id="top">
+    <div class="wrap">
+      <div class="intro-grid">
+        <div class="intro-copy">
+          <div class="intro-head">
+            <p class="intro-status"><span class="dot" aria-hidden="true"></span>{profile.status}</p>
+            <h1>{profile.name}</h1>
+            <p class="intro-id"><span class="en">{profile.en}</span><span class="intro-sep" aria-hidden="true"></span><span class="intro-affil">{profile.school} · {profile.program}</span></p>
+          </div>
 
-        <div class="hero-actions">
-          <a class="hero-project-link" href="#embodied">
-            查看项目 <span aria-hidden="true">↓</span>
-          </a>
-          <div class="hero-links" aria-label="联系方式">
-            <a href="mailto:jiahui.fang@ieee.org" title="jiahui.fang@ieee.org"><Icons name="mail" /> Email</a>
-            <a href="https://github.com/20bytes" target="_blank" rel="noopener noreferrer"><Icons name="github" /> GitHub</a>
-            <a href="https://20bytes.top" target="_blank" rel="noopener noreferrer"><Icons name="globe" /> 20bytes.top</a>
+          <p class="intro-lead">我的研究横跨两个方向：<em>具身智能</em>与 <em>AI for AI</em>。</p>
+          <p class="intro-bio" set:html={profile.bio} />
+
+          <div class="intro-actions">
+            <a class="btn" href={`mailto:${profile.email}`}><Icons name="mail" />{profile.email}</a>
+            <a class="btn" href={profile.github} target="_blank" rel="noopener noreferrer"><Icons name="github" />GitHub</a>
+            <a class="btn" href={profile.site} target="_blank" rel="noopener noreferrer"><Icons name="globe" />博客</a>
           </div>
         </div>
+
+        <aside class="intro-side">
+          <figure class="portrait">
+            <img src="/media/profile-photo.png" alt={`${profile.name}的照片`} width="295" height="399" fetchpriority="high" />
+          </figure>
+        </aside>
       </div>
-      <img class="hero-portrait" src="/media/profile-photo.png" alt="房家辉的个人照片" width="295" height="399" decoding="async" />
+
+      <div class="facts">
+        {facts.map((f) => (
+          <div class="fact">
+            <div class="fact-value">{f.value}{f.unit && <small>{f.unit}</small>}</div>
+            <div class="fact-label">{f.label}</div>
+          </div>
+        ))}
+      </div>
     </div>
   </header>
 
-  <!-- ================= 项目分组 ================= -->
-  {groups.map((g) => (
-    <section id={g.id} class="section">
-      <div class="wrap">
-        <div class="section-head reveal">
-          <span class="section-no">{g.no}</span>
-          <h2>{g.name}</h2>
-          <span class="sub">{g.sub}</span>
+  <!-- ================= 经历 ================= -->
+  <section class="block" id="experience" data-spy>
+    <div class="wrap sec">
+      <header class="sec-head reveal">
+        <span class="sec-no">i.</span>
+        <h2 class="sec-title">经历</h2>
+        <p class="sec-sub">Experience</p>
+      </header>
+      <ul class="sec-body reveal">
+        {experience.map((e) => (
+          <li class="exp-item">
+            <span class="exp-period">{e.period}</span>
+            <div>
+              <div class="exp-org">{e.org}</div>
+              <div class="exp-desc">{e.desc}</div>
+            </div>
+            <a class="exp-link" href={e.href}>{e.role} →</a>
+          </li>
+        ))}
+      </ul>
+    </div>
+  </section>
+
+  <!-- ================= 项目 ================= -->
+  <section class="block" id="projects" data-spy>
+    <div class="wrap sec">
+      <header class="sec-head reveal">
+        <span class="sec-no">ii.</span>
+        <h2 class="sec-title">项目</h2>
+        <p class="sec-sub">Selected Work</p>
+      </header>
+
+      <div class="sec-body">
+        <div class="featured reveal">
+          {featured.map((f, i) => {
+            const p = byId[f.id];
+            if (!p) return null;
+            const m = featMedia(p);
+            return (
+              <a class={i === 0 ? "feat feat-lead" : "feat"} href={`#${f.id}`}>
+                <div class="feat-media">
+                  {m.video ? (
+                    <video src={m.video} poster={posterOf(m)} muted loop playsinline preload="none" data-autoplay />
+                  ) : (
+                    <img src={m.image} alt={p.title} loading="lazy" />
+                  )}
+                </div>
+                <span class="feat-text">
+                  <span class="feat-kicker">{f.kicker}</span>
+                  <span class="feat-title">{p.title}</span>
+                  <span class="feat-desc">{f.desc}</span>
+                </span>
+              </a>
+            );
+          })}
         </div>
-        <p class="section-desc reveal">{g.desc}</p>
-        {g.ids.map((id, i) => {
-          const p = byId[id];
-          return p ? <ProjectCard project={p} index={i + 1} /> : null;
+
+        {groups.map((g) => {
+          const list = g.ids.map((id) => byId[id]).filter(Boolean);
+          return (
+            <div class="proj-group" id={g.id}>
+              <div class="proj-group-head reveal">
+                <h3 class="proj-group-title">{g.name}</h3>
+                <span class="proj-group-meta">{g.sub}</span>
+                <span class="proj-group-count">{String(list.length).padStart(2, '0')}</span>
+              </div>
+              <p class="proj-group-desc reveal">{g.desc}</p>
+              <div class={g.layout === 'grid' ? 'proj-grid' : undefined}>
+                {list.map((p, i) => <ProjectCard project={p} index={i + 1} />)}
+              </div>
+            </div>
+          );
         })}
       </div>
-    </section>
-  ))}
-
-  <!-- ================= 开源项目 ================= -->
-  <section id="opensource" class="section">
-    <div class="wrap">
-      <div class="section-head reveal">
-        <span class="section-no">07</span>
-        <h2>开源项目</h2>
-        <span class="sub">Open Source</span>
-      </div>
-      {osIds.map((id) => {
-        const repo = byId[id];
-        return repo ? <OsRow repo={repo} /> : null;
-      })}
-      <details class="oss-activity">
-        <summary>GitHub 活跃记录</summary>
-        <figure>
-          <img src="/media/github-heatmap.svg" alt="GitHub 提交热力图" loading="lazy" />
-          <figcaption>2026.3 至今 · 787 次贡献 · 120 活跃日</figcaption>
-        </figure>
-      </details>
     </div>
   </section>
 
-  <!-- ================= 荣誉与专利 ================= -->
-  <section id="honors" class="section">
-    <div class="wrap">
-      <div class="section-head reveal">
-        <span class="section-no">08</span>
-        <h2>荣誉 · 竞赛 · 专利</h2>
-        <span class="sub">Honors &amp; Patents</span>
-      </div>
+  <nav class="toc" aria-label="项目分组">
+    {groups.map((g) => <a href={`#${g.id}`}>{g.toc}</a>)}
+  </nav>
 
-      <div class="reveal" style="margin-bottom: 34px;">
-        {honors.map((h) => (
-          <span class="chip" style="display:inline-flex;margin:0 8px 8px 0;border:1px solid var(--line-strong);border-radius:8px;padding:6px 14px;font-size:13.5px;">
-            🏆 {h.name}
-          </span>
-        ))}
-      </div>
-
-      <div class="award-list reveal">
-        {competitions.map((c) => (
-          <div class="award-item">
-            <span class="medal">{c.medal}</span>
-            <span class="name">{c.name}<small>{c.note}</small></span>
-            <span class="date">{c.date}</span>
-          </div>
-        ))}
-      </div>
-
-      <h3 class="reveal" style="font-family:var(--serif);font-size:19px;margin:44px 0 18px;">专利与软件著作权</h3>
-      <div class="patent-grid reveal">
-        {patents.map((p) => (
-          <div class="patent-item">
-            <span class="kind">{p.kind}</span>
-            <span>{p.name}<br /><small style="font-family:var(--mono);font-size:11.5px;color:var(--muted);">{p.no}</small></span>
-          </div>
-        ))}
-      </div>
-    </div>
-  </section>
-
-  <!-- ================= 页脚 ================= -->
-  <footer class="footer">
-    <div class="wrap footer-inner">
-      <div>
-        <div class="zh">昙柏 · 房家辉</div>
-        <div class="contact">
-          <a href="mailto:jiahui.fang@ieee.org">jiahui.fang@ieee.org</a> ·
-          <a href="https://github.com/20bytes" target="_blank" rel="noopener noreferrer">GitHub</a> ·
-          <a href="https://20bytes.top" target="_blank" rel="noopener noreferrer">20bytes.top</a>
+  <!-- ================= 开源 ================= -->
+  <section class="block" id="opensource" data-spy>
+    <div class="wrap sec">
+      <header class="sec-head reveal">
+        <span class="sec-no">iii.</span>
+        <h2 class="sec-title">开源</h2>
+        <p class="sec-sub">Open Source</p>
+      </header>
+      <div class="sec-body">
+        <ul>
+          {osIds.map((id) => {
+            const repo = byId[id];
+            return repo ? <OsRow repo={repo} /> : null;
+          })}
+        </ul>
+        <div class="activity reveal">
+          <figure>
+            <img src="/media/github-heatmap.svg" alt="GitHub 提交热力图" loading="lazy" />
+            <figcaption>GitHub 活跃记录 · 2026.3 至今 · 787 次贡献 · 120 个活跃日</figcaption>
+          </figure>
         </div>
       </div>
-      <div class="colophon">
-        UPDATED 2026.09 · BUILT WITH ASTRO<br />
-        FIRST PRINCIPLES · SEDIMENTATION · RESTRAINT
+    </div>
+  </section>
+
+  <!-- ================= 荣誉 ================= -->
+  <section class="block" id="honors" data-spy>
+    <div class="wrap sec">
+      <header class="sec-head reveal">
+        <span class="sec-no">iv.</span>
+        <h2 class="sec-title">荣誉</h2>
+        <p class="sec-sub">Honors &amp; Patents</p>
+      </header>
+      <div class="sec-body">
+        <div class="honors reveal">
+          {honors.map((h) => (
+            <div class="honor">
+              <div class="honor-name">{h.name}</div>
+              <div class="honor-note">{h.note}</div>
+            </div>
+          ))}
+        </div>
+
+        <h3 class="sub-title reveal">竞赛</h3>
+        <ul class="row-list reveal">
+          {competitions.map((c) => (
+            <li>
+              <span class="row-date">{c.date}</span>
+              <span class="row-main">{c.name}{c.role && <small>{c.role}</small>}</span>
+              <strong class="row-side">{c.result}</strong>
+            </li>
+          ))}
+        </ul>
+
+        <CertificateWall />
+
+        <h3 class="sub-title reveal">专利与软件著作权</h3>
+        <ul class="row-list reveal">
+          {patents.map((p) => (
+            <li>
+              <span class="row-kind">{p.kind}</span>
+              <span class="row-main">{p.name}</span>
+              <span class="row-no">{p.no}</span>
+            </li>
+          ))}
+        </ul>
       </div>
     </div>
-  </footer>
+  </section>
+
+  <!-- ================= 联系 ================= -->
+  <section class="contact" id="contact" data-spy>
+    <div class="wrap">
+      <div class="contact-inner">
+        <h2 class="contact-title reveal">一起把机器人<em>带进真实世界</em>。</h2>
+        <p class="contact-text reveal">正在寻找具身智能、机器人学习方向的实习与工作机会，也欢迎科研合作与交流。</p>
+        <div class="intro-actions reveal">
+          <a class="btn" href={`mailto:${profile.email}`}><Icons name="mail" />{profile.email}</a>
+          <a class="btn" href={profile.github} target="_blank" rel="noopener noreferrer"><Icons name="github" />GitHub</a>
+          <a class="btn" href={profile.site} target="_blank" rel="noopener noreferrer"><Icons name="globe" />博客</a>
+        </div>
+      </div>
+      <footer class="footer">
+        <span>© 2026 房家辉 Jiahui Fang</span>
+        <span class="colophon">Updated October 2026 · Newsreader, Noto Serif SC &amp; Inter</span>
+      </footer>
+    </div>
+  </section>
 </Base>

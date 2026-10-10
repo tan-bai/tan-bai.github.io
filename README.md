@@ -1,7 +1,7 @@
 # tan-bai.github.io · 个人项目集合（作品集）
 
 用 Astro 构建的静态作品集站点，展示本科至今的项目实践、开源系统与竞赛专利成果。
-设计语言延续 intern-cv 简历：纸白底、墨黑正文、深蓝 `#173F7A` 链接、衬线标题、编辑式细线分隔。
+设计参考 tianxingchen.github.io，编辑式排版：标题与数字用 Newsreader + Noto Serif SC，正文用 Inter + 苹方/Noto Sans SC；暖白纸面、发丝线、左栏标题，强调色 `#2a4a8c` 只用于链接与当前状态。
 
 ## 开发
 
@@ -39,9 +39,9 @@ media:                   # 多媒体画廊（可选，多于一项时启用）
 ---
 ```
 
-- **新项目**：复制任一 md 改内容，再到 `src/pages/index.astro` 的 `groups[].ids` 登记文件 id
+- **新项目**：复制任一 md 改内容，再到 `src/pages/index.astro` 的 `groups[].ids` 登记文件 id；想放进「精选」，在 `featured` 里登记（第一项通栏大画幅展示，其余两列）。带视频的项目在列表中自动使用大画幅（16:9）
 - **开源项目**：frontmatter 用 `kind: opensource`（见 `beatless.md`），在 `osIds` 登记并配 `paras` 段落
-- **分组顺序 / 章节描述 / 荣誉竞赛专利数据**：都在 `src/pages/index.astro` 顶部
+- **首屏文案 / 经历 / 数据条 / 分组 / 荣誉竞赛专利**：都在 `src/pages/index.astro` 顶部（`profile`、`experience`、`facts`、`groups`…）；分组加 `layout: 'grid'` 用三列紧凑卡片
 
 注意：frontmatter 值里含英文冒号+空格（如论文标题 `LCGA-Net: ...`）时必须加引号。
 
@@ -55,7 +55,8 @@ public/media/powerline-icing.mp4     # 视频（有视频则用播放器替代�
 ```
 
 - 没有媒体的项目显示优雅占位（渐变 + 首字 + 网格纹理），不影响观感
-- 视频默认静音自动循环播放（进入视口才播放、滚出暂停）；多媒体项目点击任意媒体可在灯箱中放大查看
+- 视频静音循环，进入视口才加载并播放；海报帧自动取同名 `xxx-poster.webp`（新增视频时请一并放一张，否则加载前为空白）
+- 点击缩略图在全站灯箱中查看该项目全部媒体
 - 仓库内视频建议 mp4 (H.264) ≤ 5MB；更大的视频放 R2 图床外链（零流量费 + CDN，见 log-picture）
 - 也可用外链：`image` / `video` 字段直接填完整 https:// URL（如 log-picture 的 R2 图床）
 
@@ -79,9 +80,9 @@ push 时自动构建发布。也可本地 `pnpm build` 后把 `dist/` 推到 `gh
 ```
 src/
 ├── styles/global.css      # 设计系统（颜色/字体/组件样式）
-├── layouts/Base.astro     # HTML 骨架 + 滚动显现/导航高亮脚本
-├── components/            # ProjectCard / OsRow / MediaFrame / Icons
+├── layouts/Base.astro     # HTML 骨架 + 灯箱 + 显现/导航高亮/视频播放脚本
+├── components/            # ProjectCard（项目行）/ OsRow（开源卡）/ MediaFrame（缩略媒体）/ Icons
 ├── content/projects/      # ★ 全部项目数据（21 个 md）
-└── pages/index.astro      # 首页编排（分组/顺序/荣誉/专利）
+└── pages/index.astro      # 首页编排与全部配置数据
 public/media/              # 图片与视频投放目录
 ```

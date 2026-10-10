@@ -2,14 +2,12 @@
 import Icons from './Icons.astro';
 
 /*
- * 开源项目行：左侧仓库身份，右侧描述 + 子仓库/贡献列表
+ * 开源项目卡：名称 / 定位 / 关键数据 / 链接；长描述与子仓库收进「展开详情」。
  */
 
 interface OsLink {
   label: string;
   url: string;
-  icon?: string;
-  note?: string;
 }
 interface Props {
   repo: {
@@ -30,71 +28,61 @@ interface Props {
 const { repo } = Astro.props;
 const { Content } = repo;
 const iconOf = (u: string) => (/github/i.test(u) ? 'github' : /huggingface/i.test(u) ? 'hf' : 'link');
+const [lead, ...rest] = repo.paras;
+const hasMore = rest.length > 0 || (repo.subs?.length ?? 0) > 0 || !!repo.contributions || !!Content;
 ---
 
-<div class="os-row reveal">
-  <div class="os-side">
-    <h3>{repo.name}</h3>
-    <div class="meta">
-      {repo.tagline}<br />
-      <b>{repo.role}</b> · {repo.date}
-      {repo.stars && <><br />★ {repo.stars}</>}
-    </div>
+<li class="oss-item reveal" id={repo.id}>
+  <div class="oss-side">
+    <h3 class="oss-name">{repo.name}</h3>
+    <p class="oss-tagline">{repo.tagline}</p>
+    <p class="oss-meta">{repo.role} · {repo.date}{repo.stars && ` · ★ ${repo.stars}`}</p>
+  </div>
+
+  <div class="oss-main">
+    {repo.stats && repo.stats.length > 0 && (
+      <div class="stats">
+        {repo.stats.map((s) => (
+          <div class="stat"><b>{s.value}</b><span>{s.label}</span></div>
+        ))}
+      </div>
+    )}
+
+    <p class="oss-lead" set:html={lead} />
+
     {repo.links && repo.links.length > 0 && (
-      <div class="project-links" style="margin-top:12px;">
+      <div class="links">
         {repo.links.map((l) => (
           <a href={l.url} target="_blank" rel="noopener noreferrer">
-            <Icons name={iconOf(l.url)} size={14} />
-            {l.label}
+            <Icons name={iconOf(l.url)} size={13} />{l.label}
           </a>
         ))}
       </div>
     )}
-  </div>
 
-  <div class="os-main">
-    {repo.paras.map((t) => <p set:html={t} />)}
-
-    {repo.stats && repo.stats.length > 0 && (
-      <div class="stat-chips">
-        {repo.stats.map((s) => (
-          <span class="chip"><b>{s.value}</b>{s.label}</span>
-        ))}
-      </div>
-    )}
-
-    {repo.subs && repo.subs.length > 0 && (
-      <>
-        {repo.subs.map((s) => (
-          <>
-            <div class="os-sub">
-              {s.url ? (
-                <a href={s.url} target="_blank" rel="noopener noreferrer">{s.name}</a>
-              ) : (
-                s.name
-              )}
-              {s.stars && ` ★ ${s.stars}`}
-            </div>
-            <p style="margin-top:2px;">{s.desc}</p>
-          </>
-        ))}
-      </>
-    )}
-
-    {repo.contributions && (
-      <>
-        <div class="os-sub">社区贡献</div>
-        <p set:html={repo.contributions} />
-      </>
-    )}
-
-    {Content && (
+    {hasMore && (
       <details class="more">
         <summary>展开详情</summary>
         <div class="more-body">
-          <Content />
+          {rest.map((t) => <p set:html={t} />)}
+          {repo.subs?.map((s) => (
+            <>
+              <p class="oss-sub">
+                {s.url ? <a href={s.url} target="_blank" rel="noopener noreferrer">{s.name}</a> : s.name}
+                {s.stars && <small>★ {s.stars}</small>}
+              </p>
+              <p>{s.desc}</p>
+            </>
+          ))}
+          {repo.contributions && (
+            <>
+              <p class="oss-sub">社区贡献</p>
+              <p set:html={repo.contributions} />
+            </>
+          )}
+          {Content && <Content />}
         </div>
       </details>
     )}
   </div>
-</div>
+</li>

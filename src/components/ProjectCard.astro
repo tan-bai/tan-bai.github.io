@@ -3,8 +3,7 @@ import MediaFrame from './MediaFrame.astro';
 import Icons from './Icons.astro';
 
 /*
- * 项目条目：媒体 + 信息双栏
- * frontmatter 契约见 src/content/projects/ 任一文件头部注释。
+ * 项目条目：缩略媒体 + 信息。frontmatter 契约见 README。
  */
 
 interface Stat {
@@ -29,7 +28,7 @@ interface Props {
     brand?: string;
     date: string;
     brief: string;
-    Content?: any; // Markdown 正文组件，渲染在「展开详情」里
+    Content?: any;
     stats?: Stat[];
     tags?: string[];
     outcome?: string;
@@ -38,70 +37,53 @@ interface Props {
     image?: string;
     video?: string;
     media?: { video?: string; image?: string; caption?: string }[];
-    reverse?: boolean;
   };
-  index: number;
+  index?: number;
 }
 
 const { project: p, index } = Astro.props;
 const { Content } = p;
-const linkIcon = (l: Link) => l.icon ?? (/github/i.test(l.url + l.label) ? 'github' : /huggingface/i.test(l.url) ? 'hf' : 'link');
+const linkIcon = (l: Link) =>
+  l.icon ?? (/github/i.test(l.url + l.label) ? 'github' : /huggingface/i.test(l.url) ? 'hf' : 'link');
+const meta = [p.org, p.date].filter(Boolean);
+const kind = p.media?.some((m) => m.video) || p.video ? 'is-video' : p.media?.length || p.image ? 'is-image' : '';
 ---
 
-<article class:list={['project', 'reveal', { reverse: p.reverse }]}>
-  <div class="project-media">
-    <MediaFrame title={p.title} group={p.group} image={p.image} video={p.video} media={p.media} />
-  </div>
+<article class={`proj reveal ${kind}`} id={p.id}>
+  <MediaFrame title={p.title} titleEn={p.titleEn} image={p.image} video={p.video} media={p.media} index={index} />
 
-  <div class="project-body">
-    <div class="overline">
-      <span class="no">{String(index).padStart(2, '0')}</span>
-      {p.orgLogo && p.brand && (
-        <span class="brand-chip">
-          <img src={p.orgLogo} alt={p.brand} />
-          {p.brand}
-        </span>
-      )}
+  <div class="proj-body">
+    <div class="proj-meta">
       <span class="role">{p.role}</span>
-      {p.org && <span>{p.org}</span>}
-      <span>{p.date}</span>
+      {p.orgLogo && p.brand && <span class="brand-chip"><img src={p.orgLogo} alt="" />{p.brand}</span>}
+      {meta.map((m) => <span>{m}</span>)}
     </div>
 
-    <h3>
-      {p.title}
-      {p.titleEn && <span class="en">{p.titleEn}</span>}
-    </h3>
-
-    <p class="project-brief">{p.brief}</p>
+    <h4 class="proj-title">{p.title}</h4>
+    {p.titleEn && <p class="proj-en">{p.titleEn}</p>}
+    <p class="proj-brief">{p.brief}</p>
 
     {p.stats && p.stats.length > 0 && (
-      <div class="stat-chips">
+      <div class="stats">
         {p.stats.map((s) => (
-          <span class="chip"><b>{s.value}</b>{s.label}</span>
-        ))}
-      </div>
-    )}
-
-    {p.tags && p.tags.length > 0 && (
-      <div class="tags">
-        {p.tags.map((t) => (
-          <span>{t}</span>
+          <div class="stat"><b>{s.value}</b><span>{s.label}</span></div>
         ))}
       </div>
     )}
 
     {p.outcome && (
-      <div class="outcome">
-        <b>{p.outcomeLabel ?? '成果'}</b> — {p.outcome}
-      </div>
+      <p class="outcome"><span class="outcome-label">{p.outcomeLabel ?? '成果'}</span>{p.outcome}</p>
+    )}
+
+    {p.tags && p.tags.length > 0 && (
+      <p class="tags">{p.tags.map((t) => <span>{t}</span>)}</p>
     )}
 
     {p.links && p.links.length > 0 && (
-      <div class="project-links">
+      <div class="links">
         {p.links.map((l) => (
           <a href={l.url} target="_blank" rel="noopener noreferrer">
-            <Icons name={linkIcon(l)} size={14} />
-            {l.label}
+            <Icons name={linkIcon(l)} size={13} />{l.label}
           </a>
         ))}
       </div>
@@ -110,9 +92,7 @@ const linkIcon = (l: Link) => l.icon ?? (/github/i.test(l.url + l.label) ? 'gith
     {Content && (
       <details class="more">
         <summary>展开详情</summary>
-        <div class="more-body">
-          <Content />
-        </div>
+        <div class="more-body"><Content /></div>
       </details>
     )}
   </div>

@@ -1,288 +1,45 @@
 ---
-import Icons from './Icons.astro';
+import { posterOf, type MediaItem } from '../lib/media';
 
 /*
- * 媒体框：单媒体三态 + 多媒体画廊
- *  - media: [{video|image, caption}]  多项 → 主媒体 + 网格 + 灯箱放大
- *  - image / video 单项               → 单画面（向后兼容）
- *  - 都没有                           → 安静占位（分组浅色 + 项目首字）
- * 全部媒体直接可见，无需翻页；点击任意项可在灯箱中全屏查看。
+ * 项目缩略媒体：显示第一项（视频静音循环 / 图片），点击在全站灯箱中查看全部。
+ *  - media: [{video|image, caption}]  多项 → 右下角显示数量
+ *  - image / video 单项                → 单项
+ *  - 都没有                            → 排版占位（序号 + 英文标题）
+ * 视频海报：未指定 image 时自动使用同名 `xxx-poster.webp`（public/media/ 下）。
  */
-
-interface MediaItem {
-  video?: string;
-  image?: string;
-  caption?: string;
-}
 
 interface Props {
   title: string;
-  group: string;
+  titleEn?: string;
   image?: string;
   video?: string;
   media?: MediaItem[];
+  index?: number;
 }
 
-const { title, group, image, video, media } = Astro.props;
-
-const groupTints: Record<string, [string, string]> = {
-  sensing: ['#f2f5fa', '#e3eaf5'],
-  detection: ['#f4f4ef', '#e8ead9'],
-  embodied: ['#f3f1f7', '#e8e4f0'],
-  llm: ['#f1f6f4', '#e0ece7'],
-  agent: ['#f0f4f6', '#e2ecef'],
-  hardware: ['#f6f3ea', '#ebe4d0'],
-  opensource: ['#f6f4ef', '#ece7dc'],
-};
-const [t1, t2] = groupTints[group] ?? groupTints.sensing;
-const glyph = title.replace(/[（(].*$/, '').trim().charAt(0);
-const patId = `p-${group}-${title.length}`;
+const { title, titleEn, image, video, media, index } = Astro.props;
 
 const items: MediaItem[] =
   media && media.length > 0
     ? media
-    : ([{ image, video }] as MediaItem[]).filter((m) => m.image || m.video);
-const isGallery = items.length > 1;
-const isVideo = (src?: string) => !!src && /\.(mp4|webm|mov|m4v)$/i.test(src);
+    : ([{ image, video, caption: title }] as MediaItem[]).filter((m) => m.image || m.video);
+const first = items[0];
+const label = (titleEn ?? title).split('·')[0].trim();
 ---
 
-{items.length === 0 && (
-  <div class="media-frame" style={`--tint1:${t1};--tint2:${t2};`}>
-    <div class="media-placeholder" style={`background:linear-gradient(140deg,${t1},${t2});`}>
-      <svg class="grid-art" aria-hidden="true">
-        <defs>
-          <pattern id={patId} width="28" height="28" patternUnits="userSpaceOnUse">
-            <circle cx="1.5" cy="1.5" r="1" fill="rgba(23,63,122,0.09)" />
-          </pattern>
-        </defs>
-        <rect width="100%" height="100%" fill={`url(#${patId})`} />
-      </svg>
-      <span class="glyph">{glyph}</span>
-    </div>
-  </div>
-)}
-
-{items.length === 1 && (
-  <div class="media-frame" style={`--tint1:${t1};--tint2:${t2};`}>
-    {isVideo(items[0].video) ? (
-      <video
-        src={items[0].video}
-        poster={items[0].image}
-        controls
-        muted
-        loop
-        autoplay
-        playsinline
-        preload="metadata"
-      />
+{first ? (
+  <button class="thumb" type="button" data-media={JSON.stringify(items)} aria-label={`查看「${title}」的媒体`}>
+    {first.video ? (
+      <video src={first.video} poster={posterOf(first)} muted loop playsinline preload="none" data-autoplay />
     ) : (
-      <img src={items[0].image} alt={title} loading="lazy" />
+      <img src={first.image} alt={first.caption ?? title} loading="lazy" decoding="async" />
     )}
-    {isVideo(items[0].video) && (
-      <span class="media-badge"><Icons name="video" size={11} />自动循环 · 静音</span>
-    )}
-    {!isVideo(items[0].video) && items[0].image && (
-      <span class="media-badge"><Icons name="image" size={11} />图片</span>
-    )}
+    {items.length > 1 && <span class="thumb-count">1 / {items.length}</span>}
+  </button>
+) : (
+  <div class="thumb thumb-empty" aria-hidden="true">
+    <span class="t-no">{index ? `No. ${String(index).padStart(2, '0')}` : ''}</span>
+    <span class="t-name">{label}</span>
   </div>
 )}
-
-{isGallery && (
-  <div class="media-gallery">
-    <!-- 主媒体：视频直接可播，图片可点击放大 -->
-    <figure
-      class="g-main"
-      data-video={items[0].video ?? ''}
-      data-image={items[0].image ?? ''}
-      data-caption={items[0].caption ?? ''}
-    >
-      {isVideo(items[0].video) ? (
-        <div class="media-frame g-clickable">
-          <video
-            src={items[0].video}
-            poster={items[0].image}
-            muted
-            loop
-            autoplay
-            playsinline
-            preload="metadata"
-          />
-          <span class="g-no">1</span>
-          <button class="g-mute" data-muted="1" aria-label="开启声音">
-            <span class="ic-on"><Icons name="volume-on" size={13} /></span>
-            <span class="ic-off"><Icons name="volume-off" size={13} /></span>
-          </button>
-          <span class="g-hint"><Icons name="search" size={13} />点击放大</span>
-        </div>
-      ) : (
-        <button class="g-zoom media-frame" data-index="0" aria-label="放大查看">
-          <img src={items[0].image} alt={items[0].caption ?? title} loading="eager" />
-          <span class="g-no">1</span>
-          <span class="g-hint"><Icons name="search" size={13} />点击放大</span>
-        </button>
-      )}
-      {items[0].caption && <figcaption class="g-cap">{items[0].caption}</figcaption>}
-    </figure>
-
-    <!-- 其余媒体：两列网格，全部可见，点击进灯箱 -->
-    <div class="media-grid">
-      {items.slice(1).map((m, i) => (
-        <button
-          class="g-cell"
-          data-index={i + 1}
-          aria-label={`放大查看媒体 ${i + 2}`}
-          data-video={m.video ?? ''}
-          data-image={m.image ?? ''}
-          data-caption={m.caption ?? ''}
-        >
-          {isVideo(m.video) ? (
-            <video src={m.video} preload="metadata" muted playsinline />
-          ) : (
-            <img src={m.image} alt={m.caption ?? ''} loading="lazy" />
-          )}
-          {isVideo(m.video) && (
-            <span class="g-play"><Icons name="video" size={18} /></span>
-          )}
-          <span class="g-no">{i + 2}</span>
-        </button>
-      ))}
-    </div>
-
-    <!-- 灯箱 -->
-    <dialog class="g-lightbox">
-      <button class="g-close" aria-label="关闭">✕</button>
-      <button class="g-prev" aria-label="上一项">←</button>
-      <div class="g-body">
-        <div class="g-media"></div>
-        <div class="g-meta">
-          <span class="g-lbcount"></span>
-          <span class="g-lbcap"></span>
-        </div>
-      </div>
-      <button class="g-next" aria-label="下一项">→</button>
-    </dialog>
-  </div>
-)}
-
-<script>
-  // 灯箱：点击网格/主图放大查看，←/→ 切换，Esc/点背景关闭
-  document.querySelectorAll<HTMLElement>('.media-gallery').forEach((g) => {
-    const lb = g.querySelector<HTMLDialogElement>('.g-lightbox');
-    if (!lb) return;
-    const mediaBox = lb.querySelector<HTMLElement>('.g-media');
-    const capEl = lb.querySelector<HTMLElement>('.g-lbcap');
-    const cntEl = lb.querySelector<HTMLElement>('.g-lbcount');
-
-    const cells = [...g.querySelectorAll<HTMLElement>('.g-cell')] as HTMLElement[];
-    const main = g.querySelector<HTMLElement>('.g-main');
-    const mainImg = g.querySelector<HTMLElement>('.g-zoom');
-    const sources = [
-      {
-        video: main?.dataset.video ?? '',
-        image: main?.dataset.image ?? '',
-        caption: main?.dataset.caption ?? '',
-      },
-      ...cells.map((c) => ({
-        video: c.dataset.video ?? '',
-        image: c.dataset.image ?? '',
-        caption: c.dataset.caption ?? '',
-      })),
-    ];
-
-    let cur = 0;
-    const render = () => {
-      const it = sources[cur];
-      mediaBox!.innerHTML = '';
-      if (it.video) {
-        const v = document.createElement('video');
-        v.src = it.video;
-        v.controls = true;
-        v.playsInline = true;
-        v.preload = 'metadata';
-        mediaBox!.appendChild(v);
-        v.play().catch(() => {});
-      } else if (it.image) {
-        const im = document.createElement('img');
-        im.src = it.image;
-        im.alt = it.caption;
-        mediaBox!.appendChild(im);
-      }
-      capEl!.textContent = it.caption;
-      cntEl!.textContent = `${cur + 1} / ${sources.length}`;
-    };
-
-    cells.forEach((c) =>
-      c.addEventListener('click', () => {
-        cur = Number(c.dataset.index);
-        render();
-        lb.showModal();
-      })
-    );
-    mainImg?.addEventListener('click', () => {
-      cur = 0;
-      render();
-      lb.showModal();
-    });
-    // 主媒体是视频时：点击进灯箱（带声音与完整控制条）
-    g.querySelector('.g-main video')?.addEventListener('click', () => {
-      cur = 0;
-      render();
-      lb.showModal();
-    });
-
-    const close = () => lb.close();
-    lb.querySelector('.g-close')?.addEventListener('click', close);
-    lb.querySelector('.g-prev')?.addEventListener('click', () => {
-      cur = (cur - 1 + sources.length) % sources.length;
-      render();
-    });
-    lb.querySelector('.g-next')?.addEventListener('click', () => {
-      cur = (cur + 1) % sources.length;
-      render();
-    });
-    lb.addEventListener('click', (e) => {
-      if (e.target === lb || (e.target as HTMLElement).classList?.contains('g-body')) close();
-    });
-    lb.addEventListener('close', () => {
-      mediaBox!.innerHTML = '';
-    });
-    lb.addEventListener('keydown', (e) => {
-      if (e.key === 'ArrowLeft') lb.querySelector<HTMLButtonElement>('.g-prev')?.click();
-      if (e.key === 'ArrowRight') lb.querySelector<HTMLButtonElement>('.g-next')?.click();
-    });
-  });
-
-  // 自动播放：进入视口才播放、滚出即暂停，避免同时拉流多个视频
-  const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  const autoplayVideos = document.querySelectorAll<HTMLVideoElement>('video[autoplay]');
-  if (!reduced) {
-    const vio = new IntersectionObserver(
-      (entries) => {
-        for (const e of entries) {
-          const v = e.target as HTMLVideoElement;
-          if (e.isIntersecting) v.play().catch(() => {});
-          else v.pause();
-        }
-      },
-      { threshold: 0.5 }
-    );
-    autoplayVideos.forEach((v) => vio.observe(v));
-  } else {
-    autoplayVideos.forEach((v) => {
-      v.removeAttribute('autoplay');
-      v.controls = true;
-    });
-  }
-
-  // 静音切换（画廊主视频）
-  document.querySelectorAll<HTMLElement>('.g-mute').forEach((btn) => {
-    btn.addEventListener('click', (e) => {
-      e.stopPropagation();
-      const v = btn.closest('.media-frame')?.querySelector('video');
-      if (!v) return;
-      v.muted = !v.muted;
-      btn.dataset.muted = v.muted ? '1' : '0';
-      btn.setAttribute('aria-label', v.muted ? '开启声音' : '静音');
-    });
-  });
-</script>
