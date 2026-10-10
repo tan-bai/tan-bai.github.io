@@ -39,9 +39,10 @@ interface Props {
     media?: { video?: string; image?: string; caption?: string }[];
   };
   index?: number;
+  highlight?: boolean;
 }
 
-const { project: p, index } = Astro.props;
+const { project: p, index, highlight = false } = Astro.props;
 const { Content } = p;
 const linkIcon = (l: Link) =>
   l.icon ?? (/github/i.test(l.url + l.label) ? 'github' : /huggingface/i.test(l.url) ? 'hf' : 'link');
@@ -49,7 +50,7 @@ const meta = [p.org, p.date].filter(Boolean);
 const kind = p.media?.some((m) => m.video) || p.video ? 'is-video' : p.media?.length || p.image ? 'is-image' : '';
 ---
 
-<article class={`proj reveal ${kind}`} id={p.id}>
+<article class:list={['proj', kind, { 'is-highlight': highlight }]} id={p.id}>
   <MediaFrame title={p.title} titleEn={p.titleEn} image={p.image} video={p.video} media={p.media} index={index} />
 
   <div class="proj-body">

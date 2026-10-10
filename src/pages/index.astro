@@ -3,8 +3,6 @@ import Base from '../layouts/Base.astro';
 import CertificateWall from '../components/CertificateWall.astro';
 import ProjectCard from '../components/ProjectCard.astro';
 import OsRow from '../components/OsRow.astro';
-import Icons from '../components/Icons.astro';
-import { posterOf } from '../lib/media';
 
 /* ---------- 数据装载：src/content/projects/*.md ---------- */
 const mods = import.meta.glob<{ frontmatter: any; Content: any }>('../content/projects/*.md', {
@@ -17,24 +15,28 @@ const all = Object.entries(mods).map(([path, m]) => ({
 }));
 const byId = Object.fromEntries(all.map((p) => [p.id, p]));
 
-/* ---------- 个人信息（首屏） ---------- */
+/* ---------- 个人信息 ---------- */
 const profile = {
   name: '房家辉',
   en: 'Jiahui Fang',
+  affil: '东南大学 · 电子信息 · 硕士研究生',
   status: '欢迎实习、全职与科研合作机会',
-  school: '东南大学',
-  program: '电子信息 · 研究生',
-  bio: '<strong>具身智能</strong>方面，关注无人机空中视觉语言导航（Aerial VLN）、视觉-语言-动作模型（VLA）与面向无人机的世界模型；<strong>AI for AI</strong> 方面，研究并构建能够自动化科学研究的大模型 Agent。',
+  bio: [
+    '我的研究横跨两个方向：<b>具身智能</b>——无人机空中视觉语言导航（Aerial VLN）、视觉-语言-动作模型（VLA）与面向无人机的世界模型；以及 <b class="nb">AI for AI</b>——研究并构建能够自动化科学研究的大模型 Agent。',
+    '此前，我在智元 X2 人形机器人上打通了从人体视频到真机部署的强化学习链路，并在浙江大学 FAST-LAB 参与羽毛球轮足机器人的感知研究。',
+  ],
   email: 'jiahui.fang@ieee.org',
   github: 'https://github.com/20bytes',
   site: 'https://20bytes.top',
 };
 
-const facts = [
-  { value: '4', unit: '项', label: '发明专利 · 实审中' },
-  { value: '12', unit: '项', label: '竞赛与项目荣誉' },
-  { value: '15.5', unit: '万', label: 'Polaris 收录顶会论文' },
-  { value: '787', unit: '', label: 'GitHub 贡献 · 2026.3 起' },
+/* ---------- 动态（新的放最前） ---------- */
+const news = [
+  { date: '2026.09', text: '进入东南大学攻读电子信息硕士（推免）。' },
+  { date: '2026.07', text: '开始人形机器人算法实习：在智元 X2 上训练并部署 RL 策略。' },
+  { date: '2026.05', text: '获评上海市优秀毕业生。' },
+  { date: '2025.12', text: '获<b>国家奖学金</b>。' },
+  { date: '2025.05', text: '「挑战杯」上海市大学生课外学术科技作品竞赛省级一等奖（第一完成人）。' },
 ];
 
 /* ---------- 经历（链接到对应项目） ---------- */
@@ -45,24 +47,11 @@ const experience = [
   { period: '2024.8 – 2024.9', org: 'SHNU 机器人与智能制造实验室', desc: '双足机器人强化学习仿真训练', role: '进组学习', href: '#bipedal' },
 ];
 
-/* ---------- 精选：首屏下方的三个代表作 ---------- */
-const featured = [
-  { id: 'x2-internship', kicker: 'HUMANOID · RL', desc: '从人体视频到真机行走：骨骼提取、动作重定向、策略训练与部署诊断。' },
-  { id: 'pi0-vla', kicker: 'VLA · REPRODUCTION', desc: '独立复现 π0 流匹配动作生成，LIBERO 评测 10 回合 9 成功。' },
-  { id: 'proma', kicker: 'AGENT · AI SCIENTIST', desc: '基于 Qwen 的自动化研究 Agent 平台，挑战杯揭榜挂帅阿里云榜题作品。' },
-];
-const featMedia = (p: any) => p.media?.[0] ?? { video: p.video, image: p.image };
+/* ---------- 代表性工作：在项目列表中高亮 ---------- */
+const highlight = ['x2-internship', 'pi0-vla', 'proma'];
 
 /* ---------- 项目分组 ---------- */
 const groups = [
-  {
-    id: 'g-embodied',
-    toc: '机器人',
-    name: '具身智能与机器人',
-    sub: 'Embodied AI & Robotics',
-    desc: '从仿真到真机本体：智元 X2 人形机器人策略训练、宇树 G1 全栈开发、FAST-LAB 羽毛球轮足机器人感知、双足仿真训练。',
-    ids: ['x2-internship', 'badminton-robot', 'ros-g1', 'bipedal'],
-  },
   {
     id: 'g-llm',
     toc: 'VLA / LLM',
@@ -78,6 +67,14 @@ const groups = [
     sub: 'Agent Systems',
     desc: '两项竞赛中的 Agent 实践：挑战杯揭榜挂帅阿里云榜题的 AI Scientist 平台 Proma，与字节跳动 AI 全栈挑战赛的深度研究 Agent 明镜。',
     ids: ['proma', 'bytedance'],
+  },
+  {
+    id: 'g-embodied',
+    toc: '机器人',
+    name: '具身智能与机器人',
+    sub: 'Embodied AI & Robotics',
+    desc: '从仿真到真机本体：智元 X2 人形机器人策略训练、宇树 G1 全栈开发、FAST-LAB 羽毛球轮足机器人感知、双足仿真训练。',
+    ids: ['x2-internship', 'badminton-robot', 'ros-g1', 'bipedal'],
   },
   {
     id: 'g-vision',
@@ -109,9 +106,9 @@ const osIds = ['beatless', 'polaris', 'aerial-vln'];
 
 /* ---------- 荣誉 / 竞赛 / 专利 ---------- */
 const honors = [
-  { name: '国家奖学金', note: '教育部' },
-  { name: '上海市奖学金', note: '上海市教育委员会' },
-  { name: '上海市优秀毕业生', note: '上海市教育委员会' },
+  { name: '上海市优秀毕业生', note: '上海市教育委员会', date: '2026.05' },
+  { name: '国家奖学金', note: '教育部', date: '2025.12' },
+  { name: '上海市奖学金', note: '上海市教育委员会', date: '2025.12' },
 ];
 const competitions = [
   { name: '上海市级大学生创新创业训练计划', result: '优秀结项', role: '第一完成人', date: '2025.11' },
@@ -148,219 +145,125 @@ const navItems = [
 <Base>
   <nav class="nav">
     <div class="nav-inner">
-      <a class="nav-logo" href="#top">{profile.name}<span>{profile.en}</span></a>
+      <a class="nav-logo" href="#top">{profile.name}</a>
       <div class="nav-links">
         {navItems.map((n) => <a href={n.href}>{n.label}</a>)}
       </div>
     </div>
   </nav>
 
-  <!-- ================= 首屏 ================= -->
-  <header class="intro" id="top">
-    <div class="wrap">
-      <div class="intro-grid">
-        <div class="intro-copy">
-          <div class="intro-head">
-            <p class="intro-status"><span class="dot" aria-hidden="true"></span>{profile.status}</p>
-            <h1>{profile.name}</h1>
-            <p class="intro-id"><span class="en">{profile.en}</span><span class="intro-sep" aria-hidden="true"></span><span class="intro-affil">{profile.school} · {profile.program}</span></p>
-          </div>
-
-          <p class="intro-lead">我的研究横跨两个方向：<em>具身智能</em>与 <em>AI for AI</em>。</p>
-          <p class="intro-bio" set:html={profile.bio} />
-
-          <div class="intro-actions">
-            <a class="btn" href={`mailto:${profile.email}`}><Icons name="mail" />{profile.email}</a>
-            <a class="btn" href={profile.github} target="_blank" rel="noopener noreferrer"><Icons name="github" />GitHub</a>
-            <a class="btn" href={profile.site} target="_blank" rel="noopener noreferrer"><Icons name="globe" />博客</a>
-          </div>
+  <main class="page">
+    <!-- ================= 个人信息 ================= -->
+    <header class="hero" id="top">
+      <div class="hero-text">
+        <h1>{profile.name}<span class="en">{profile.en}</span></h1>
+        <p class="affil">{profile.affil}</p>
+        <div class="bio">
+          {profile.bio.map((t) => <p set:html={t} />)}
         </div>
-
-        <aside class="intro-side">
-          <figure class="portrait">
-            <img src="/media/profile-photo.png" alt={`${profile.name}的照片`} width="295" height="399" fetchpriority="high" />
-          </figure>
-        </aside>
+        <p class="hero-links">
+          <a href={`mailto:${profile.email}`}>Email</a><span>/</span>
+          <a href={profile.github} target="_blank" rel="noopener noreferrer">GitHub</a><span>/</span>
+          <a href={profile.site} target="_blank" rel="noopener noreferrer">博客</a>
+        </p>
+        <p class="status"><span class="dot" aria-hidden="true"></span>{profile.status}</p>
       </div>
+      <div class="hero-photo">
+        <img src="/media/profile-photo.png" alt={`${profile.name}的照片`} width="295" height="399" fetchpriority="high" />
+      </div>
+    </header>
 
-      <div class="facts">
-        {facts.map((f) => (
-          <div class="fact">
-            <div class="fact-value">{f.value}{f.unit && <small>{f.unit}</small>}</div>
-            <div class="fact-label">{f.label}</div>
-          </div>
+    <!-- ================= 动态 ================= -->
+    <section class="sec" id="news">
+      <h2>动态</h2>
+      <ul class="news">
+        {news.map((n) => (
+          <li><span class="date">{n.date}</span><span set:html={n.text} /></li>
         ))}
-      </div>
-    </div>
-  </header>
+      </ul>
+    </section>
 
-  <!-- ================= 经历 ================= -->
-  <section class="block" id="experience" data-spy>
-    <div class="wrap sec">
-      <header class="sec-head reveal">
-        <span class="sec-no">i.</span>
-        <h2 class="sec-title">经历</h2>
-        <p class="sec-sub">Experience</p>
-      </header>
-      <ul class="sec-body reveal">
+    <!-- ================= 经历 ================= -->
+    <section class="sec" id="experience" data-spy>
+      <h2>经历</h2>
+      <ul class="rows">
         {experience.map((e) => (
-          <li class="exp-item">
-            <span class="exp-period">{e.period}</span>
+          <li>
+            <span class="date">{e.period}</span>
             <div>
-              <div class="exp-org">{e.org}</div>
-              <div class="exp-desc">{e.desc}</div>
+              <a class="row-title" href={e.href}>{e.org}</a><span class="row-role">{e.role}</span>
+              <p class="row-desc">{e.desc}</p>
             </div>
-            <a class="exp-link" href={e.href}>{e.role} →</a>
           </li>
         ))}
       </ul>
-    </div>
-  </section>
+    </section>
 
-  <!-- ================= 项目 ================= -->
-  <section class="block" id="projects" data-spy>
-    <div class="wrap sec">
-      <header class="sec-head reveal">
-        <span class="sec-no">ii.</span>
-        <h2 class="sec-title">项目</h2>
-        <p class="sec-sub">Selected Work</p>
-      </header>
-
-      <div class="sec-body">
-        <div class="featured reveal">
-          {featured.map((f, i) => {
-            const p = byId[f.id];
-            if (!p) return null;
-            const m = featMedia(p);
-            return (
-              <a class={i === 0 ? "feat feat-lead" : "feat"} href={`#${f.id}`}>
-                <div class="feat-media">
-                  {m.video ? (
-                    <video src={m.video} poster={posterOf(m)} muted loop playsinline preload="none" data-autoplay />
-                  ) : (
-                    <img src={m.image} alt={p.title} loading="lazy" />
-                  )}
-                </div>
-                <span class="feat-text">
-                  <span class="feat-kicker">{f.kicker}</span>
-                  <span class="feat-title">{p.title}</span>
-                  <span class="feat-desc">{f.desc}</span>
-                </span>
-              </a>
-            );
-          })}
-        </div>
-
-        {groups.map((g) => {
-          const list = g.ids.map((id) => byId[id]).filter(Boolean);
-          return (
-            <div class="proj-group" id={g.id}>
-              <div class="proj-group-head reveal">
-                <h3 class="proj-group-title">{g.name}</h3>
-                <span class="proj-group-meta">{g.sub}</span>
-                <span class="proj-group-count">{String(list.length).padStart(2, '0')}</span>
-              </div>
-              <p class="proj-group-desc reveal">{g.desc}</p>
-              <div class={g.layout === 'grid' ? 'proj-grid' : undefined}>
-                {list.map((p, i) => <ProjectCard project={p} index={i + 1} />)}
-              </div>
+    <!-- ================= 项目 ================= -->
+    <section class="sec" id="projects" data-spy>
+      <h2>项目</h2>
+      <p class="sec-note">高亮条目为代表性工作；点击图片或视频可放大查看。</p>
+      {groups.map((g) => {
+        const list = g.ids.map((id) => byId[id]).filter(Boolean);
+        return (
+          <div class="proj-group" id={g.id}>
+            <h3>{g.name}</h3>
+            <p class="group-desc">{g.desc}</p>
+            <div class={g.layout === 'grid' ? 'proj-grid' : 'proj-list'}>
+              {list.map((p, i) => <ProjectCard project={p} index={i + 1} highlight={highlight.includes(p.id)} />)}
             </div>
-          );
+          </div>
+        );
+      })}
+    </section>
+
+    <!-- ================= 开源 ================= -->
+    <section class="sec" id="opensource" data-spy>
+      <h2>开源</h2>
+      <ul>
+        {osIds.map((id) => {
+          const repo = byId[id];
+          return repo ? <OsRow repo={repo} /> : null;
         })}
-      </div>
-    </div>
-  </section>
+      </ul>
+      <figure class="activity">
+        <img src="/media/github-heatmap.svg" alt="GitHub 提交热力图" loading="lazy" />
+        <figcaption>GitHub 活跃记录 · 2026.3 至今 · 787 次贡献</figcaption>
+      </figure>
+    </section>
 
-  <nav class="toc" aria-label="项目分组">
-    {groups.map((g) => <a href={`#${g.id}`}>{g.toc}</a>)}
-  </nav>
+    <!-- ================= 荣誉 ================= -->
+    <section class="sec" id="honors" data-spy>
+      <h2>荣誉</h2>
+      <ul class="plain">
+        {honors.map((h) => (
+          <li><span class="date">{h.date}</span><span><b>{h.name}</b><span class="muted"> · {h.note}</span></span></li>
+        ))}
+      </ul>
 
-  <!-- ================= 开源 ================= -->
-  <section class="block" id="opensource" data-spy>
-    <div class="wrap sec">
-      <header class="sec-head reveal">
-        <span class="sec-no">iii.</span>
-        <h2 class="sec-title">开源</h2>
-        <p class="sec-sub">Open Source</p>
-      </header>
-      <div class="sec-body">
-        <ul>
-          {osIds.map((id) => {
-            const repo = byId[id];
-            return repo ? <OsRow repo={repo} /> : null;
-          })}
-        </ul>
-        <div class="activity reveal">
-          <figure>
-            <img src="/media/github-heatmap.svg" alt="GitHub 提交热力图" loading="lazy" />
-            <figcaption>GitHub 活跃记录 · 2026.3 至今 · 787 次贡献 · 120 个活跃日</figcaption>
-          </figure>
-        </div>
-      </div>
-    </div>
-  </section>
+      <h3>竞赛</h3>
+      <ul class="plain">
+        {competitions.map((c) => (
+          <li><span class="date">{c.date}</span><span>{c.name}，<b>{c.result}</b>{c.role && <span class="muted">（{c.role}）</span>}</span></li>
+        ))}
+      </ul>
 
-  <!-- ================= 荣誉 ================= -->
-  <section class="block" id="honors" data-spy>
-    <div class="wrap sec">
-      <header class="sec-head reveal">
-        <span class="sec-no">iv.</span>
-        <h2 class="sec-title">荣誉</h2>
-        <p class="sec-sub">Honors &amp; Patents</p>
-      </header>
-      <div class="sec-body">
-        <div class="honors reveal">
-          {honors.map((h) => (
-            <div class="honor">
-              <div class="honor-name">{h.name}</div>
-              <div class="honor-note">{h.note}</div>
-            </div>
-          ))}
-        </div>
+      <CertificateWall />
 
-        <h3 class="sub-title reveal">竞赛</h3>
-        <ul class="row-list reveal">
-          {competitions.map((c) => (
-            <li>
-              <span class="row-date">{c.date}</span>
-              <span class="row-main">{c.name}{c.role && <small>{c.role}</small>}</span>
-              <strong class="row-side">{c.result}</strong>
-            </li>
-          ))}
-        </ul>
+      <h3>专利与软件著作权</h3>
+      <ul class="plain">
+        {patents.map((p) => (
+          <li><span class="date">{p.kind}</span><span>{p.name}<span class="muted"> · {p.no}</span></span></li>
+        ))}
+      </ul>
+    </section>
 
-        <CertificateWall />
+    <!-- ================= 联系 ================= -->
+    <section class="sec" id="contact" data-spy>
+      <h2>联系</h2>
+      <p>正在寻找具身智能与 AI for AI 方向的实习、全职与科研合作机会。欢迎邮件联系：<a href={`mailto:${profile.email}`}>{profile.email}</a></p>
+    </section>
 
-        <h3 class="sub-title reveal">专利与软件著作权</h3>
-        <ul class="row-list reveal">
-          {patents.map((p) => (
-            <li>
-              <span class="row-kind">{p.kind}</span>
-              <span class="row-main">{p.name}</span>
-              <span class="row-no">{p.no}</span>
-            </li>
-          ))}
-        </ul>
-      </div>
-    </div>
-  </section>
-
-  <!-- ================= 联系 ================= -->
-  <section class="contact" id="contact" data-spy>
-    <div class="wrap">
-      <div class="contact-inner">
-        <h2 class="contact-title reveal">一起把机器人<em>带进真实世界</em>。</h2>
-        <p class="contact-text reveal">正在寻找具身智能、机器人学习方向的实习与工作机会，也欢迎科研合作与交流。</p>
-        <div class="intro-actions reveal">
-          <a class="btn" href={`mailto:${profile.email}`}><Icons name="mail" />{profile.email}</a>
-          <a class="btn" href={profile.github} target="_blank" rel="noopener noreferrer"><Icons name="github" />GitHub</a>
-          <a class="btn" href={profile.site} target="_blank" rel="noopener noreferrer"><Icons name="globe" />博客</a>
-        </div>
-      </div>
-      <footer class="footer">
-        <span>© 2026 房家辉 Jiahui Fang</span>
-        <span class="colophon">Updated October 2026 · Newsreader, Noto Serif SC &amp; Inter</span>
-      </footer>
-    </div>
-  </section>
+    <footer class="footer">© 2026 房家辉 Jiahui Fang · 更新于 2026 年 10 月</footer>
+  </main>
 </Base>
