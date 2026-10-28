@@ -1,0 +1,94 @@
+---
+import Media from './Media.astro';
+import type { Project } from '../data/site';
+
+/*
+ * One project in three sizes:
+ *  feature — visual beside the full write-up
+ *  card    — visual on top, summary and key numbers below
+ *  compact — small thumbnail and one paragraph, for foundations
+ * The visual is media when there is footage, otherwise a stat panel,
+ * otherwise a text placard, so every card in a row lines up.
+ */
+
+interface Props {
+  project: Project;
+  variant?: 'feature' | 'card' | 'compact';
+}
+
+const { project: p, variant = 'card' } = Astro.props;
+const visual = p.media?.length ? 'media' : p.stats ? 'stats' : p.placard ? 'placard' : null;
+const where = [p.org, p.date].filter(Boolean).join(' · ');
+---
+
+<article class={`project project--${variant} reveal`} id={p.id}>
+  {visual === 'media' && <Media items={p.media!} title={p.title} eager={variant === 'feature'} />}
+  {visual === 'stats' && (
+    <div class="statpanel" aria-label="Key numbers">
+      {p.stats!.map((s) => (
+        <div class="statpanel-item"><b>{s.value}</b><span>{s.label}</span></div>
+      ))}
+    </div>
+  )}
+  {visual === 'placard' && <div class="placard"><p>{p.placard}</p></div>}
+
+  <div class="project-body">
+    {variant === 'compact' ? (
+      <>
+        <h4 class="project-title">{p.title}</h4>
+        {p.org && <p class="project-meta">{p.org}</p>}
+      </>
+    ) : (
+      <>
+        {(p.role || where) && (
+          <p class="project-meta">
+            {p.role && <span class="project-role">{p.role}</span>}
+            {where && <span>{where}</span>}
+          </p>
+        )}
+        <h4 class="project-title">{p.title}</h4>
+      </>
+    )}
+    <p class="project-summary">{p.summary}</p>
+
+    {p.pipeline && (
+      <ol class="pipeline">
+        {p.pipeline.map((s, i) => (
+          <li>
+            <span class="pipeline-no">{String(i + 1).padStart(2, '0')}</span>
+            <b>{s.title}</b>
+            <span>{s.detail}</span>
+          </li>
+        ))}
+      </ol>
+    )}
+
+    {p.points && (
+      <ul class="points">
+        {p.points.map((t) => <li>{t}</li>)}
+      </ul>
+    )}
+
+    {p.stats && visual !== 'stats' && (
+      <dl class="stats">
+        {p.stats.map((s) => (
+          <div><dt>{s.label}</dt><dd>{s.value}</dd></div>
+        ))}
+      </dl>
+    )}
+
+    {p.outcome && <p class="outcome">{p.outcome}</p>}
+
+    {p.tags && variant !== 'compact' && (
+      <p class="tags">{p.tags.map((t) => <span>{t}</span>)}</p>
+    )}
+
+    {p.links && (
+      <p class="links">
+        {p.links.map((l) => (
+          <a href={l.url} target="_blank" rel="noopener noreferrer">{l.label}<span aria-hidden="true">↗</span></a>
+        ))}
+      </p>
+    )}
+  </div>
+</article>

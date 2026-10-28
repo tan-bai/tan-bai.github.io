@@ -7,50 +7,55 @@ interface Props {
 }
 
 const {
-  title = '房家辉 Jiahui Fang · 具身智能与 AI for AI',
-  description = '房家辉（Jiahui Fang），东南大学研究生，研究具身智能（空中视觉语言导航、VLA、无人机世界模型）与 AI for AI（自动化科研 Agent）。',
+  title = 'Jiahui Fang · Robotics & AI Agents',
+  description =
+    'Jiahui Fang (房家辉) — humanoid motion learning, autonomous research agents and edge vision, built on an electrical-engineering foundation. Open to research and engineering internships.',
 } = Astro.props;
 ---
 
 <!doctype html>
-<html lang="zh-CN">
+<html lang="en">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
     <title>{title}</title>
     <meta name="description" content={description} />
-    <meta name="author" content="房家辉 Jiahui Fang" />
+    <meta name="author" content="Jiahui Fang" />
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
     <meta property="og:type" content="profile" />
     <meta property="og:url" content="https://tan-bai.github.io/" />
     <meta property="og:image" content="https://tan-bai.github.io/media/profile-photo.png" />
-    <meta name="theme-color" content="#ffffff" />
+    <meta name="theme-color" content="#f8f7f3" media="(prefers-color-scheme: light)" />
+    <meta name="theme-color" content="#131416" media="(prefers-color-scheme: dark)" />
     <link
       rel="icon"
-      href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='22' fill='%2317181b'/%3E%3Ctext x='50' y='67' font-size='50' font-family='Songti SC, Noto Serif SC, serif' font-weight='600' fill='%23fbfaf7' text-anchor='middle'%3E房%3C/text%3E%3C/svg%3E"
+      href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='22' fill='%2317181b'/%3E%3Ctext x='50' y='68' font-size='56' font-family='Georgia, serif' font-style='italic' fill='%23f8f7f3' text-anchor='middle'%3EJ%3C/text%3E%3C/svg%3E"
     />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&family=Noto+Sans+SC:wght@400;600&display=swap" rel="stylesheet" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Newsreader:ital,opsz,wght@0,6..72,300..600;1,6..72,300..500&display=swap"
+      rel="stylesheet"
+    />
     <script is:inline>document.documentElement.classList.add('js');</script>
   </head>
   <body>
     <slot />
 
-    <!-- 全站共用灯箱：任何带 data-media 的元素点击后在此展示 -->
-    <dialog class="lightbox" id="lightbox" aria-label="媒体查看">
-      <button class="lb-btn lb-close" aria-label="关闭">✕</button>
-      <button class="lb-btn lb-prev" aria-label="上一项">←</button>
+    <!-- Shared lightbox: any element with data-media opens here -->
+    <dialog class="lightbox" id="lightbox" aria-label="Media viewer">
+      <button class="lb-btn lb-close" aria-label="Close">✕</button>
+      <button class="lb-btn lb-prev" aria-label="Previous">←</button>
       <div class="lb-body">
         <div class="lb-stage"></div>
         <div class="lb-meta"><span class="lb-count"></span><span class="lb-cap"></span></div>
       </div>
-      <button class="lb-btn lb-next" aria-label="下一项">→</button>
+      <button class="lb-btn lb-next" aria-label="Next">→</button>
     </dialog>
 
     <script>
-      /* 滚动显现 */
+      /* Reveal on scroll */
       const io = new IntersectionObserver(
         (entries) => {
           for (const e of entries) {
@@ -64,41 +69,35 @@ const {
       );
       document.querySelectorAll('.reveal').forEach((el) => io.observe(el));
 
-      /* 导航：离开首屏后才出现底色与发丝线 */
+      /* Nav gains a surface once the hero scrolls away */
       const nav = document.querySelector('.nav');
       const onScroll = () => nav?.classList.toggle('is-stuck', window.scrollY > 24);
       onScroll();
       window.addEventListener('scroll', onScroll, { passive: true });
 
-      /* 导航与右侧目录高亮 */
-      const spy = (selector: string, links: HTMLAnchorElement[]) => {
-        const targets = [...document.querySelectorAll<HTMLElement>(selector)];
-        const obs = new IntersectionObserver(
-          (entries) => {
-            for (const e of entries) {
-              if (!e.isIntersecting) continue;
-              const id = (e.target as HTMLElement).id;
-              links.forEach((a) => a.classList.toggle('is-active', a.getAttribute('href') === `#${id}`));
-            }
-          },
-          { rootMargin: '-35% 0px -60% 0px' }
-        );
-        targets.forEach((t) => obs.observe(t));
-      };
-      spy('[data-spy]', [...document.querySelectorAll<HTMLAnchorElement>('.nav-links a')]);
-      spy('.proj-group', [...document.querySelectorAll<HTMLAnchorElement>('.toc a')]);
+      /* Nav highlight follows the section in view */
+      const links = [...document.querySelectorAll<HTMLAnchorElement>('.nav-links a')];
+      const targets = [...document.querySelectorAll<HTMLElement>('[data-spy]')];
+      const activate = (t: HTMLElement) =>
+        links.forEach((a) => a.classList.toggle('is-active', a.getAttribute('href') === `#${t.id}`));
+      const spy = new IntersectionObserver(
+        (entries) => {
+          for (const e of entries) if (e.isIntersecting) activate(e.target as HTMLElement);
+        },
+        { rootMargin: '-35% 0px -60% 0px' }
+      );
+      targets.forEach((t) => spy.observe(t));
+      window.addEventListener(
+        'scroll',
+        () => {
+          if (targets.length && window.scrollY + window.innerHeight >= document.documentElement.scrollHeight - 2)
+            activate(targets[targets.length - 1]);
+        },
+        { passive: true }
+      );
 
-      const toc = document.querySelector('.toc');
-      const projects = document.getElementById('projects');
-      if (toc && projects) {
-        new IntersectionObserver(([e]) => toc.classList.toggle('is-visible', e.isIntersecting), {
-          rootMargin: '-40% 0px -40% 0px',
-        }).observe(projects);
-      }
-
-      /* 视频：进入视口才播放，滚出暂停 */
+      /* Videos play only while on screen */
       const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-      const vids = document.querySelectorAll<HTMLVideoElement>('video[data-autoplay]');
       if (!reduced) {
         const vio = new IntersectionObserver(
           (entries) => {
@@ -110,10 +109,10 @@ const {
           },
           { threshold: 0.4 }
         );
-        vids.forEach((v) => vio.observe(v));
+        document.querySelectorAll<HTMLVideoElement>('video[data-autoplay]').forEach((v) => vio.observe(v));
       }
 
-      /* 灯箱 */
+      /* Lightbox */
       type Item = { video?: string; image?: string; caption?: string };
       const lb = document.getElementById('lightbox') as HTMLDialogElement;
       const stage = lb.querySelector<HTMLElement>('.lb-stage')!;
@@ -150,8 +149,7 @@ const {
       document.querySelectorAll<HTMLElement>('[data-media]').forEach((el) =>
         el.addEventListener('click', () => {
           items = JSON.parse(el.dataset.media!);
-          const requestedIndex = Number(el.dataset.mediaIndex ?? 0);
-          cur = Number.isInteger(requestedIndex) && requestedIndex >= 0 && requestedIndex < items.length ? requestedIndex : 0;
+          cur = 0;
           lb.toggleAttribute('data-single', items.length < 2);
           render();
           lb.showModal();

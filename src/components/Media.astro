@@ -1,0 +1,27 @@
+---
+import { posterOf } from '../lib/media';
+import type { MediaItem } from '../data/site';
+
+/*
+ * Shows the first item (muted looping video or image); a click opens every
+ * item in the shared lightbox. Video posters default to `<name>-poster.webp`.
+ */
+
+interface Props {
+  items: MediaItem[];
+  title: string;
+  eager?: boolean;
+}
+
+const { items, title, eager = false } = Astro.props;
+const first = items[0];
+---
+
+<button class="media" type="button" data-media={JSON.stringify(items)} aria-label={`View media for ${title}`}>
+  {first.video ? (
+    <video src={first.video} poster={posterOf(first)} muted loop playsinline preload={eager ? 'metadata' : 'none'} data-autoplay />
+  ) : (
+    <img src={first.image} alt={first.caption ?? title} loading={eager ? 'eager' : 'lazy'} decoding="async" />
+  )}
+  {items.length > 1 && <span class="media-count">1 / {items.length}</span>}
+</button>
