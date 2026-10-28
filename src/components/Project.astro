@@ -24,7 +24,7 @@ const where = [p.org, p.date].filter(Boolean).join(' · ');
 <article class={`project project--${variant} reveal`} id={p.id}>
   {visual === 'media' && <Media items={p.media!} title={p.title} eager={variant === 'feature'} />}
   {visual === 'stats' && (
-    <div class="statpanel" aria-label="Key numbers">
+    <div class="statpanel" aria-label="关键数据">
       {p.stats!.map((s) => (
         <div class="statpanel-item"><b>{s.value}</b><span>{s.label}</span></div>
       ))}

@@ -4,10 +4,10 @@ import Project from '../components/Project.astro';
 import { profile, pillars, lineage, timeline, honors, awards, patents } from '../data/site';
 
 const nav = [
-  { href: '#work', label: 'Work' },
-  { href: '#path', label: 'Path' },
-  { href: '#recognition', label: 'Recognition' },
-  { href: '#contact', label: 'Contact' },
+  { href: '#work', label: '项目' },
+  { href: '#path', label: '路径' },
+  { href: '#recognition', label: '荣誉' },
+  { href: '#contact', label: '联系' },
 ];
 ---
 
@@ -26,7 +26,7 @@ const nav = [
     <header class="hero" id="top">
       <div class="hero-text">
         <p class="status"><span class="status-dot" aria-hidden="true"></span>{profile.status}</p>
-        <h1>{profile.name}<span lang="zh-CN">{profile.nameZh}</span></h1>
+        <h1>{profile.name}<span lang="en">{profile.nameEn}</span></h1>
         <p class="headline">{profile.headline}</p>
         <p class="bio">{profile.bio}</p>
         <ul class="edu">
@@ -37,14 +37,14 @@ const nav = [
         <p class="hero-links">
           <a href={`mailto:${profile.email}`}>{profile.email}</a>
           <a href={profile.github} target="_blank" rel="noopener noreferrer">GitHub<span aria-hidden="true">↗</span></a>
-          <a href={profile.blog} target="_blank" rel="noopener noreferrer">Blog<span aria-hidden="true">↗</span></a>
+          <a href={profile.blog} target="_blank" rel="noopener noreferrer">博客<span aria-hidden="true">↗</span></a>
         </p>
       </div>
       <figure class="hero-photo">
-        <img src={profile.photo} alt={`Portrait of ${profile.name}`} width="295" height="399" fetchpriority="high" />
+        <img src={profile.photo} alt={`${profile.name}的照片`} width="295" height="399" fetchpriority="high" />
       </figure>
 
-      <ol class="arc" aria-label="Path so far">
+      <ol class="arc" aria-label="成长路径">
         {timeline.map((s) => (
           <li><a href="#path"><span class="arc-no">{s.no}</span>{s.name}</a></li>
         ))}
@@ -54,8 +54,8 @@ const nav = [
     <!-- ============================ Work ============================ -->
     <section class="section" id="work" data-spy>
       <header class="section-head">
-        <h2>Selected work</h2>
-        <p>Ordered by impact. Click any image or video to enlarge.</p>
+        <h2>代表项目</h2>
+        <p>按影响力排序，点击图片或视频可放大查看。</p>
       </header>
 
       {pillars.map((pl) => (
@@ -67,7 +67,7 @@ const nav = [
           </header>
 
           {pl.id === 'vision' && (
-            <ol class="lineage reveal" aria-label="Detection architectures worked through">
+            <ol class="lineage reveal" aria-label="实践过的检测架构">
               {lineage.map((l) => (
                 <li><b>{l.name}</b><span>{l.note}</span></li>
               ))}
@@ -88,8 +88,8 @@ const nav = [
     <!-- ============================ Path ============================ -->
     <section class="section" id="path" data-spy>
       <header class="section-head">
-        <h2>Path</h2>
-        <p>How the work moved: from circuits to perception, to robots, to agents. Stages overlap in time.</p>
+        <h2>成长路径</h2>
+        <p>从电路到感知，从机器人到 Agent。各阶段在时间上有所重叠。</p>
       </header>
 
       <ol class="timeline">
@@ -120,12 +120,12 @@ const nav = [
     <!-- ========================= Recognition ======================== -->
     <section class="section" id="recognition" data-spy>
       <header class="section-head">
-        <h2>Recognition</h2>
+        <h2>荣誉与成果</h2>
       </header>
 
       <div class="recog reveal">
         <div>
-          <h3>Honors</h3>
+          <h3>荣誉奖励</h3>
           <ul class="rows rows--tight">
             {honors.map((h) => (
               <li><span class="row-date">{h.date}</span><span class="row-title">{h.name}</span></li>
@@ -133,7 +133,7 @@ const nav = [
           </ul>
         </div>
         <div>
-          <h3>Selected competitions</h3>
+          <h3>竞赛获奖（节选）</h3>
           <ul class="rows rows--tight">
             {awards.map((a) => (
               <li><span class="row-date">{a.date}</span><div><span class="row-title">{a.name}</span><p class="row-detail">{a.result}</p></div></li>
@@ -141,7 +141,7 @@ const nav = [
           </ul>
         </div>
         <div class="recog-wide">
-          <h3>Patent applications</h3>
+          <h3>发明专利申请</h3>
           <ul class="rows rows--tight">
             {patents.map((p) => (
               <li><span class="row-date mono">{p.id}</span><span class="row-title">{p.name}</span></li>
@@ -153,10 +153,9 @@ const nav = [
 
     <!-- =========================== Contact ========================== -->
     <section class="section contact" id="contact" data-spy>
-      <h2>Let’s build something that runs on real hardware.</h2>
+      <h2>一起做点能在真机上跑起来的东西。</h2>
       <p>
-        I’m looking for research and engineering internships in embodied AI, robot learning and agent systems.
-        The fastest way to reach me is email.
+        正在寻找具身智能、机器人学习与 Agent 系统方向的科研与工程实习机会，欢迎邮件联系。
       </p>
       <p class="contact-links">
         <a href={`mailto:${profile.email}`}>{profile.email}</a>
@@ -165,8 +164,8 @@ const nav = [
     </section>
 
     <footer class="footer">
-      <span>© 2026 {profile.name}</span>
-      <span>Updated October 2026</span>
+      <span>© 2026 {profile.name} {profile.nameEn}</span>
+      <span>更新于 2026 年 10 月</span>
     </footer>
   </main>
 </Base>

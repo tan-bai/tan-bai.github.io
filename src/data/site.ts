@@ -1,7 +1,8 @@
 /*
- * All site copy lives here. Pages and components only lay it out.
- * Facts are drawn from src/content/projects/*.md and the CV (cv-private);
- * lines marked NOTE need the owner's confirmation.
+ * 全站文案集中在此，页面与组件只负责排版。
+ * 事实依据 src/content/projects/*.md 与简历仓库（cv-private）；
+ * 标注 NOTE 的条目需本人确认。
+ * 中英文之间手动留半角空格；日期统一写作 2026.07。
  */
 
 export interface MediaItem {
@@ -35,7 +36,7 @@ export interface Project {
   outcome?: string;
   links?: Link[];
   media?: MediaItem[];
-  /** Short text shown in place of media when there is no footage or stats. */
+  /** 没有影像也没有数字时，用一句话占位，保证同排卡片对齐 */
   placard?: string;
 }
 export interface Pillar {
@@ -49,16 +50,16 @@ export interface Pillar {
 }
 
 export const profile = {
-  name: 'Jiahui Fang',
-  nameZh: '房家辉',
-  headline: 'Robots and AI agents, built from the hardware up.',
+  name: '房家辉',
+  nameEn: 'Jiahui Fang',
+  headline: '从硬件出发，构建机器人与 AI Agent。',
   bio:
-    'I started in electrical engineering, taught small vision models to run on edge devices, and now work on humanoid motion learning and autonomous research agents. I like problems that end on real hardware or in a merged pull request.',
+    '电子信息工程出身，先把小型视觉模型部署到边缘设备，现在专注人形机器人运动学习与自主科研 Agent。我偏爱最终落到真机上、或落成一个被合并的 PR 的问题。',
   education: [
-    { school: 'Southeast University', detail: 'Graduate study, Electronic Information', date: '2026 –' },
-    { school: 'Shanghai Normal University', detail: 'B.Eng. Electronic Information Engineering · GPA 3.82/4.00 · Rank 1/425', date: '2022 – 2026' },
+    { school: '东南大学', detail: '电子信息 · 硕士研究生（推免）', date: '2026 –' },
+    { school: '上海师范大学', detail: '电子信息工程 · 工学学士 · GPA 3.82/4.00 · 专业排名 1/425', date: '2022 – 2026' },
   ],
-  status: 'Open to research & engineering internships',
+  status: '正在寻找科研与工程实习',
   email: 'jiahui.fang@ieee.org',
   github: 'https://github.com/20bytes',
   blog: 'https://20bytes.top',
@@ -66,89 +67,89 @@ export const profile = {
 };
 
 /* ------------------------------------------------------------------ */
-/* Featured work, ordered by impact                                    */
+/* 代表项目：按影响力排序                                                */
 /* ------------------------------------------------------------------ */
 
 const humanoid: Project = {
   id: 'humanoid-pipeline',
-  title: 'End-to-End Humanoid Motion Pipeline',
-  org: 'Shanghai Zhuluoshou · robotics startup',
-  role: 'Algorithm Intern · Project Lead',
-  date: 'Jul – Aug 2026',
+  title: '端到端人形机器人运动链路',
+  org: '上海侏罗兽 · 机器人初创公司',
+  role: '算法实习生 · 项目负责人',
+  date: '2026.07 – 2026.08',
   summary:
-    'Led the full path from a human video to a policy running on a real humanoid — motion extraction, retargeting, reinforcement learning and Sim2Real deployment on AgiBot X2 — and owned it end to end.',
+    '独立牵头打通从人体视频到真机策略的完整链路：动作提取、动作重定向、强化学习训练与 Sim2Real 部署，在智元 X2 人形机器人上端到端落地。',
   pipeline: [
-    { title: 'Motion extraction', detail: 'GVHMR / PromptHMR recover SMPL body motion from monocular human video.' },
-    { title: 'Retargeting', detail: 'AMASS-format motion mapped onto X2 kinematics as Isaac / MuJoCo reference trajectories.' },
-    { title: 'RL training', detail: 'Motion-tracking policies trained with HumanoidPolicyLab in MuJoCo, about 4.5 h per run.' },
-    { title: 'Sim2Real', detail: 'ONNX policies deployed to the X2 controller via AIMDK; robot logs and fault bundles drive diagnosis.' },
+    { title: '动作提取', detail: 'GVHMR / PromptHMR 从单目人体视频中恢复 SMPL 人体动作。' },
+    { title: '动作重定向', detail: 'AMASS 格式动作映射到 X2 运动学结构，生成 Isaac / MuJoCo 参考轨迹。' },
+    { title: '强化学习训练', detail: '基于 HumanoidPolicyLab 在 MuJoCo 中训练动作跟踪策略，单次约 4.5 小时。' },
+    { title: 'Sim2Real 部署', detail: '导出 ONNX 策略，经 AIMDK 部署至 X2 控制器；以真机日志与故障信息驱动诊断。' },
   ],
-  tags: ['AgiBot X2', 'GVHMR', 'PromptHMR', 'SMPL / AMASS', 'MuJoCo', 'Isaac', 'RL', 'ONNX', 'AIMDK'],
+  tags: ['智元 X2', 'GVHMR', 'PromptHMR', 'SMPL / AMASS', 'MuJoCo', 'Isaac', '强化学习', 'ONNX', 'AIMDK'],
   media: [
-    { video: '/media/x2-realrobot.mp4', caption: 'Real-robot walking and turning on AgiBot X2, recorded in the lab.' },
-    { video: '/media/x2-internship.mp4', caption: 'MuJoCo playback: X2 tracking a retargeted reference motion.' },
-    { video: '/media/x2-maiguai2.mp4', caption: 'PromptHMR pose extraction from video, the front end of the retargeting pipeline.' },
+    { video: '/media/x2-realrobot.mp4', caption: '智元 X2 真机行走与转向，实验室部署现场实录。' },
+    { video: '/media/x2-internship.mp4', caption: 'MuJoCo 回放：X2 跟踪重定向后的参考动作。' },
+    { video: '/media/x2-maiguai2.mp4', caption: 'PromptHMR 从视频中提取人体姿态，是重定向链路的前端。' },
   ],
 };
 
 const robotics: Project[] = [
   {
     id: 'badminton',
-    title: 'Humanoid Robot Badminton',
-    org: 'ZJU FAST Lab',
-    role: 'Research Intern',
-    date: 'Aug 2025 – Jan 2026',
-    // NOTE: the brief says "humanoid"; earlier site copy described a LimX wheeled-legged platform.
+    title: '人形机器人羽毛球',
+    org: '浙江大学 FAST Lab',
+    role: '科研实习生',
+    date: '2025.08 – 2026.01',
+    // NOTE: 需求写的是“人形”；旧版站点描述为逐际动力轮足平台。
     summary:
-      'Inspired by ETH Zürich’s badminton-playing legged robot, the team builds a robot that returns high-speed shuttles. I owned the motion-capture side: large-scale MoCap processing and motion mapping that feed trajectory prediction and strike control.',
+      '受 ETH Zürich 羽毛球足式机器人启发，团队研发能回击高速来球的机器人。我负责动捕数据一侧：大规模动捕数据处理与动作映射，为来球轨迹预测与击球控制提供数据支撑。',
     points: [
-      'Validated MoCap trajectories and aligned multi-source time series with MOKKA and PlotJuggler.',
-      'Turned captured motion into robot-ready references and diagnostic views for control tuning.',
+      '使用 MOKKA 与 PlotJuggler 完成动捕轨迹校验与多源时序数据对齐。',
+      '把采集到的动作转为机器人可用的参考数据，并产出供控制调试的可视化视图。',
     ],
-    tags: ['Motion capture', 'Motion mapping', 'MOKKA', 'PlotJuggler', 'Trajectory prediction'],
-    placard: 'Motion capture → motion mapping → trajectory prediction → strike',
+    tags: ['动作捕捉', '动作映射', 'MOKKA', 'PlotJuggler', '轨迹预测'],
+    placard: '动作捕捉 → 动作映射 → 轨迹预测 → 击球',
   },
   {
     id: 'unitree',
-    title: 'Unitree Humanoids, Simulation to Hardware',
-    org: 'SHNU Robotics Lab · ROS Summer School',
-    role: 'Lab member · Trainee',
+    title: '宇树人形机器人：从仿真到真机',
+    org: '上师大机器人实验室 · ROS 暑期学校',
+    role: '实验室成员 · 学员',
     date: '2024 – 2025',
     summary:
-      'Built the lab’s Unitree humanoid simulation environment from scratch on Isaac Gym and unitree_rl_gym, then debugged and operated a real Unitree G1 at summer school: ROS 2, SDK motion programming, RealSense + YOLO perception and Mid-360 + FAST-LIO mapping.',
-    tags: ['Isaac Gym', 'unitree_rl_gym', 'PPO', 'ROS 2', 'Unitree G1', 'FAST-LIO'],
-    outcome: 'Invention patent application on bipedal gait generation with adversarial motion priors (CN120595629A, 3rd inventor)',
-    media: [{ video: '/media/bipedal.mp4', caption: 'Bipedal locomotion policy trained in simulation.' }],
+      '为实验室从零搭建宇树人形机器人仿真环境（Isaac Gym、unitree_rl_gym）；暑期学校中在宇树 G1 真机上完成调试与操作：ROS 2、SDK 动作编程、RealSense + YOLO 视觉感知、Mid-360 + FAST-LIO 建图。',
+    tags: ['Isaac Gym', 'unitree_rl_gym', 'PPO', 'ROS 2', '宇树 G1', 'FAST-LIO'],
+    outcome: '发明专利申请：基于增强型对抗运动先验的双足机器人步态生成方法（CN120595629A，排名 3）',
+    media: [{ video: '/media/bipedal.mp4', caption: '仿真中训练的双足行走策略。' }],
   },
   {
     id: 'pi0',
-    title: 'π0 Vision-Language-Action Reproduction',
-    role: 'Independent study',
-    date: 'May 2026 –',
+    title: 'π0 视觉-语言-动作模型复现',
+    role: '独立复现',
+    date: '2026.05 –',
     summary:
-      'Re-implemented π0’s multimodal encoder, flow-matching action expert and π0-FAST action tokenization from the papers, then evaluated with openpi on LIBERO.',
-    stats: [{ value: '9 / 10', label: 'LIBERO episodes solved' }],
-    tags: ['VLA', 'π0', 'Flow matching', 'openpi', 'LIBERO'],
-    media: [{ video: '/media/pi0-libero.mp4', caption: 'π0 rollout on LIBERO, seen from the model’s 224×224 camera.' }],
+      '依据论文独立实现 π0 的多模态编码器、流匹配动作专家与 π0-FAST 动作分词，并基于 openpi 在 LIBERO 上完成评测。',
+    stats: [{ value: '9 / 10', label: 'LIBERO 回合成功' }],
+    tags: ['VLA', 'π0', '流匹配', 'openpi', 'LIBERO'],
+    media: [{ video: '/media/pi0-libero.mp4', caption: 'π0 在 LIBERO 上的执行过程（模型 224×224 视角）。' }],
   },
 ];
 
 const beatless: Project = {
   id: 'beatless',
-  title: 'Beatless · Autonomous Research Agents',
-  role: 'Co-author',
-  date: 'Mar 2026 –',
+  title: 'Beatless · 自治科研 Agent 系统',
+  role: '共同作者',
+  date: '2026.03 –',
   summary:
-    'A self-running multi-agent research system. A resident scheduler wakes ten cron jobs that collect papers, run a seven-stage research loop and open pull requests against real open-source repositories.',
+    '自主运行的多智能体科研系统：常驻调度器按计划唤醒 10 个定时任务，完成论文采集、七阶段研究循环，并向真实开源仓库提交 PR。',
   points: [
-    'Writing and reviewing are split across model families — Codex checks correctness, Gemini architecture, Sonnet argues the other side. Output scoring under 7/10 on an eight-item rubric is withdrawn automatically.',
-    'The paper pipeline merges arXiv, OpenReview, CVF and ACL Anthology into Zotero and Obsidian.',
-    'Upstream contributions include promptfoo (★21.6K) and CodeWhale (★35K).',
+    '“写”与“审”严格拆给不同模型族：Codex 查正确性，Gemini 看架构，Sonnet 做对抗；八项评分卡均分低于 7 分的产出自动撤回。',
+    '论文管线整合 arXiv、OpenReview、CVF 与 ACL Anthology，入库 Zotero 并同步 Obsidian。',
+    '向上游贡献代码，包括 promptfoo（★21.6K）与 CodeWhale（★35K）。',
   ],
   stats: [
-    { value: '34', label: 'PRs in 7 days, 53 repos' },
-    { value: '41.5%', label: 'merge rate' },
-    { value: '144', label: 'papers processed / day' },
+    { value: '34', label: '7 天内提交 PR，覆盖 53 个仓库' },
+    { value: '41.5%', label: 'PR 合并率' },
+    { value: '144', label: '每日处理论文篇数' },
   ],
   links: [
     { label: 'Beatless', url: 'https://github.com/CrepuscularIRIS/Beatless' },
@@ -159,16 +160,16 @@ const beatless: Project = {
 const agents: Project[] = [
   {
     id: 'polaris',
-    title: 'Polaris · AI Paper Dataset',
-    role: 'Author',
-    date: 'May 2026 –',
-    // NOTE: the brief says "accepted by a CCF venue"; existing copy only says it covers CCF venues.
+    title: 'Polaris · AI 论文数据集',
+    role: '作者',
+    date: '2026.05 –',
+    // NOTE: 需求写的是“被 CCF 会议接收”；现有材料只说明覆盖 CCF 会议。
     summary:
-      '155K papers from eleven top AI venues (1982–2026), deduplicated across DBLP, CVF, ACL Anthology, OpenReview and PMLR, with semantic search, RAG and a method–dataset–task knowledge graph. It is also the data layer under Beatless.',
+      '覆盖 11 个 AI 顶会（1982–2026）共 15.5 万篇论文，跨 DBLP、CVF、ACL Anthology、OpenReview 与 PMLR 去重融合，提供语义检索、RAG 与“方法–数据集–任务”知识图谱，同时是 Beatless 的数据底座。',
     stats: [
-      { value: '155K', label: 'papers' },
-      { value: '92.2%', label: 'abstract coverage' },
-      { value: '59K', label: 'graph triples' },
+      { value: '155K', label: '论文总量' },
+      { value: '92.2%', label: '摘要覆盖率' },
+      { value: '59K', label: '知识图谱三元组' },
     ],
     links: [
       { label: 'GitHub', url: 'https://github.com/20bytes/Polaris' },
@@ -177,118 +178,118 @@ const agents: Project[] = [
   },
   {
     id: 'mingjing',
-    title: 'MingJing · Evidence-Auditable Research Agent',
-    org: 'ByteDance AI Full-Stack Challenge',
-    role: 'Core contributor',
-    // NOTE: placement not recorded in the repo; add it here.
+    title: '明镜 · 证据可审计的研究 Agent',
+    org: '字节跳动 AI 全栈挑战赛',
+    role: '核心成员',
+    // NOTE: 仓库中没有名次记录，确认后补充。
     summary:
-      'A LangGraph multi-agent system where the LLM may only propose claims. A rule-based QA agent admits a claim only if its quote is a verbatim substring of the source; otherwise it triggers fresh collection.',
-    stats: [{ value: '883', label: 'backend tests, no API key' }],
+      '基于 LangGraph 的多智能体系统：LLM 只负责提出声明，由规则化 QA Agent 裁决；引用必须是来源原文的逐字子串，否则打回并触发新一轮采集。',
+    stats: [{ value: '883', label: '后端测试，无需 API Key' }],
     links: [
       { label: 'GitHub', url: 'https://github.com/CrepuscularIRIS/mingjing' },
-      { label: 'Demo', url: 'https://crepusculariris.github.io/mingjing' },
+      { label: '在线演示', url: 'https://crepusculariris.github.io/mingjing' },
     ],
-    media: [{ video: '/media/mingjing-clip.mp4', caption: 'MingJing release video (excerpt).' }],
+    media: [{ video: '/media/mingjing-clip.mp4', caption: '明镜发布视频（节选）。' }],
   },
   {
     id: 'proma',
-    title: 'Proma · AI Scientist Platform',
-    org: 'Challenge Cup · Alibaba Cloud track (Qwen)',
-    role: 'Core contributor',
-    date: 'May – Sep 2026',
-    // NOTE: placement not recorded in the repo; add it here.
+    title: 'Proma · AI Scientist 平台',
+    org: '挑战杯揭榜挂帅 · 阿里云榜题（Qwen）',
+    role: '核心成员',
+    date: '2026.05 – 2026.09',
+    // NOTE: 仓库中没有名次记录，确认后补充。
     summary:
-      'An Electron research-agent platform on a forked Pi Agent runtime, calling Qwen through DashScope. Research skills and MCP organize evidence chains and falsification experiments; the whole stack starts with one docker compose.',
+      'Electron 桌面端科研 Agent 平台，运行时基于 Pi Agent 分支，经 DashScope 调用 Qwen；以 Research Skills 与 MCP 组织证据链和判伪实验，docker compose 一键启动。',
     links: [{ label: 'GitHub', url: 'https://github.com/CrepuscularIRIS/crucible' }],
-    media: [{ video: '/media/proma-clip.mp4', caption: 'Proma competition demo (excerpt).' }],
+    media: [{ video: '/media/proma-clip.mp4', caption: 'Proma 参赛演示（节选）。' }],
   },
 ];
 
 const vision: Project[] = [
   {
     id: 'icing',
-    title: 'UAV Power-Line Icing Detection',
-    role: 'Project Lead',
-    date: 'Oct 2024 – Oct 2025',
+    title: '无人机输电线路覆冰检测',
+    role: '项目负责人',
+    date: '2024.10 – 2025.10',
     summary:
-      'Edge–cloud inspection. A pruned, PPQ-quantized YOLOv12-tiny on a drone’s Jetson AGX Xavier finds ice through rain, snow and haze; a QLoRA-tuned multimodal LLM with RAGFlow classifies the ice type and drafts de-icing plans.',
+      '端云协同巡检：无人机端 Jetson AGX Xavier 部署剪枝与 PPQ 量化后的 YOLOv12-tiny，在雨雪雾霾中定位覆冰；云端以 QLoRA 微调的多模态大模型结合 RAGFlow，判别覆冰类型并生成除冰方案。',
     stats: [
       { value: '98.4%', label: 'mAP50' },
-      { value: '30M', label: 'quantized model' },
+      { value: '30M', label: '量化后模型' },
     ],
-    outcome: 'Challenge Cup Shanghai, First Prize (first contributor) · software copyright granted',
+    outcome: '“挑战杯”上海市一等奖（第一完成人）· 软件著作权授权',
     links: [{ label: 'detection-web', url: 'https://github.com/20bytes/detection-web' }],
-    media: [{ image: '/media/powerline-icing.webp', caption: 'Edge–cloud icing detection system.' }],
+    media: [{ image: '/media/powerline-icing.webp', caption: '端云协同覆冰检测系统。' }],
   },
   {
     id: 'lcga-net',
-    title: 'Infrared Small Target Detection',
-    role: 'Core Contributor',
-    date: 'Mar – Aug 2025',
+    title: '红外小目标检测',
+    role: '核心成员',
+    date: '2025.03 – 2025.08',
     summary:
-      'LCGA-Net: Hessian curvature features surface faint edges, a saliency module suppresses clutter, and a Gaussian radial alignment loss sharpens center localization.',
+      'LCGA-Net：Hessian 曲率感知突出微弱边缘，显著性聚焦模块抑制背景杂波，高斯径向对齐损失提升中心定位精度。',
     stats: [
-      { value: '86.5%', label: 'AP50 on IRSTD-1K, +5.5' },
-      { value: '2.92M', label: 'parameters' },
+      { value: '86.5%', label: 'IRSTD-1K AP50（+5.5）' },
+      { value: '2.92M', label: '参数量' },
       { value: '204', label: 'FPS' },
     ],
-    outcome: 'First-author working paper',
-    media: [{ image: '/media/lcga-net.webp', caption: 'LCGA-Net architecture.' }],
+    outcome: '第一作者工作论文',
+    media: [{ image: '/media/lcga-net.webp', caption: 'LCGA-Net 网络结构。' }],
   },
   {
     id: 'safe-detr',
-    title: 'Tiny-Object Detection for UAV Imagery',
-    role: 'Undergraduate thesis',
-    date: 'Feb – May 2026',
+    title: '无人机航拍小目标检测',
+    role: '本科毕业设计',
+    date: '2026.02 – 2026.05',
     summary:
-      'SAFE-DETR, a real-time end-to-end detector: Haar-wavelet downsampling keeps small-object detail and scale-collaborative fusion runs through every CCFM node. Deployed INT8 on a Jetson Nano behind a Vue + FastAPI console.',
+      'SAFE-DETR 端到端实时检测框架：Haar 小波下采样保留小目标细节，尺度协同融合贯穿 CCFM 全部融合节点；以 TensorRT INT8 部署至 Jetson Nano，并搭建 Vue + FastAPI 可视化平台。',
     stats: [
-      { value: '+6.3', label: 'AP50 vs YOLOv8s' },
-      { value: '+4.27%', label: 'APs' },
+      { value: '+6.3', label: 'AP50，对比 YOLOv8s' },
+      { value: '+4.27%', label: 'APs 相对提升' },
     ],
-    outcome: 'Thesis graded A',
+    outcome: '毕业论文获评 A',
   },
   {
     id: 'posture',
-    title: 'Human Pose for a Posture-Aware Lamp',
-    org: 'Huawei Cup IoT Design Contest',
-    role: 'Project Lead',
-    date: 'Apr – Aug 2024',
+    title: '人体姿态估计 · 坐姿矫正台灯',
+    org: '全国大学生物联网设计竞赛（华为杯）',
+    role: '项目负责人',
+    date: '2024.04 – 2024.08',
     summary:
-      'A self-trained YOLOv8 pose model watches a student through the lamp’s camera, measures the neck–back angle and speaks up about bad posture; OCR plus a local Qwen2-7B handles homework questions.',
-    outcome: 'National Second Prize (first contributor)',
-    media: [{ image: '/media/study-lamp.jpg', caption: 'ESP32-S3 study lamp prototype.' }],
+      '自主训练 YOLOv8 姿态模型，通过台灯摄像头实时计算颈背夹角并语音提醒不良坐姿；OCR 结合本地 Qwen2-7B 实现拍照答疑。',
+    outcome: '全国二等奖（第一完成人）',
+    media: [{ image: '/media/study-lamp.jpg', caption: 'ESP32-S3 学习台灯原型。' }],
   },
 ];
 
 const hardware: Project[] = [
   {
     id: 'signal',
-    title: 'Wireless Signal Simulator',
-    org: 'Electronic Design Contest',
-    summary: 'STM32F407 drives an AD9959 DDS carrier, AD835 amplitude modulation and an AGC stage. I soldered the boards, routed coax and wrote the DDS driver.',
-    media: [{ image: '/media/signal-system.jpg', caption: 'Signal simulator boards.' }],
+    title: '无线传输信号模拟系统',
+    org: '全国大学生电子设计竞赛',
+    summary: 'STM32F407 主控，AD9959 直接数字合成载波，AD835 完成调幅，AGC 稳幅输出；负责电路焊接、同轴走线与 AD9959 驱动。',
+    media: [{ image: '/media/signal-system.jpg', caption: '信号模拟系统电路板。' }],
   },
   {
     id: 'smart-car',
-    title: 'Magnetic Line-Following Car',
-    org: 'Smart Car Contest',
-    summary: 'A Hall-sensor array and PID differential steering on STM32; I redrew and extended the PCB from schematic to soldered board.',
-    media: [{ image: '/media/smart-car.jpg', caption: 'Line-following car.' }],
+    title: '电磁循迹小车',
+    org: '智能车竞赛',
+    summary: '霍尔传感器阵列识别磁条，PID 闭环差速转向，STM32 主控；从原理图到焊接，复现并拓展了电路板。',
+    media: [{ image: '/media/smart-car.jpg', caption: '电磁循迹小车。' }],
   },
   {
     id: 'tw-msd',
-    title: 'TW-MSD Adder on FPGA',
-    org: 'Faculty research project',
-    summary: 'A Verilog TW-MSD adder with a shorter carry chain — two clock edges faster than ripple-carry.',
-    media: [{ image: '/media/tw-msd.jpg', caption: 'TW-MSD adder timing on FPGA.' }],
+    title: 'TW-MSD 加法器 · FPGA',
+    org: '教师科研课题',
+    summary: 'Verilog 实现 TW-MSD 加法器，进位链更短，比行波进位加法器快两个时钟沿。',
+    media: [{ image: '/media/tw-msd.jpg', caption: 'TW-MSD 加法器 FPGA 时序。' }],
   },
   {
     id: 'visual-aid',
-    title: 'Visual Aid for the Blind',
-    org: 'Electronic systems course',
-    summary: 'A Raspberry Pi camera streams to Qwen2.5-VL, which describes obstacles, signs and text aloud.',
-    media: [{ image: '/media/accessibility-aid.webp', caption: 'Accessible visual aid.' }],
+    title: '无障碍视觉辅助系统',
+    org: '电子系统设计课程',
+    summary: '树莓派摄像头采集画面，Qwen2.5-VL 理解障碍、标识与文字，并语音播报给视障用户。',
+    media: [{ image: '/media/accessibility-aid.webp', caption: '无障碍视觉辅助设备。' }],
   },
 ];
 
@@ -296,48 +297,48 @@ export const pillars: Pillar[] = [
   {
     id: 'robotics',
     no: '01',
-    name: 'Embodied AI & Robotics',
-    thesis: 'Getting learned motion onto real humanoids.',
+    name: '具身智能与机器人',
+    thesis: '让学到的动作，在真实的人形机器人上跑起来。',
     feature: humanoid,
     projects: robotics,
   },
   {
     id: 'agents',
     no: '02',
-    name: 'AI Agents & Auto-Research',
-    thesis: 'Agents that do research, held to evidence.',
+    name: 'AI Agent 与自动化科研',
+    thesis: '做科研的 Agent，每个结论都要有证据。',
     feature: beatless,
     projects: agents,
   },
   {
     id: 'vision',
     no: '03',
-    name: 'Computer Vision & Perception',
-    thesis: 'Small models that see small things, on the edge.',
+    name: '计算机视觉与感知',
+    thesis: '小模型、小目标、跑在边缘端。',
     projects: vision,
   },
   {
     id: 'hardware',
     no: '04',
-    name: 'Hardware & Embedded Systems',
+    name: '硬件与嵌入式系统',
     thesis:
-      'A B.Eng. in Electronic Information Engineering: circuit design, embedded firmware and contest deadlines. It is why edge deployment and real-robot debugging feel familiar.',
+      '电子信息工程本科：电路设计、嵌入式开发与工程竞赛。这份底子，让边缘部署与真机调试都不陌生。',
     projects: hardware,
     layout: 'compact',
   },
 ];
 
-/** Detection paradigms worked through, oldest first. */
+/** 实践过的检测范式，从早到晚 */
 export const lineage = [
-  { name: 'YOLOv5', note: 'anchor-based' },
-  { name: 'YOLOv8', note: 'anchor-free' },
-  { name: 'YOLOv11', note: 'anchor-free' },
-  { name: 'DETR', note: 'end-to-end' },
-  { name: 'D-FINE', note: 'end-to-end, refined boxes' },
+  { name: 'YOLOv5', note: '基于锚框' },
+  { name: 'YOLOv8', note: '无锚框' },
+  { name: 'YOLOv11', note: '无锚框' },
+  { name: 'DETR', note: '端到端' },
+  { name: 'D-FINE', note: '端到端 · 精细回归' },
 ];
 
 /* ------------------------------------------------------------------ */
-/* Timeline: the chronological story                                   */
+/* 成长路径：按时间顺序                                                  */
 /* ------------------------------------------------------------------ */
 
 export interface Milestone {
@@ -357,76 +358,76 @@ export interface Stage {
 export const timeline: Stage[] = [
   {
     no: 'I',
-    name: 'EE Hardware & Embedded',
+    name: '电子硬件与嵌入式',
     span: '2022 – 2024',
-    line: 'Circuits, microcontrollers and contest deadlines.',
+    line: '电路、单片机，还有一场接一场的竞赛。',
     items: [
-      { date: 'Oct 2022', title: 'Shanghai Normal University', detail: 'B.Eng., Electronic Information Engineering' },
-      { date: '2023 – 2024', title: 'Contest hardware', detail: 'Signal simulator, line-following car, FPGA adder', href: '#hardware' },
-      { date: 'Aug 2023', title: 'Huawei Cup IoT Design Contest, East China', detail: 'Regional First Prize (first contributor)' },
-      { date: 'Jul 2024', title: 'IC Innovation & Entrepreneurship Contest, East China', detail: 'Provincial Second Prize' },
+      { date: '2022.10', title: '上海师范大学', detail: '电子信息工程 · 工学学士' },
+      { date: '2023 – 2024', title: '竞赛硬件作品', detail: '信号模拟系统、电磁循迹小车、FPGA 加法器', href: '#hardware' },
+      { date: '2023.08', title: '全国大学生物联网设计竞赛（华为杯）华东赛区', detail: '赛区一等奖（第一完成人）' },
+      { date: '2024.07', title: '全国大学生集成电路创新创业大赛华东赛区', detail: '省级二等奖' },
     ],
   },
   {
     no: 'II',
-    name: 'Visual Perception',
+    name: '视觉感知',
     span: '2024 – 2026',
-    line: 'Models moved onto devices, then learned to find small targets.',
+    line: '先把模型装进设备，再让它看清小目标。',
     items: [
-      { date: 'Apr – Aug 2024', title: 'Posture-aware lamp', detail: 'YOLOv8 pose · Huawei Cup national Second Prize', href: '#posture' },
-      { date: 'Oct 2024 – Oct 2025', title: 'UAV icing detection', detail: 'Edge–cloud system, project lead · Challenge Cup First Prize', href: '#icing' },
-      { date: 'Mar – Aug 2025', title: 'LCGA-Net', detail: 'Infrared small target detection', href: '#lcga-net' },
-      { date: 'Feb – May 2026', title: 'SAFE-DETR', detail: 'UAV tiny-object detection, undergraduate thesis', href: '#safe-detr' },
+      { date: '2024.04 – 2024.08', title: '坐姿矫正台灯', detail: 'YOLOv8 姿态估计 · 华为杯全国二等奖', href: '#posture' },
+      { date: '2024.10 – 2025.10', title: '无人机覆冰检测', detail: '端云协同系统，项目负责人 · 挑战杯上海市一等奖', href: '#icing' },
+      { date: '2025.03 – 2025.08', title: 'LCGA-Net', detail: '红外小目标检测', href: '#lcga-net' },
+      { date: '2026.02 – 2026.05', title: 'SAFE-DETR', detail: '无人机航拍小目标检测，本科毕业设计', href: '#safe-detr' },
     ],
   },
   {
     no: 'III',
-    name: 'Embodied Robotics',
+    name: '具身机器人',
     span: '2024 – 2026',
-    line: 'From simulated legs to real humanoids.',
+    line: '从仿真里的双足，到真实的人形机器人。',
     items: [
-      { date: 'Aug – Sep 2024', title: 'SHNU Robotics Lab', detail: 'Built the Unitree humanoid simulation environment', href: '#unitree' },
-      { date: 'Jul 2025', title: 'ROS Summer School', detail: 'Hands-on Unitree G1 debugging and operation', href: '#unitree' },
-      { date: 'Aug 2025 – Jan 2026', title: 'ZJU FAST Lab', detail: 'Humanoid badminton, MoCap processing and motion mapping', href: '#badminton' },
-      { date: 'Jul – Aug 2026', title: 'Shanghai Zhuluoshou', detail: 'Led video-to-Sim2Real humanoid pipeline', href: '#humanoid-pipeline' },
+      { date: '2024.08 – 2024.09', title: '上师大机器人实验室', detail: '从零搭建宇树人形机器人仿真环境', href: '#unitree' },
+      { date: '2025.07', title: 'ROS 暑期学校', detail: '宇树 G1 真机调试与操作', href: '#unitree' },
+      { date: '2025.08 – 2026.01', title: '浙江大学 FAST Lab', detail: '人形机器人羽毛球：动捕数据处理与动作映射', href: '#badminton' },
+      { date: '2026.07 – 2026.08', title: '上海侏罗兽', detail: '牵头打通从视频到 Sim2Real 的人形机器人链路', href: '#humanoid-pipeline' },
     ],
   },
   {
     no: 'IV',
-    name: 'Autonomous Agents',
+    name: '自主 Agent',
     span: '2026 –',
-    line: 'Agents that read, experiment and open pull requests.',
+    line: '会读论文、做实验、提 PR 的 Agent。',
     items: [
-      { date: 'Mar 2026', title: 'Beatless', detail: 'Autonomous research and PR agents', href: '#beatless' },
-      { date: 'May 2026', title: 'Polaris', detail: '155K-paper dataset and knowledge graph', href: '#polaris' },
-      { date: 'May – Sep 2026', title: 'Proma', detail: 'Challenge Cup, Alibaba Cloud track', href: '#proma' },
-      { date: 'Sep 2026', title: 'Southeast University', detail: 'Graduate study in Electronic Information begins' },
+      { date: '2026.03', title: 'Beatless', detail: '自治科研与自动 PR Agent 系统', href: '#beatless' },
+      { date: '2026.05', title: 'Polaris', detail: '15.5 万篇论文数据集与知识图谱', href: '#polaris' },
+      { date: '2026.05 – 2026.09', title: 'Proma', detail: '挑战杯揭榜挂帅 · 阿里云榜题', href: '#proma' },
+      { date: '2026.09', title: '东南大学', detail: '电子信息硕士研究生入学' },
     ],
   },
 ];
 
 /* ------------------------------------------------------------------ */
-/* Recognition                                                         */
+/* 荣誉与成果                                                           */
 /* ------------------------------------------------------------------ */
 
 export const honors = [
-  { date: 'May 2026', name: 'Outstanding Graduate of Shanghai' },
-  { date: 'Dec 2025', name: 'National Scholarship' },
-  // NOTE: date conflicts between sources (CV: Dec 2026, old site: Dec 2025); left undated.
-  { date: '', name: 'Shanghai Municipal Scholarship' },
+  { date: '2026.05', name: '上海市优秀毕业生' },
+  { date: '2025.12', name: '国家奖学金' },
+  // NOTE: 各来源日期不一致（简历 2026.12，旧站 2025.12），暂不标日期。
+  { date: '', name: '上海市奖学金' },
 ];
 
 export const awards = [
-  { date: 'Nov 2025', name: 'Shanghai Undergraduate Innovation Program', result: 'Excellent completion, lead' },
-  { date: 'Aug 2025', name: 'China Robotics & AI Competition, provincial', result: 'Third Prize, first contributor' },
-  { date: 'Jun 2025', name: 'Shanghai Computer Application Contest', result: 'Second Prize, first contributor' },
-  { date: 'May 2025', name: 'Challenge Cup, Shanghai', result: 'First Prize, first contributor' },
-  { date: 'Aug 2024', name: 'Huawei Cup IoT Design Contest', result: 'National Second Prize, first contributor' },
+  { date: '2025.11', name: '上海市级大学生创新创业训练计划', result: '优秀结项（第一完成人）' },
+  { date: '2025.08', name: '中国机器人与人工智能大赛省级选拔赛', result: '省级三等奖（第一完成人）' },
+  { date: '2025.06', name: '上海市大学生计算机应用能力大赛', result: '省级二等奖（第一完成人）' },
+  { date: '2025.05', name: '“挑战杯”上海市大学生课外学术科技作品竞赛', result: '省级一等奖（第一完成人）' },
+  { date: '2024.08', name: '全国大学生物联网设计竞赛（华为杯）', result: '全国二等奖（第一完成人）' },
 ];
 
 export const patents = [
-  { id: 'CN120595629A', name: 'Bipedal gait generation with enhanced adversarial motion priors' },
-  { id: 'CN120747212A', name: '6-DoF object pose estimation with a pose-refinement network' },
-  { id: 'CN120726591A', name: 'Door-frame recognition with an improved YOLOv7' },
-  { id: 'CN120748020A', name: 'Multimodal assisted-feeding system for Parkinson’s patients' },
+  { id: 'CN120595629A', name: '一种基于增强型对抗运动先验的双足机器人步态生成方法' },
+  { id: 'CN120747212A', name: '一种基于位姿优化网络的 6-DoF 目标位姿估计方法' },
+  { id: 'CN120726591A', name: '一种基于改进 YOLOv7 的门框识别方法' },
+  { id: 'CN120748020A', name: '基于多模态深度学习的帕金森病患智能辅助进食系统' },
 ];

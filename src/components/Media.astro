@@ -17,7 +17,7 @@ const { items, title, eager = false } = Astro.props;
 const first = items[0];
 ---
 
-<button class="media" type="button" data-media={JSON.stringify(items)} aria-label={`View media for ${title}`}>
+<button class="media" type="button" data-media={JSON.stringify(items)} aria-label={`查看「${title}」的媒体`}>
   {first.video ? (
     <video src={first.video} poster={posterOf(first)} muted loop playsinline preload={eager ? 'metadata' : 'none'} data-autoplay />
   ) : (
