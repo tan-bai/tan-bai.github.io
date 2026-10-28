@@ -277,6 +277,8 @@ b { font-weight: 600; }
 /* ---------- Sections ---------- */
 
 .section { padding-top: 136px; }
+/* 首屏底部已有 arc 粗线收尾，第一个章节收紧衔接 */
+#work { padding-top: 96px; }
 .section-head { display: flex; flex-wrap: wrap; align-items: baseline; gap: 8px 24px; padding-bottom: 18px; border-bottom: 1px solid var(--ink); }
 .section-head h2 { font-family: var(--serif); font-size: 32px; font-weight: 500; line-height: 1.3; letter-spacing: 0.08em; }
 .section-head p { color: var(--ink-faint); font-size: 14px; }
@@ -693,6 +695,7 @@ a.row-title:hover { color: var(--accent); }
   .arc li:nth-child(3) a { padding-left: 0; }
   .arc li:nth-child(3)::before { display: none; }
   .section { padding-top: 96px; }
+  #work { padding-top: 72px; }
   .section-head h2 { font-size: 27px; }
   .pillar { padding-top: 56px; }
   .pillar-head { grid-template-columns: 40px minmax(0, 1fr); }
