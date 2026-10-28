@@ -1,7 +1,8 @@
 ---
 import Base from '../layouts/Base.astro';
 import Project from '../components/Project.astro';
-import { profile, pillars, lineage, timeline, honors, awards, patents } from '../data/site';
+import CertificateWall from '../components/CertificateWall.astro';
+import { profile, pillars, lineage, timeline, honors, awards } from '../data/site';
 
 const nav = [
   { href: '#work', label: '项目' },
@@ -140,15 +141,9 @@ const nav = [
             ))}
           </ul>
         </div>
-        <div class="recog-wide">
-          <h3>发明专利申请</h3>
-          <ul class="rows rows--tight">
-            {patents.map((p) => (
-              <li><span class="row-date mono">{p.id}</span><span class="row-title">{p.name}</span></li>
-            ))}
-          </ul>
-        </div>
       </div>
+
+      <CertificateWall />
     </section>
 
     <!-- =========================== Contact ========================== -->

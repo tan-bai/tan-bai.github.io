@@ -149,7 +149,8 @@ const {
       document.querySelectorAll<HTMLElement>('[data-media]').forEach((el) =>
         el.addEventListener('click', () => {
           items = JSON.parse(el.dataset.media!);
-          cur = 0;
+          const start = Number(el.dataset.mediaIndex ?? 0);
+          cur = Number.isInteger(start) && start >= 0 && start < items.length ? start : 0;
           lb.toggleAttribute('data-single', items.length < 2);
           render();
           lb.showModal();
