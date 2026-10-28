@@ -1,0 +1,141 @@
+<!doctype html>
+<html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Mockup · Job-focused</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&family=Noto+Sans+SC:wght@400;600&display=swap" rel="stylesheet">
+<style>
+:root{--ink:#1d1d1f;--soft:#55565a;--faint:#8a8a8e;--line:#e8e8ea;--link:#1a56b8;--ok:#2f7a4b;--sunk:#f4f4f6;--hl:#fffbe6}
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:#fff;color:var(--ink);font:15px/1.75 Inter,"Noto Sans SC",sans-serif;-webkit-font-smoothing:antialiased;text-autospace:normal;font-synthesis-weight:none}
+a{color:var(--link);text-decoration:none}a:hover{text-decoration:underline;text-underline-offset:3px}
+b,strong{font-weight:600}ul{list-style:none}
+.w{max-width:1080px;margin:0 auto;padding:0 32px}
+nav{height:52px;display:flex;align-items:center;justify-content:space-between;max-width:1080px;margin:0 auto;padding:0 32px}
+nav b{font-weight:600}nav span{color:var(--faint);margin-left:10px}
+nav div{display:flex;gap:24px;font-size:14px;color:var(--soft)}
+/* hero */
+.hero{display:grid;grid-template-columns:minmax(0,1fr) 200px;gap:40px 72px;align-items:center;padding-top:64px}
+.status{display:inline-flex;align-items:center;gap:8px;color:var(--ok);font-size:13px}
+.status i{width:7px;height:7px;border-radius:50%;background:var(--ok)}
+h1{margin-top:10px;font-size:30px;line-height:1.3;letter-spacing:.02em}
+.id{display:flex;align-items:baseline;gap:12px;margin-top:2px;color:var(--soft)}
+.id .en{font-size:20px}.id i{width:1px;height:14px;background:var(--line);align-self:center}
+.lead{margin-top:24px;font-size:20px;line-height:1.5}
+.lead b{white-space:nowrap}
+.bio{max-width:40em;margin-top:8px;color:var(--soft)}
+.bio b{color:var(--ink)}
+.links{margin-top:18px}
+.links a+a::before{content:"/";margin:0 10px;color:var(--faint);display:inline-block}
+.links .cv{font-weight:600}
+.ph{width:200px;height:200px;border-radius:50%;overflow:hidden;background:var(--sunk)}
+.ph img{width:100%;height:125%;object-fit:cover;object-position:top}
+.facts{display:grid;grid-template-columns:repeat(4,1fr);margin-top:56px;border-top:1px solid var(--line)}
+.fact{padding:18px 24px 0 0}.fact+.fact{padding-left:24px;border-left:1px solid var(--line)}
+.fv{font-size:30px;font-weight:600;line-height:1.1}.fv small{font-size:13px;font-weight:400;color:var(--faint);margin-left:2px}
+.fl{margin-top:6px;font-size:13px;color:var(--faint)}
+/* section */
+.sec{display:grid;grid-template-columns:168px minmax(0,1fr);gap:0 48px;padding-top:88px}
+.sec h2{font-size:20px;line-height:1.4}.sec .sub{font-size:13px;color:var(--faint)}
+.note{color:var(--soft);margin-bottom:24px;max-width:40em}
+/* timeline */
+.tl{position:relative}
+.tl::before{content:"";position:absolute;left:5px;top:10px;bottom:10px;width:1px;background:var(--line)}
+.st{position:relative;display:grid;grid-template-columns:120px minmax(0,1fr);gap:0 24px;padding:0 0 28px 32px}
+.st::before{content:"";position:absolute;left:0;top:8px;width:11px;height:11px;border-radius:50%;background:#fff;border:1.5px solid var(--faint)}
+.st.key::before{background:var(--ink);border-color:var(--ink)}
+.st.now::before{background:var(--ok);border-color:var(--ok)}
+.when{color:var(--faint);font-size:13px;font-variant-numeric:tabular-nums;padding-top:2px}
+.stage{font-size:13px;color:var(--faint)}
+.st h3{font-size:15px;font-weight:600}
+.st p{color:var(--soft)}
+.st .gain{margin-top:2px;font-size:13px;color:var(--ink)}
+.st .gain::before{content:"收获 → ";color:var(--faint)}
+.st .proj{margin-top:4px;font-size:14px}
+.st .proj a+a::before{content:"/";margin:0 8px;color:var(--faint);display:inline-block}
+.st .stack{margin-top:2px;font-size:13px;color:var(--faint)}
+.st.key .card{margin:0 -14px;padding:12px 14px;background:var(--hl);border-radius:6px}
+.badge{display:inline-block;margin-left:8px;padding:0 7px;border-radius:999px;font-size:12px;font-weight:400;background:var(--ink);color:#fff;vertical-align:2px}
+.now .badge{background:var(--ok)}
+.anno{margin-top:72px;padding:16px;border:1px dashed #c9c9cf;border-radius:6px;color:var(--soft);font-size:13px}
+@media(max-width:760px){
+ .w,nav{padding:0 20px}nav span,nav div{display:none}
+ .hero{grid-template-columns:1fr 96px;gap:16px 20px;align-items:start;padding-top:28px}
+ .ph{width:96px;height:96px}.txt{display:contents}.head{grid-column:1;grid-row:1}.side{grid-column:2;grid-row:1}
+ .lead,.bio,.links{grid-column:1/-1;margin-top:0}.lead{font-size:18px}
+ .id{flex-wrap:wrap}.id i{display:none}
+ .facts{grid-template-columns:1fr 1fr}.fact:nth-child(3){padding-left:0;border-left:0}.fact{padding-bottom:16px}
+ .sec{grid-template-columns:1fr;padding-top:64px}.sec .hd{display:flex;gap:12px;align-items:baseline;margin-bottom:12px}
+ .st{grid-template-columns:1fr;padding-left:28px}
+}
+</style></head><body>
+<nav><div><b>房家辉</b><span>Jiahui Fang</span></div><div><a style="color:inherit">技术路线</a><a style="color:inherit">代表作</a><a style="color:inherit">项目</a><a style="color:inherit">开源</a><a style="color:inherit">荣誉</a><a style="color:inherit">联系</a></div></nav>
+<div class="w">
+
+<header class="hero">
+ <div class="txt">
+  <div class="head">
+   <p class="status"><i></i>正在寻找具身智能算法方向的实习与全职机会</p>
+   <h1>房家辉</h1>
+   <p class="id"><span class="en">Jiahui Fang</span><i></i><span>东南大学 · 电子信息 · 研究生</span></p>
+  </div>
+  <p class="lead">具身智能算法：<b>人形机器人 RL</b>、<b>真机部署</b>与 <b>VLA</b>。</p>
+  <p class="bio">从视觉感知起步，一路走到人形机器人的仿真、真机与端到端部署——在智元 X2 上独立打通了<b>视频生成 → 动作提取与重定向 → RL 策略训练 → 真机部署</b>的完整链路。现在在东南大学研究空中视觉语言导航、VLA 与无人机世界模型，并构建自动化科研的大模型 Agent。</p>
+  <p class="links"><a class="cv" href="#">简历 PDF</a><a href="#">English CV</a><a href="#">Email</a><a href="#">GitHub</a><a href="#">博客</a></p>
+ </div>
+ <div class="side"><div class="ph"><img src="/media/profile-photo.png" alt=""></div></div>
+</header>
+
+<div class="facts">
+ <div class="fact"><div class="fv">1<small>条</small></div><div class="fl">人形机器人端到端真机部署链路</div></div>
+ <div class="fact"><div class="fv">9/10</div><div class="fl">π0 复现 · LIBERO 评测成功回合</div></div>
+ <div class="fact"><div class="fv">4<small>项</small></div><div class="fl">发明专利 · 实审中</div></div>
+ <div class="fact"><div class="fv">2<small>段</small></div><div class="fl">机器人实习 · 智元 / FAST-LAB</div></div>
+</div>
+
+<section class="sec">
+ <div class="hd"><h2>技术路线</h2><p class="sub">Technical Journey</p></div>
+ <div>
+  <p class="note">从「看懂世界」到「在真实世界里行动」：每一步都建立在上一步之上。</p>
+  <ol class="tl">
+   <li class="st"><span class="when">2024 – 2026.5</span><div>
+    <p class="stage">① 起点</p><h3>视觉感知</h3>
+    <p>红外小目标检测、无人机覆冰检测、人体姿态估计，以及本科毕设的无人机航拍小目标检测。</p>
+    <p class="gain">把模型从论文做到可部署：数据、训练、评测与端侧推理</p>
+    <p class="stack">YOLOv5 → v8 → v11 → DETR → D-FINE</p>
+    <p class="proj"><a href="#">LCGA-Net</a><a href="#">SAFE-DETR（毕设）</a><a href="#">覆冰检测</a></p>
+   </div></li>
+   <li class="st"><span class="when">2024.8 – 2024.9</span><div>
+    <p class="stage">② 转向具身</p><h3>人形 / 双足仿真</h3>
+    <p>进入学校机器人实验室，独立搭建 Isaac Gym 环境，跑通宇树强化学习训练。</p>
+    <p class="gain">RL 训练与仿真平台的基本功</p>
+    <p class="proj"><a href="#">双足机器人行走研究</a></p>
+   </div></li>
+   <li class="st"><span class="when">2025.7</span><div>
+    <p class="stage">③ 上手真机</p><h3>宇树 G1 全栈开发</h3>
+    <p>ROS 暑期学校：在 G1 真机上完成 ROS2、动作编程、视觉感知与建图。</p>
+    <p class="gain">第一次面对真机：仿真之外的工程约束</p>
+    <p class="proj"><a href="#">人形机器人开发训练营</a></p>
+   </div></li>
+   <li class="st"><span class="when">2025.8 – 2026.1</span><div>
+    <p class="stage">④ 科研实习</p><h3>浙江大学 FAST-LAB · 羽毛球轮足机器人</h3>
+    <p>逐际动力轮足机器人 + 机械臂的高动态回球系统，我负责动捕数据处理与轨迹分析。</p>
+    <p class="gain">高动态场景下的数据链路与科研组的工作方式</p>
+    <p class="proj"><a href="#">羽毛球轮足机器人</a></p>
+   </div></li>
+   <li class="st key"><span class="when">2026.7 – 2026.8</span><div class="card">
+    <p class="stage">⑤ 端到端</p><h3>智元机器人 · X2 人形 RL 链路<span class="badge">代表作</span></h3>
+    <p>独立负责：视频生成与动作提取 → 重定向 → RL 策略训练 → 真机部署诊断，整条链路跑通到真机行走。</p>
+    <p class="gain">独立交付一条完整的具身算法链路</p>
+    <p class="proj"><a href="#">查看案例 ↓</a><a href="#">真机视频</a></p>
+   </div></li>
+   <li class="st now"><span class="when">2026.9 – 至今</span><div>
+    <p class="stage">⑥ 现在</p><h3>东南大学 · VLA、空中导航与 AI for AI<span class="badge">进行中</span></h3>
+    <p>复现 π0 VLA，研究无人机空中视觉语言导航与世界模型，并构建自动化科研 Agent。</p>
+    <p class="proj"><a href="#">π0-VLA 复现</a><a href="#">Aerial-VLN</a><a href="#">Proma</a><a href="#">Polaris</a></p>
+   </div></li>
+  </ol>
+ </div>
+</section>
+
+<div class="anno"><b>Mockup 说明</b>：本页只展示首屏与「技术路线」两块。完整版顺序为：首屏 → 技术路线（替代原「经历」）→ 代表作（X2、π0 两个案例：问题 / 我的角色 / 方法 / 结果 / 证据）→ 全部项目（按路线阶段分组，硬件与竞赛折叠为「主线之外」）→ 开源 → 荣誉（精简 + 全部）→ 联系（含简历下载）。</div>
+<div style="height:80px"></div>
+</div></body></html>
