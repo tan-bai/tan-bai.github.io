@@ -526,7 +526,7 @@ a.row-title:hover { color: var(--accent); }
 }
 .honor-chips .chip span { color: var(--ink-faint); font-family: var(--mono); font-size: 11px; letter-spacing: 0.02em; }
 
-.award-list { margin-top: 20px; border-top: 1px solid var(--ink); }
+.award-list { margin-top: 20px; border-top: 1px solid var(--line); }
 .award-item {
   display: grid;
   grid-template-columns: 44px minmax(0, 1fr) auto;
