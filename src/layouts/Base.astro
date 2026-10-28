@@ -69,9 +69,15 @@ const {
       );
       document.querySelectorAll('.reveal').forEach((el) => io.observe(el));
 
-      /* Nav gains a surface once the hero scrolls away */
-      const nav = document.querySelector('.nav');
-      const onScroll = () => nav?.classList.toggle('is-stuck', window.scrollY > 24);
+      /* 导航：离开顶部后收成浮动卡片；向下滚动时隐藏，向上滚动时出现 */
+      const nav = document.querySelector<HTMLElement>('.nav');
+      let prevY = window.scrollY;
+      const onScroll = () => {
+        const y = window.scrollY;
+        nav?.classList.toggle('is-stuck', y > 20);
+        if (nav) nav.dataset.show = String(y < 350 || y < prevY);
+        prevY = y;
+      };
       onScroll();
       window.addEventListener('scroll', onScroll, { passive: true });
 

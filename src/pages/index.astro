@@ -1,6 +1,7 @@
 ---
 import Base from '../layouts/Base.astro';
 import Project from '../components/Project.astro';
+import Heatmap from '../components/Heatmap.astro';
 import CertificateWall from '../components/CertificateWall.astro';
 import { profile, pillars, lineage, timeline, honors, awards, patents } from '../data/site';
 
@@ -15,7 +16,7 @@ const nav = [
 <Base>
   <nav class="nav">
     <div class="nav-inner">
-      <a class="nav-name" href="#top">{profile.name}</a>
+      <a class="nav-name" href="#top">{profile.siteTitle}</a>
       <div class="nav-links">
         {nav.map((n) => <a href={n.href}>{n.label}</a>)}
       </div>
@@ -26,13 +27,13 @@ const nav = [
     <!-- ============================ Hero ============================ -->
     <header class="hero" id="top">
       <div class="hero-text">
-        <p class="status"><span class="status-dot" aria-hidden="true"></span>{profile.status}</p>
+        <a class="status" href="#contact"><span class="status-dot" aria-hidden="true"></span>{profile.status}</a>
         <h1>{profile.name}<span lang="en">{profile.nameEn}</span></h1>
         <p class="headline">{profile.headline}</p>
         <p class="bio">{profile.bio}</p>
         <ul class="edu">
           {profile.education.map((e) => (
-            <li><b>{e.school}</b><span>{e.detail}</span><span class="edu-date">{e.date}</span></li>
+            <li><b>{e.school}</b><span>{e.detail}</span>{e.date && <span class="edu-date">{e.date}</span>}</li>
           ))}
         </ul>
         <p class="hero-links">
@@ -44,6 +45,7 @@ const nav = [
       <figure class="hero-photo">
         <img src={profile.photo} alt={`${profile.name}的照片`} width="295" height="399" fetchpriority="high" />
       </figure>
+      <Heatmap />
 
       <ol class="arc" aria-label="成长路径">
         {timeline.map((s) => (

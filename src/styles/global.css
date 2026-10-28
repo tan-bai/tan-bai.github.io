@@ -14,6 +14,13 @@
   --line: #e2dfd8;
   --accent: #2a4a8c;
   --ok: #2f7a4b;
+  --nav-bg: var(--bg);
+  /* GitHub 贡献热力图：与 GitHub 个人主页一致的官方配色 */
+  --hm-0: #ebedf0;
+  --hm-1: #9be9a8;
+  --hm-2: #40c463;
+  --hm-3: #30a14e;
+  --hm-4: #216e39;
 
   /* 拉丁字符先命中前面的西文字体，汉字回落到后面的中文字体 */
   --serif: 'Newsreader', 'Noto Serif SC', 'Songti SC', 'STSong', serif;
@@ -23,7 +30,7 @@
   --w: 1120px;
   --gutter: 32px;
   --measure: 38em; /* 约 38 个汉字一行 */
-  --nav-h: 60px;
+  --nav-h: 52px;
   --r: 6px;
   --ease: cubic-bezier(0.2, 0.7, 0.3, 1);
   color-scheme: light;
@@ -39,6 +46,12 @@
     --line: #2b2c30;
     --accent: #9fb6ea;
     --ok: #6fbf8b;
+    --nav-bg: var(--sunk);
+    --hm-0: #161b22;
+    --hm-1: #0e4429;
+    --hm-2: #006d32;
+    --hm-3: #26a641;
+    --hm-4: #39d353;
     color-scheme: dark;
   }
 }
@@ -51,6 +64,12 @@
   --line: #2b2c30;
   --accent: #9fb6ea;
   --ok: #6fbf8b;
+  --nav-bg: var(--sunk);
+  --hm-0: #161b22;
+  --hm-1: #0e4429;
+  --hm-2: #006d32;
+  --hm-3: #26a641;
+  --hm-4: #39d353;
   color-scheme: dark;
 }
 
@@ -82,45 +101,79 @@ b { font-weight: 600; }
 
 /* ---------- Nav ---------- */
 
+/* 参考 astro-theme-pure：顶部时透明；离开顶部后收窄成带边框与阴影的浮动卡片，向下滚动时上移隐藏 */
 .nav {
   position: fixed;
-  inset: 0 0 auto;
+  inset: 16px 0 auto;
   z-index: 10;
-  height: var(--nav-h);
-  transition: background 0.3s, box-shadow 0.3s;
-}
-.nav.is-stuck {
-  background: color-mix(in srgb, var(--bg) 86%, transparent);
-  backdrop-filter: saturate(1.4) blur(12px);
-  -webkit-backdrop-filter: saturate(1.4) blur(12px);
-  box-shadow: 0 1px 0 var(--line);
-}
-.nav-inner {
-  max-width: var(--w);
-  height: 100%;
-  margin: 0 auto;
   padding: 0 var(--gutter);
+  transition: transform 0.3s var(--ease);
+}
+.nav[data-show='false'] { transform: translateY(-5rem); }
+.nav-inner {
+  max-width: calc(var(--w) - 2 * var(--gutter));
+  height: var(--nav-h);
+  margin: 0 auto;
   display: flex;
   align-items: center;
   justify-content: space-between;
+  border: 1px solid transparent;
+  border-radius: 16px;
+  transition: max-width 0.3s var(--ease), padding 0.3s var(--ease), border-color 0.15s, background-color 0.15s, box-shadow 0.3s;
 }
-.nav-name { color: var(--ink); font-family: var(--serif); font-size: 18px; font-weight: 500; letter-spacing: 0.12em; }
+.nav.is-stuck .nav-inner {
+  max-width: calc((var(--w) - 2 * var(--gutter)) * 0.84);
+  padding: 0 8px 0 20px;
+  border-color: var(--line);
+  background: var(--nav-bg);
+  box-shadow: 0 10px 15px -3px rgba(39, 39, 42, 0.08), 0 4px 6px -4px rgba(39, 39, 42, 0.08);
+}
+.nav-name { color: var(--ink); font-family: var(--serif); font-size: 20px; font-weight: 500; letter-spacing: 0.1em; }
 .nav-name:hover { text-decoration: none; }
-.nav-links { display: flex; gap: 30px; font-size: 14px; letter-spacing: 0.08em; }
-.nav-links a { color: var(--ink-faint); }
-.nav-links a:hover, .nav-links a.is-active { color: var(--ink); text-decoration: none; }
+.nav-links { display: flex; align-items: center; gap: 2px; font-size: 14.5px; font-weight: 500; letter-spacing: 0.06em; }
+.nav-links a { padding: 7px 13px; border-radius: 10px; color: var(--ink-soft); transition: color 0.2s, background-color 0.2s; }
+.nav-links a:hover { color: var(--accent); text-decoration: none; }
+.nav-links a.is-active { color: var(--ink); background: var(--sunk); }
 
 /* ---------- Hero ---------- */
 
 .hero {
   display: grid;
-  grid-template-columns: minmax(0, 1fr) 232px;
-  gap: 40px 80px;
-  align-items: end;
+  grid-template-columns: minmax(0, 1fr) 320px;
+  grid-template-areas:
+    'text photo'
+    'text heat'
+    'arc  arc';
+  grid-template-rows: auto 1fr auto;
+  gap: 0 72px;
+  align-items: start;
   padding-top: calc(var(--nav-h) + 96px);
 }
-.status { display: inline-flex; align-items: center; gap: 9px; color: var(--ok); font-size: 13.5px; letter-spacing: 0.04em; }
-.status-dot { width: 7px; height: 7px; border-radius: 50%; background: currentColor; box-shadow: 0 0 0 4px color-mix(in srgb, currentColor 16%, transparent); }
+.hero-text { grid-area: text; }
+/* 右栏：照片与热力图同宽，左右边线对齐；照片裁成 5:4，让右栏与左栏文字等高 */
+.hero-photo { grid-area: photo; width: 100%; }
+.hero > .heatmap { grid-area: heat; width: 100%; margin-top: 20px; }
+.hero > .heatmap .hm-month { font-size: 14px; } /* 窄栏中缩放后约 10px */
+/* 状态胶囊（参考 astro-theme-pure）：描边圆角、轻阴影，悬停加深；绿点带脉冲扩散 */
+.status {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  padding: 7px 16px;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  background: var(--nav-bg);
+  color: var(--ink-soft);
+  font-size: 13.5px;
+  font-weight: 500;
+  letter-spacing: 0.04em;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+  transition: box-shadow 0.2s, color 0.2s;
+}
+.status:hover { color: var(--ink); text-decoration: none; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.1); }
+.status-dot { position: relative; flex: none; width: 8px; height: 8px; border-radius: 50%; background: #4ade80; }
+.status-dot::before { content: ''; position: absolute; inset: 0; border-radius: 50%; background: #4ade80; opacity: 0.75; animation: ping 1s cubic-bezier(0, 0, 0.2, 1) infinite; }
+@keyframes ping { 75%, 100% { transform: scale(2); opacity: 0; } }
 .hero h1 {
   margin-top: 18px;
   font-family: var(--serif);
@@ -156,21 +209,49 @@ b { font-weight: 600; }
 .hero-links { display: flex; flex-wrap: wrap; gap: 8px 28px; margin-top: 24px; font-size: 14.5px; }
 .hero-links span, .links span, .contact-links span { margin-left: 2px; font-size: 0.85em; }
 
+/* 证件照为透明底抠图：不加底色面板，人像在右栏居中、立于热力图上方 */
+.hero-photo { display: flex; justify-content: center; align-items: flex-end; aspect-ratio: 5 / 4; }
 .hero-photo img {
-  width: 100%;
-  height: auto;
+  width: auto;
+  height: 100%;
   aspect-ratio: 295 / 399;
-  object-fit: cover;
   border-radius: var(--r);
   filter: grayscale(0.15);
 }
 
+/* GitHub 贡献热力图：首屏文字栏底部，列从左到右依次显现 */
+.heatmap { max-width: 40em; }
+.heatmap svg { display: block; width: 100%; height: auto; overflow: visible; }
+.hm-month { fill: var(--ink-faint); font: 11px var(--sans); letter-spacing: 0.04em; }
+.hm-l0 { fill: var(--hm-0); background: var(--hm-0); }
+.hm-l1 { fill: var(--hm-1); background: var(--hm-1); }
+.hm-l2 { fill: var(--hm-2); background: var(--hm-2); }
+.hm-l3 { fill: var(--hm-3); background: var(--hm-3); }
+.hm-l4 { fill: var(--hm-4); background: var(--hm-4); }
+.heatmap figcaption {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 6px 16px;
+  margin-top: 10px;
+  color: var(--ink-faint);
+  font-size: 12.5px;
+  font-variant-numeric: tabular-nums;
+}
+.heatmap figcaption b { color: var(--ink-soft); font-weight: 500; }
+.hm-legend { display: inline-flex; align-items: center; gap: 3px; }
+.hm-legend i { width: 9px; height: 9px; border-radius: 2px; }
+.hm-legend i:first-of-type { margin-left: 4px; }
+.hm-legend i:last-of-type { margin-right: 4px; }
+.js .heatmap rect { opacity: 0; transition: opacity 0.5s var(--ease) calc(var(--i) * 16ms + 0.15s); }
+.js .heatmap.in rect { opacity: 1; }
+
 /* The four-stage arc, a preview of the timeline */
 .arc {
-  grid-column: 1 / -1;
+  grid-area: arc;
   display: grid;
   grid-template-columns: repeat(4, minmax(0, 1fr));
-  margin-top: 24px;
+  margin-top: 56px;
   border-top: 1px solid var(--ink);
 }
 .arc li { position: relative; }
@@ -566,13 +647,19 @@ a.row-title:hover { color: var(--accent); }
 
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
-  .js .reveal { opacity: 1; transform: none; }
+  .js .reveal, .js .heatmap rect { opacity: 1; transform: none; }
+  .status-dot::before { display: none; }
   *, *::before, *::after { transition-duration: 0.01ms !important; animation-duration: 0.01ms !important; }
 }
 
 /* ---------- Responsive ---------- */
 
 @media (max-width: 1000px) {
+  .hero { grid-template-columns: minmax(0, 1fr) 180px; grid-template-areas: 'text photo' 'heat heat' 'arc arc'; grid-template-rows: auto; gap: 0 48px; }
+  .hero-photo { aspect-ratio: auto; }
+  .hero-photo img { width: 100%; height: auto; }
+  .hero > .heatmap { justify-self: start; margin-top: 40px; }
+  .hero > .heatmap .hm-month { font-size: 11px; }
   .grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .grid--compact { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .stage { grid-template-columns: 1fr; gap: 20px; }
@@ -582,11 +669,22 @@ a.row-title:hover { color: var(--accent); }
 }
 
 @media (max-width: 760px) {
-  :root { --gutter: 16px; --nav-h: 54px; }
+  :root { --gutter: 16px; --nav-h: 48px; }
+  .nav { inset-block-start: 10px; }
+  .nav-name { font-size: 18px; }
+  .nav.is-stuck .nav-inner { max-width: 100%; padding: 0 4px 0 14px; }
+  .nav-links a { padding: 6px 9px; }
   .nav-links { gap: 20px; font-size: 13.5px; letter-spacing: 0.04em; }
-  .nav-links a:nth-child(3) { display: none; }
-  .hero { grid-template-columns: 1fr; gap: 28px; padding-top: calc(var(--nav-h) + 48px); }
-  .hero-photo { order: -1; width: 112px; }
+  .hero {
+    grid-template-columns: 1fr;
+    grid-template-areas: 'photo' 'text' 'heat' 'arc';
+    grid-template-rows: auto;
+    gap: 28px;
+    padding-top: calc(var(--nav-h) + 48px);
+  }
+  .hero-photo { justify-self: start; width: 112px; }
+  .hero > .heatmap { margin-top: 0; }
+  .arc { margin-top: 8px; }
   .hero h1 span { display: block; margin: 6px 0 0; vertical-align: 0; font-size: 17px; }
   .section-head h2 { letter-spacing: 0.06em; }
   .edu li { grid-template-columns: 1fr auto; gap: 2px 12px; }

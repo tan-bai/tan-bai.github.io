@@ -50,13 +50,14 @@ export interface Pillar {
 }
 
 export const profile = {
+  siteTitle: '项目集',
   name: '房家辉',
   nameEn: 'Jiahui Fang',
   headline: '从硬件出发，构建机器人与 AI Agent。',
   bio:
     '电子信息工程出身，先把小型视觉模型部署到边缘设备，现在专注人形机器人运动学习与自主科研 Agent。我偏爱最终落到真机上、或落成一个被合并的 PR 的问题。',
   education: [
-    { school: '东南大学', detail: '电子信息 · 硕士研究生（推免）', date: '2026 –' },
+    { school: '东南大学', detail: '电子信息 · 硕士研究生（推免）', date: '' },
   ],
   status: '正在寻找科研与工程实习',
   email: 'jiahui.fang@ieee.org',

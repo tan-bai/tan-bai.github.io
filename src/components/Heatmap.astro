@@ -1,0 +1,59 @@
+---
+import data from '../data/github-contributions.json';
+
+/*
+ * GitHub 贡献热力图，由 src/data/github-contributions.json 绘制。
+ * 每列一周（周日在上），颜色等级沿用 GitHub 的分档（0–4），配色见 global.css 的 --hm-*。
+ */
+
+type Day = [date: string, count: number, level: number];
+const days = data.days as Day[];
+
+const CELL = 11;
+const STEP = 14;
+const TOP = 18;
+
+const start = new Date(`${days[0][0]}T00:00:00Z`);
+const offset = start.getUTCDay(); // 首日所在行
+const cells = days.map(([date, count, level], i) => {
+  const k = i + offset;
+  return { date, count, level, col: Math.floor(k / 7), row: k % 7 };
+});
+const cols = cells[cells.length - 1].col + 1;
+
+// 月份标签放在每月 1 日所在的列；数据不从 1 日开始时，首月标在第 0 列
+const months = cells
+  .filter((c, i) => i === 0 || c.date.endsWith('-01'))
+  .map((c) => ({ col: c.col, label: `${Number(c.date.slice(5, 7))}月` }));
+
+const total = cells.reduce((n, c) => n + c.count, 0);
+const active = cells.filter((c) => c.count > 0).length;
+const fmt = (s: string) => s.slice(0, 7).replace('-', '.');
+const width = cols * STEP - (STEP - CELL);
+const height = TOP + 7 * STEP - (STEP - CELL);
+---
+
+<figure class="heatmap reveal">
+  <svg viewBox={`0 0 ${width} ${height}`} role="img" aria-label={`GitHub 贡献热力图：${fmt(days[0][0])} 至 ${fmt(days[days.length - 1][0])}，共 ${total} 次贡献`}>
+    {months.map((m) => (
+      <text x={m.col * STEP} y="10" class="hm-month">{m.label}</text>
+    ))}
+    {cells.map((c) => (
+      <rect
+        class={`hm-l${c.level}`}
+        x={c.col * STEP}
+        y={TOP + c.row * STEP}
+        width={CELL}
+        height={CELL}
+        rx="2"
+        style={`--i:${c.col}`}
+      >
+        <title>{`${c.date}：${c.count} 次贡献`}</title>
+      </rect>
+    ))}
+  </svg>
+  <figcaption>
+    <span>GitHub · <b>{total}</b> 次贡献 · {active} 天活跃</span>
+    <span class="hm-legend" aria-hidden="true">少<i class="hm-l0"></i><i class="hm-l1"></i><i class="hm-l2"></i><i class="hm-l3"></i><i class="hm-l4"></i>多</span>
+  </figcaption>
+</figure>
