@@ -5,7 +5,7 @@ group: embodied
 role: 算法实习
 org: 智元机器人 · 上海
 date: 2026.7 – 2026.8
-brief: 在智元 X2 人形机器人上打通「人体动作视频 → 骨骼提取与重定向 → RL 策略训练 → 真机部署诊断」的完整链路。
+brief: 在智元 X2 人形机器人上打通「视频生成与动作提取 → 动作重定向 → RL 策略训练 → 真机部署诊断」的完整链路。
 tags: [智元 X2, 人形机器人, GVHMR, PromptHMR, SMPL/AMASS, 动作重定向, HumanoidPolicyLab, MuJoCo, Isaac, 强化学习, ONNX, 真机部署, AIMDK]
 media:
   - { video: /media/x2-realrobot.mp4, caption: X2 真机行走与转向——实验室部署现场实录 }
