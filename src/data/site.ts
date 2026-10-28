@@ -57,7 +57,6 @@ export const profile = {
     '电子信息工程出身，先把小型视觉模型部署到边缘设备，现在专注人形机器人运动学习与自主科研 Agent。我偏爱最终落到真机上、或落成一个被合并的 PR 的问题。',
   education: [
     { school: '东南大学', detail: '电子信息 · 硕士研究生（推免）', date: '2026 –' },
-    { school: '上海师范大学', detail: '电子信息工程 · 工学学士 · GPA 3.82/4.00 · 专业排名 1/425', date: '2022 – 2026' },
   ],
   status: '正在寻找科研与工程实习',
   email: 'jiahui.fang@ieee.org',
@@ -362,7 +361,6 @@ export const timeline: Stage[] = [
     span: '2022 – 2024',
     line: '电路、单片机，还有一场接一场的竞赛。',
     items: [
-      { date: '2022.10', title: '上海师范大学', detail: '电子信息工程 · 工学学士' },
       { date: '2023 – 2024', title: '竞赛硬件作品', detail: '信号模拟系统、电磁循迹小车、FPGA 加法器', href: '#hardware' },
       { date: '2023.08', title: '全国大学生物联网设计竞赛（华为杯）华东赛区', detail: '赛区一等奖（第一完成人）' },
       { date: '2024.07', title: '全国大学生集成电路创新创业大赛华东赛区', detail: '省级二等奖' },
