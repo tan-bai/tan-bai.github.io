@@ -2,7 +2,7 @@
 import Base from '../layouts/Base.astro';
 import Project from '../components/Project.astro';
 import CertificateWall from '../components/CertificateWall.astro';
-import { profile, pillars, lineage, timeline, honors, awards } from '../data/site';
+import { profile, pillars, lineage, timeline, honors, awards, patents } from '../data/site';
 
 const nav = [
   { href: '#work', label: '项目' },
@@ -121,26 +121,33 @@ const nav = [
     <!-- ========================= Recognition ======================== -->
     <section class="section" id="recognition" data-spy>
       <header class="section-head">
-        <h2>荣誉与成果</h2>
+        <h2>荣誉 · 竞赛 · 专利</h2>
       </header>
 
-      <div class="recog reveal">
-        <div>
-          <h3>荣誉奖励</h3>
-          <ul class="rows rows--tight">
-            {honors.map((h) => (
-              <li><span class="row-date">{h.date}</span><span class="row-title">{h.name}</span></li>
-            ))}
-          </ul>
-        </div>
-        <div>
-          <h3>竞赛获奖（节选）</h3>
-          <ul class="rows rows--tight">
-            {awards.map((a) => (
-              <li><span class="row-date">{a.date}</span><div><span class="row-title">{a.name}</span><p class="row-detail">{a.result}</p></div></li>
-            ))}
-          </ul>
-        </div>
+      <div class="honor-chips reveal">
+        {honors.map((h) => (
+          <span class="chip">🏆 {h.name}{h.date && <span>{h.date}</span>}</span>
+        ))}
+      </div>
+
+      <div class="award-list reveal">
+        {awards.map((a) => (
+          <div class="award-item">
+            <span class="medal" aria-hidden="true">{a.medal}</span>
+            <span class="name">{a.name}<small>{a.note}</small></span>
+            <span class="date">{a.date}</span>
+          </div>
+        ))}
+      </div>
+
+      <h3 class="patents-title reveal">专利与软件著作权</h3>
+      <div class="patent-grid reveal">
+        {patents.map((p) => (
+          <div class="patent-item">
+            <span class="kind">{p.kind}</span>
+            <span>{p.name}<small>{p.no}</small></span>
+          </div>
+        ))}
       </div>
 
       <CertificateWall />

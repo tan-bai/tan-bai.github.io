@@ -430,21 +430,61 @@ b { font-weight: 600; }
 a.row-title:hover { color: var(--accent); }
 .row-detail { margin-top: 2px; color: var(--ink-soft); font-size: 14px; line-height: 1.75; }
 
-/* ---------- Recognition ---------- */
+/* ---------- Recognition (badge rows, from the landscape design) ---------- */
 
-.recog {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 48px 64px;
-  margin-top: 36px;
+.honor-chips { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 34px; }
+.honor-chips .chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+  padding: 7px 15px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: var(--sunk);
+  color: var(--ink);
+  font-size: 13.5px;
 }
-.recog-wide { grid-column: 1 / -1; }
-.recog h3 { margin-bottom: 14px; color: var(--ink-faint); font-size: 13px; font-weight: 500; letter-spacing: 0.16em; }
-.rows--tight li { grid-template-columns: 80px minmax(0, 1fr); padding: 10px 0; }
-.rows--tight li:first-child { padding-top: 0; }
-.rows--tight .row-title { font-size: 14.5px; }
-.recog-wide .rows--tight li { grid-template-columns: 148px minmax(0, 1fr); }
-.recog-wide .row-title { font-weight: 400; }
+.honor-chips .chip span { color: var(--ink-faint); font-family: var(--mono); font-size: 11px; letter-spacing: 0.02em; }
+
+.award-list { margin-top: 20px; border-top: 1px solid var(--ink); }
+.award-item {
+  display: grid;
+  grid-template-columns: 44px minmax(0, 1fr) auto;
+  gap: 18px;
+  align-items: baseline;
+  padding: 15px 4px;
+  border-bottom: 1px solid var(--line);
+  font-size: 14.5px;
+}
+.award-item .medal { font-size: 17px; text-align: center; }
+.award-item .name { color: var(--ink); font-weight: 500; line-height: 1.65; }
+.award-item .name small { margin-left: 10px; color: var(--ink-faint); font-size: 12.5px; font-weight: 400; }
+.award-item .date { color: var(--ink-faint); font-family: var(--mono); font-size: 12px; white-space: nowrap; }
+
+.patents-title { margin: 44px 0 14px; font-family: var(--serif); font-size: 19px; font-weight: 500; letter-spacing: 0.05em; }
+.patent-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px 32px; }
+.patent-item {
+  display: flex;
+  gap: 12px;
+  align-items: baseline;
+  padding: 12px 0 0;
+  border-top: 1px dashed var(--line);
+  color: var(--ink-soft);
+  font-size: 14px;
+  line-height: 1.75;
+}
+.patent-item .kind {
+  flex: none;
+  padding: 1px 8px;
+  border: 1px solid color-mix(in srgb, var(--accent) 35%, transparent);
+  border-radius: 4px;
+  color: var(--accent);
+  font-family: var(--mono);
+  font-size: 11px;
+  white-space: nowrap;
+  transform: translateY(-1px);
+}
+.patent-item small { display: block; color: var(--ink-faint); font-family: var(--mono); font-size: 11.5px; letter-spacing: 0.02em; }
 
 /* ---------- Contact & footer ---------- */
 
@@ -572,7 +612,10 @@ a.row-title:hover { color: var(--accent); }
   .rows li, .recog-wide .rows--tight li { grid-template-columns: 1fr; gap: 2px; }
   .timeline::before { display: none; }
   .stage-head { padding-left: 46px; }
-  .recog { grid-template-columns: 1fr; gap: 40px; }
+  .award-item { grid-template-columns: 36px minmax(0, 1fr); }
+  .award-item .date { grid-column: 2; }
+  .award-item .name small { display: block; margin: 2px 0 0; }
+  .patent-grid { grid-template-columns: 1fr; }
   .rows--tight li { grid-template-columns: 76px minmax(0, 1fr); }
   .lb-body { padding: 56px 12px 88px; }
   .lb-prev, .lb-next { top: auto; bottom: 20px; transform: none; }
