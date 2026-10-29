@@ -204,7 +204,7 @@ b { font-weight: 600; }
  * 像纸页上的朱批。项目名链接悬停时下划线从左划出。
  * 楷体优先取系统字（macOS Kaiti SC / Windows KaiTi），再回落霞鹜文楷 Lite 网络字体。
  */
-.bio { max-width: var(--measure); margin-top: 28px; color: var(--ink-soft); font-size: 16px; line-height: 1.9; }
+.bio { max-width: 42em; margin-top: 28px; color: var(--ink-soft); font-size: 16px; line-height: 1.9; }
 .bio p { text-wrap: pretty; }
 .bio p + p { margin-top: 12px; }
 .bio b, .bio a {
