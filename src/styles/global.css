@@ -15,8 +15,10 @@
   --accent: #2a4a8c;
   --ok: #2f7a4b;
   --nav-bg: var(--bg);
-  /* 正文内链接：强调色压暗一档，比界面链接更沉稳；深色模式下随 --accent/--ink 自动变浅 */
-  --link: color-mix(in srgb, var(--accent) 72%, var(--ink));
+  /* 简介朱批：楷体 + 朱砂红；深色模式下换偏亮的珊瑚红保证对比度 */
+  --kai: 'Kaiti SC', 'STKaiti', 'KaiTi', 'LXGW WenKai Lite', '楷体', var(--serif);
+  --annotate: #b23b30;
+  --annotate-strong: #d94a3c;
   /* GitHub 贡献热力图：与 GitHub 个人主页一致的官方配色 */
   --hm-0: #ebedf0;
   --hm-1: #9be9a8;
@@ -46,6 +48,8 @@
     --ink-soft: #b5b4ae;
     --ink-faint: #7f7f83;
     --line: #2b2c30;
+    --annotate: #e57a68;
+    --annotate-strong: #f08d7c;
     --accent: #9fb6ea;
     --ok: #6fbf8b;
     --nav-bg: var(--sunk);
@@ -64,6 +68,8 @@
   --ink-soft: #b5b4ae;
   --ink-faint: #7f7f83;
   --line: #2b2c30;
+  --annotate: #e57a68;
+  --annotate-strong: #f08d7c;
   --accent: #9fb6ea;
   --ok: #6fbf8b;
   --nav-bg: var(--sunk);
@@ -194,24 +200,27 @@ b { font-weight: 600; }
 }
 .hero h1 span { margin-left: 18px; color: var(--ink-faint); font-family: var(--serif); font-size: 0.4em; font-weight: 400; letter-spacing: 0.02em; vertical-align: 0.3em; }
 /*
- * 简介三级层次，同一套无衬线字体，靠字重与颜色区分：
- *  正文       — 400，灰墨色
- *  方向关键词 — 600，最深墨色：段落里唯一的重点
- *  项目名链接 — 500，沉稳的深蓝：一眼可知可点；悬停时变亮并从左向右划出下划线
+ * 简介三级层次：正文用无衬线灰墨；方向关键词与项目名用楷体 + 朱砂红，
+ * 像纸页上的朱批。项目名链接悬停时下划线从左划出。
+ * 楷体优先取系统字（macOS Kaiti SC / Windows KaiTi），再回落霞鹜文楷 Lite 网络字体。
  */
 .bio { max-width: var(--measure); margin-top: 28px; color: var(--ink-soft); font-size: 16px; line-height: 1.9; }
 .bio p { text-wrap: pretty; }
 .bio p + p { margin-top: 12px; }
-.bio b { color: var(--ink); font-weight: 600; letter-spacing: 0.02em; }
-.bio a {
-  color: var(--link);
+.bio b, .bio a {
+  font-family: var(--kai);
   font-weight: 500;
+  font-size: 1.05em;
+  color: var(--annotate);
+}
+.bio b { letter-spacing: 0.03em; }
+.bio a {
   background: linear-gradient(currentColor, currentColor) left bottom / 0 1px no-repeat;
   -webkit-box-decoration-break: clone;
   box-decoration-break: clone;
   transition: color 0.25s var(--ease), background-size 0.45s var(--ease);
 }
-.bio a:hover { color: var(--accent); text-decoration: none; background-size: 100% 1px; }
+.bio a:hover { color: var(--annotate-strong); text-decoration: none; background-size: 100% 1px; }
 @media (prefers-reduced-motion: reduce) { .bio a { transition: none; } }
 /* 学校署名：校徽 + 细竖线 + 两行文字（中英校名 / 专业与学位） */
 .edu { margin-top: 22px; }
