@@ -96,6 +96,17 @@ a:hover { text-decoration: underline; text-underline-offset: 3px; text-decoratio
 a:focus-visible, button:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; border-radius: 2px; }
 b { font-weight: 600; }
 .mono { font-family: var(--mono); font-size: 12px; letter-spacing: 0; }
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+  border: 0;
+}
 
 .page { max-width: var(--w); margin: 0 auto; padding: 0 var(--gutter); }
 
@@ -282,6 +293,7 @@ b { font-weight: 600; }
 
 .pillar { padding-top: 72px; }
 .pillar + .pillar { margin-top: 24px; }
+#work > .pillar:first-of-type { padding-top: 0; }
 .pillar-head {
   display: grid;
   grid-template-columns: 56px minmax(0, 1fr);
@@ -373,6 +385,44 @@ b { font-weight: 600; }
 /* Feature visual stays in view while the longer write-up scrolls past */
 .project--feature > .media,
 .project--feature > .statpanel { position: sticky; top: calc(var(--nav-h) + 24px); }
+
+/* 多个重点项目：左右交替，之间以发丝线分隔 */
+.project--feature + .project--feature { margin-top: 64px; padding-top: 64px; border-top: 1px solid var(--line); }
+.project--flip { grid-template-columns: minmax(0, 1fr) minmax(0, 1.18fr); }
+.project--flip > .media, .project--flip > .statpanel, .project--flip > .placard { order: 2; }
+
+/* 竞赛徽标：标题上方的描边胶囊 */
+.brand-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 14px;
+  padding: 4px 13px 4px 6px;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  background: var(--nav-bg);
+  color: var(--ink);
+  font-size: 13px;
+  font-weight: 500;
+  letter-spacing: 0.03em;
+}
+.brand-chip img { width: 18px; height: 18px; }
+
+/* 次要项目的小标题 */
+.more-label {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-top: 72px;
+  color: var(--ink-faint);
+  font-size: 13px;
+  font-weight: 500;
+  letter-spacing: 0.1em;
+}
+.more-label::after { content: ''; flex: 1; height: 1px; background: var(--line); }
+.more-label + .grid { margin-top: 28px; }
+/* 次要卡片：去掉大面板，仅保留文字与行内数字 */
+.project--quiet .project-title { font-size: 19px; }
 
 /* Stat panel and placard stand in for media when there is no footage */
 .statpanel {
@@ -696,6 +746,9 @@ a.row-title:hover { color: var(--accent); }
   .pillar { padding-top: 56px; }
   .pillar-head { grid-template-columns: 40px minmax(0, 1fr); }
   .project--feature { grid-template-columns: 1fr; gap: 22px; margin-top: 28px; }
+  .project--flip > .media, .project--flip > .statpanel, .project--flip > .placard { order: 0; }
+  .project--feature + .project--feature { margin-top: 44px; padding-top: 44px; }
+  .more-label { margin-top: 56px; }
   .project--feature .project-title { font-size: 23px; }
   .statpanel, .project--card .statpanel { aspect-ratio: auto; padding: 24px; gap: 14px; }
   .project--feature > .media, .project--feature > .statpanel { position: static; }

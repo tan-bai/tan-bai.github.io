@@ -55,10 +55,8 @@ const nav = [
     </header>
 
     <!-- ============================ Work ============================ -->
-    <section class="section" id="work" data-spy>
-      <header class="section-head">
-        <h2>代表项目</h2>
-      </header>
+    <section class="section" id="work" data-spy aria-label="代表项目">
+      <h2 class="visually-hidden">代表项目</h2>
 
       {pillars.map((pl) => (
         <section class="pillar" id={pl.id} aria-labelledby={`${pl.id}-h`}>
@@ -76,11 +74,13 @@ const nav = [
             </ol>
           )}
 
-          {pl.feature && <Project project={pl.feature} variant="feature" />}
+          {pl.features?.map((f, i) => <Project project={f} variant="feature" flip={i % 2 === 1} />)}
+
+          {pl.moreLabel && <p class="more-label reveal">{pl.moreLabel}</p>}
 
           <div class={pl.layout === 'compact' ? 'grid grid--compact' : pl.projects.length % 2 === 0 ? 'grid grid--even' : 'grid'}>
             {pl.projects.map((p) => (
-              <Project project={p} variant={pl.layout === 'compact' ? 'compact' : 'card'} />
+              <Project project={p} variant={pl.layout === 'compact' ? 'compact' : 'card'} quiet={!!pl.moreLabel} />
             ))}
           </div>
         </section>

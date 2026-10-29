@@ -38,13 +38,18 @@ export interface Project {
   media?: MediaItem[];
   /** 没有影像也没有数字时，用一句话占位，保证同排卡片对齐 */
   placard?: string;
+  /** 竞赛 / 合作方徽标，显示在标题上方 */
+  brand?: { name: string; logo: string };
 }
 export interface Pillar {
   id: string;
   no: string;
   name: string;
   thesis: string;
-  feature?: Project;
+  /** 大图并排的重点项目；多个时左右交替 */
+  features?: Project[];
+  /** 次要项目上方的小标题；设置后次要项目以纯文字卡片呈现 */
+  moreLabel?: string;
   projects: Project[];
   layout?: 'cards' | 'compact';
 }
@@ -142,9 +147,7 @@ const beatless: Project = {
   summary:
     '自主运行的多智能体科研系统：常驻调度器按计划唤醒 10 个定时任务，完成论文采集、七阶段研究循环，并向真实开源仓库提交 PR。',
   points: [
-    '“写”与“审”严格拆给不同模型族：Codex 查正确性，Gemini 看架构，Sonnet 做对抗；八项评分卡均分低于 7 分的产出自动撤回。',
-    '论文管线整合 arXiv、OpenReview、CVF 与 ACL Anthology，入库 Zotero 并同步 Obsidian。',
-    '向上游贡献代码，包括 promptfoo（★21.6K）与 CodeWhale（★35K）。',
+    '“写”与“审”拆给不同模型族：Codex 查正确性，Gemini 看架构，Sonnet 做对抗；评分低于 7 分的产出自动撤回。',
   ],
   stats: [
     { value: '34', label: '7 天内提交 PR，覆盖 53 个仓库' },
@@ -157,7 +160,59 @@ const beatless: Project = {
   ],
 };
 
+const mingjing: Project = {
+  id: 'mingjing',
+  title: '明镜 · 证据可审计的研究 Agent',
+  brand: { name: '字节跳动 AI 全栈挑战赛', logo: '/icons/bytedance-color.svg' },
+  role: '核心成员',
+  // NOTE: 仓库中没有名次与参赛时间记录，确认后补充。
+  summary:
+    '基于 LangGraph 的竞品分析多智能体系统。LLM 只负责提出声明，独立的 QA Agent 用确定性规则裁决：引用必须是来源原文的逐字子串，否则打回并触发新一轮真实采集，证据等级由 weak 逐轮升至 strong。报告里每条结论都能点回原文出处与采纳理由。',
+  pipeline: [
+    { title: 'Collector 采集', detail: '搜索、robots 检查与带 SSRF 防护的抓取，来源上限随修订轮次递增。' },
+    { title: 'Analyst 分析', detail: '每个字段只调用一次 LLM，网页文本装入 UNTRUSTED 信封隔离。' },
+    { title: 'QA 门禁', detail: '只看证据、不看推理；七项确定性检查全程无 LLM，提示注入无法改判。' },
+    { title: 'Writer 成文', detail: '只投影过审声明，没有依据的结论进不了报告。' },
+  ],
+  stats: [
+    { value: '883', label: '后端测试，无需 API Key' },
+    { value: '7', label: '项确定性 QA 规则' },
+    { value: '+42%', label: '旗舰跑批修复增益' },
+  ],
+  tags: ['LangGraph', 'FastAPI', 'React 19', 'Pydantic v2', 'SearXNG', '豆包', 'MiniMax', 'Docker'],
+  links: [
+    { label: 'GitHub', url: 'https://github.com/CrepuscularIRIS/mingjing' },
+    { label: '在线演示', url: 'https://crepusculariris.github.io/mingjing' },
+  ],
+  media: [{ video: '/media/mingjing-clip.mp4', caption: '明镜发布视频（节选）。' }],
+};
+
+const proma: Project = {
+  id: 'proma',
+  title: 'Proma · AI Scientist 平台',
+  brand: { name: '挑战杯揭榜挂帅 · 阿里云榜题', logo: '/icons/qwen-color.svg' },
+  role: '核心成员',
+  date: '2026.05 – 2026.09',
+  // NOTE: 仓库中没有名次记录，确认后补充。
+  summary:
+    '榜题「基于国产开源大模型的 AI Scientist 的研发与应用」的参赛作品。Electron 桌面端负责会话，Prime Agent（Pi Agent 分支）负责执行，按赛题要求经百炼 DashScope 调用 Qwen；整套系统 docker compose 一键启动。',
+  pipeline: [
+    { title: '数据源编排', detail: 'MCP 统一接入检索与数据源，为研究提供可追溯的证据。' },
+    { title: '任务定义', detail: 'Research Skills 把研究问题拆成可执行、可校验的步骤。' },
+    { title: '判伪实验', detail: '先跑能推翻假设的实验，再迭代结论。' },
+    { title: '可复现交付', detail: '产出可复现的研究产物，对应评分中的校验迭代与可复现性。' },
+  ],
+  points: [
+    '将 Proma 迁移到 Prime Agent 运行时：浏览器与桌面窗口共用渲染层，preload IPC 改为 WebSocket 桥，差异收敛在一个适配层。',
+    '容器内以 Xvfb 提供无头显示，真实 Electron 主进程可在 Docker 中运行；monorepo 六个工作区全部通过类型检查。',
+  ],
+  tags: ['Electron', 'React', 'TypeScript', 'Qwen', 'DashScope', 'MCP', 'Docker'],
+  links: [{ label: 'GitHub', url: 'https://github.com/CrepuscularIRIS/crucible' }],
+  media: [{ video: '/media/proma-clip.mp4', caption: 'Proma 参赛演示（节选）。' }],
+};
+
 const agents: Project[] = [
+  beatless,
   {
     id: 'polaris',
     title: 'Polaris · AI 论文数据集',
@@ -175,33 +230,6 @@ const agents: Project[] = [
       { label: 'GitHub', url: 'https://github.com/20bytes/Polaris' },
       { label: 'Hugging Face', url: 'https://huggingface.co/datasets/beatless-ai/polaris-ccf' },
     ],
-  },
-  {
-    id: 'mingjing',
-    title: '明镜 · 证据可审计的研究 Agent',
-    org: '字节跳动 AI 全栈挑战赛',
-    role: '核心成员',
-    // NOTE: 仓库中没有名次记录，确认后补充。
-    summary:
-      '基于 LangGraph 的多智能体系统：LLM 只负责提出声明，由规则化 QA Agent 裁决；引用必须是来源原文的逐字子串，否则打回并触发新一轮采集。',
-    stats: [{ value: '883', label: '后端测试，无需 API Key' }],
-    links: [
-      { label: 'GitHub', url: 'https://github.com/CrepuscularIRIS/mingjing' },
-      { label: '在线演示', url: 'https://crepusculariris.github.io/mingjing' },
-    ],
-    media: [{ video: '/media/mingjing-clip.mp4', caption: '明镜发布视频（节选）。' }],
-  },
-  {
-    id: 'proma',
-    title: 'Proma · AI Scientist 平台',
-    org: '挑战杯揭榜挂帅 · 阿里云榜题（Qwen）',
-    role: '核心成员',
-    date: '2026.05 – 2026.09',
-    // NOTE: 仓库中没有名次记录，确认后补充。
-    summary:
-      'Electron 桌面端科研 Agent 平台，运行时基于 Pi Agent 分支，经 DashScope 调用 Qwen；以 Research Skills 与 MCP 组织证据链和判伪实验，docker compose 一键启动。',
-    links: [{ label: 'GitHub', url: 'https://github.com/CrepuscularIRIS/crucible' }],
-    media: [{ video: '/media/proma-clip.mp4', caption: 'Proma 参赛演示（节选）。' }],
   },
 ];
 
@@ -299,7 +327,7 @@ export const pillars: Pillar[] = [
     no: '01',
     name: '具身智能与机器人',
     thesis: '让学到的动作，在真实的人形机器人上跑起来。',
-    feature: humanoid,
+    features: [humanoid],
     projects: robotics,
   },
   {
@@ -307,7 +335,8 @@ export const pillars: Pillar[] = [
     no: '02',
     name: 'AI Agent 与自动化科研',
     thesis: '做科研的 Agent，每个结论都要有证据。',
-    feature: beatless,
+    features: [mingjing, proma],
+    moreLabel: '更多 Agent 项目',
     projects: agents,
   },
   {

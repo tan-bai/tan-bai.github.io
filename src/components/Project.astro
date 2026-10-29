@@ -4,24 +4,27 @@ import type { Project } from '../data/site';
 
 /*
  * One project in three sizes:
- *  feature — visual beside the full write-up
+ *  feature — visual beside the full write-up (flip puts the visual on the right)
  *  card    — visual on top, summary and key numbers below
  *  compact — small thumbnail and one paragraph, for foundations
  * The visual is media when there is footage, otherwise a stat panel,
  * otherwise a text placard, so every card in a row lines up.
+ * quiet — secondary cards: no stat panel or placard, numbers stay inline.
  */
 
 interface Props {
   project: Project;
   variant?: 'feature' | 'card' | 'compact';
+  flip?: boolean;
+  quiet?: boolean;
 }
 
-const { project: p, variant = 'card' } = Astro.props;
-const visual = p.media?.length ? 'media' : p.stats ? 'stats' : p.placard ? 'placard' : null;
+const { project: p, variant = 'card', flip = false, quiet = false } = Astro.props;
+const visual = p.media?.length ? 'media' : quiet ? null : p.stats ? 'stats' : p.placard ? 'placard' : null;
 const where = [p.org, p.date].filter(Boolean).join(' · ');
 ---
 
-<article class={`project project--${variant} reveal`} id={p.id}>
+<article class={`project project--${variant}${flip ? ' project--flip' : ''}${quiet ? ' project--quiet' : ''} reveal`} id={p.id}>
   {visual === 'media' && <Media items={p.media!} title={p.title} eager={variant === 'feature'} />}
   {visual === 'stats' && (
     <div class="statpanel" aria-label="关键数据">
@@ -40,6 +43,9 @@ const where = [p.org, p.date].filter(Boolean).join(' · ');
       </>
     ) : (
       <>
+        {p.brand && (
+          <p class="brand-chip"><img src={p.brand.logo} alt="" width="18" height="18" />{p.brand.name}</p>
+        )}
         {(p.role || where) && (
           <p class="project-meta">
             {p.role && <span class="project-role">{p.role}</span>}
