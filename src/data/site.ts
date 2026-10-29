@@ -58,11 +58,19 @@ export const profile = {
   siteTitle: '项目集',
   name: '房家辉',
   nameEn: 'Jiahui Fang',
-  headline: '从硬件出发，构建机器人与 AI Agent。',
-  bio:
-    '电子信息工程出身，先把小型视觉模型部署到边缘设备，现在专注人形机器人运动学习与自主科研 Agent。我偏爱最终落到真机上、或落成一个被合并的 PR 的问题。',
+  // 每项一段；[文字](#id) 渲染为指向下方项目的链接，**文字** 渲染为加粗
+  bio: [
+    '我目前在探索两个方向：**具身智能**，包括视觉语言导航（VLN）与世界模型（World\u00A0Model）；以及 **AI for AI**，包括自动化科研（Auto Research）与递归自我改进（RSI）。本科期间加入机器人与智能制造实验室；此后在[浙江大学 FAST Lab](#badminton) 科研实习，2026 年夏在上海侏罗兽科技担任算法实习生。',
+    '在视觉感知方向，我的代表工作是[复杂场景下无人机架空输电线路覆冰检测](#icing)（项目负责人）与[基于曲率感知和高斯对齐的红外小目标检测网络 LCGA-Net](#lcga-net)。在机器人方向，我在[宇树 G1](#unitree) 与[智元灵犀 X2](#humanoid-pipeline) 人形机器人真机上做过开发与部署。在 AI for AI 方向，参与了[明镜](#mingjing)（字节跳动 AI 全栈挑战赛）与 [Proma](#proma)（挑战杯 · 阿里云榜题）。',
+  ],
   education: [
-    { school: '东南大学', detail: '电子信息 · 硕士研究生（推免）', date: '' },
+    {
+      school: '东南大学',
+      schoolEn: 'Southeast University',
+      logo: '/icons/seu.png',
+      detail: '电子信息 · 硕士研究生 · 推免',
+      date: '',
+    },
   ],
   status: '正在寻找科研与工程实习',
   email: 'jiahui.fang@ieee.org',
@@ -333,7 +341,7 @@ export const pillars: Pillar[] = [
   {
     id: 'agents',
     no: '02',
-    name: 'AI Agent 与自动化科研',
+    name: 'AI for AI · 自动化科研',
     thesis: '做科研的 Agent，每个结论都要有证据。',
     features: [mingjing, proma],
     moreLabel: '更多 Agent 项目',
@@ -422,7 +430,7 @@ export const timeline: Stage[] = [
   },
   {
     no: 'IV',
-    name: '自主 Agent',
+    name: 'AI for AI',
     span: '2026 –',
     line: '会读论文、做实验、提 PR 的 Agent。',
     items: [

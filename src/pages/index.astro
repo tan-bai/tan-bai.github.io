@@ -5,6 +5,16 @@ import Heatmap from '../components/Heatmap.astro';
 import CertificateWall from '../components/CertificateWall.astro';
 import { profile, pillars, lineage, timeline, honors, awards, patents } from '../data/site';
 
+// bio 每段中的 [文字](#id) 拆成项目链接，**文字** 拆成加粗，其余为普通文本
+const bio = profile.bio.map((para) =>
+  para.split(/(\[[^\]]+\]\([^)]+\)|\*\*[^*]+\*\*)/).filter(Boolean).map((part) => {
+    const link = part.match(/^\[([^\]]+)\]\(([^)]+)\)$/);
+    if (link) return { text: link[1], href: link[2] };
+    const strong = part.match(/^\*\*([^*]+)\*\*$/);
+    return strong ? { text: strong[1], strong: true } : { text: part };
+  })
+);
+
 const nav = [
   { href: '#work', label: '项目' },
   { href: '#path', label: '路径' },
@@ -29,13 +39,22 @@ const nav = [
       <div class="hero-text">
         <a class="status" href="#contact"><span class="status-dot" aria-hidden="true"></span>{profile.status}</a>
         <h1>{profile.name}<span lang="en">{profile.nameEn}</span></h1>
-        <p class="headline">{profile.headline}</p>
-        <p class="bio">{profile.bio}</p>
         <ul class="edu">
           {profile.education.map((e) => (
-            <li><b>{e.school}</b><span>{e.detail}</span>{e.date && <span class="edu-date">{e.date}</span>}</li>
+            <li>
+              {e.logo && <img class="edu-logo" src={e.logo} alt="" width="40" height="40" />}
+              <div class="edu-text">
+                <p class="edu-school"><b>{e.school}</b>{e.schoolEn && <span lang="en">{e.schoolEn}</span>}</p>
+                <p class="edu-detail">{e.detail}{e.date && <span class="edu-date">{e.date}</span>}</p>
+              </div>
+            </li>
           ))}
         </ul>
+        <div class="bio">
+          {bio.map((para) => (
+            <p>{para.map((b) => (b.href ? <a href={b.href}>{b.text}</a> : b.strong ? <b>{b.text}</b> : b.text))}</p>
+          ))}
+        </div>
         <p class="hero-links">
           <a href={`mailto:${profile.email}`}>{profile.email}</a>
           <a href={profile.github} target="_blank" rel="noopener noreferrer">GitHub<span aria-hidden="true">↗</span></a>

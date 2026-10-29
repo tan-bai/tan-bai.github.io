@@ -15,6 +15,8 @@
   --accent: #2a4a8c;
   --ok: #2f7a4b;
   --nav-bg: var(--bg);
+  /* 正文内链接：强调色压暗一档，比界面链接更沉稳；深色模式下随 --accent/--ink 自动变浅 */
+  --link: color-mix(in srgb, var(--accent) 72%, var(--ink));
   /* GitHub 贡献热力图：与 GitHub 个人主页一致的官方配色 */
   --hm-0: #ebedf0;
   --hm-1: #9be9a8;
@@ -191,29 +193,37 @@ b { font-weight: 600; }
   letter-spacing: 0.08em;
 }
 .hero h1 span { margin-left: 18px; color: var(--ink-faint); font-family: var(--serif); font-size: 0.4em; font-weight: 400; letter-spacing: 0.02em; vertical-align: 0.3em; }
-.headline {
-  margin-top: 16px;
-  font-family: var(--serif);
-  font-size: clamp(20px, 2.4vw, 25px);
-  font-weight: 400;
-  line-height: 1.55;
-  letter-spacing: 0.04em;
-  color: var(--ink-soft);
+/*
+ * 简介三级层次，同一套无衬线字体，靠字重与颜色区分：
+ *  正文       — 400，灰墨色
+ *  方向关键词 — 600，最深墨色：段落里唯一的重点
+ *  项目名链接 — 500，沉稳的深蓝：一眼可知可点；悬停时变亮并从左向右划出下划线
+ */
+.bio { max-width: var(--measure); margin-top: 28px; color: var(--ink-soft); font-size: 16px; line-height: 1.9; }
+.bio p { text-wrap: pretty; }
+.bio p + p { margin-top: 12px; }
+.bio b { color: var(--ink); font-weight: 600; letter-spacing: 0.02em; }
+.bio a {
+  color: var(--link);
+  font-weight: 500;
+  background: linear-gradient(currentColor, currentColor) left bottom / 0 1px no-repeat;
+  -webkit-box-decoration-break: clone;
+  box-decoration-break: clone;
+  transition: color 0.25s var(--ease), background-size 0.45s var(--ease);
 }
-.bio { max-width: var(--measure); margin-top: 20px; color: var(--ink-soft); font-size: 16px; line-height: 1.9; }
-.edu { max-width: 40em; margin-top: 26px; border-top: 1px solid var(--line); }
-.edu li {
-  display: grid;
-  grid-template-columns: 128px minmax(0, 1fr) auto;
-  gap: 16px;
-  padding: 10px 0;
-  border-bottom: 1px solid var(--line);
-  font-size: 14px;
-  line-height: 1.7;
-}
-.edu b { font-weight: 500; }
-.edu span { color: var(--ink-faint); }
-.edu-date { font-variant-numeric: tabular-nums; }
+.bio a:hover { color: var(--accent); text-decoration: none; background-size: 100% 1px; }
+@media (prefers-reduced-motion: reduce) { .bio a { transition: none; } }
+/* 学校署名：校徽 + 细竖线 + 两行文字（中英校名 / 专业与学位） */
+.edu { margin-top: 22px; }
+.edu li { display: flex; align-items: center; gap: 16px; }
+.edu li + li { margin-top: 14px; }
+.edu-logo { flex: none; width: 40px; height: 40px; object-fit: contain; }
+.edu-text { padding-left: 16px; border-left: 1px solid var(--line); }
+.edu-school { font-family: var(--serif); font-size: 16.5px; line-height: 1.35; color: var(--ink); }
+.edu-school b { font-weight: 500; letter-spacing: 0.08em; }
+.edu-school span { margin-left: 10px; color: var(--ink-faint); font-size: 14.5px; letter-spacing: 0.01em; }
+.edu-detail { margin-top: 4px; color: var(--ink-faint); font-size: 13.5px; line-height: 1.5; letter-spacing: 0.06em; }
+.edu-date { margin-left: 10px; font-variant-numeric: tabular-nums; letter-spacing: 0.02em; }
 .hero-links { display: flex; flex-wrap: wrap; gap: 8px 28px; margin-top: 24px; font-size: 14.5px; }
 .hero-links span, .links span, .contact-links span { margin-left: 2px; font-size: 0.85em; }
 
@@ -735,8 +745,9 @@ a.row-title:hover { color: var(--accent); }
   .arc { margin-top: 8px; }
   .hero h1 span { display: block; margin: 6px 0 0; vertical-align: 0; font-size: 17px; }
   .section-head h2 { letter-spacing: 0.06em; }
-  .edu li { grid-template-columns: 1fr auto; gap: 2px 12px; }
-  .edu li span:not(.edu-date) { grid-column: 1 / -1; grid-row: 2; }
+  .edu-logo { width: 36px; height: 36px; }
+  .edu li { gap: 14px; }
+  .edu-text { padding-left: 14px; }
   .arc { grid-template-columns: repeat(2, minmax(0, 1fr)); row-gap: 4px; }
   .arc li:nth-child(3) a { padding-left: 0; }
   .arc li:nth-child(3)::before { display: none; }
