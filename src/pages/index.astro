@@ -5,11 +5,20 @@ import Heatmap from '../components/Heatmap.astro';
 import CertificateWall from '../components/CertificateWall.astro';
 import { profile, pillars, lineage, timeline, honors, awards, patents } from '../data/site';
 
-// bio 每段中的 [文字](#id) 拆成项目链接，**文字** 拆成加粗；~[文字](#id) 为静音链接（正文样式，无高亮）
+// bio 每段中的 [文字](#id) 拆成项目链接，**文字** 拆成加粗；~[文字](#id) 为静音链接（正文样式），
+// 静音链接文字里仍可写 **…** 做局部朱批（如长标题只强调核心词）
 const bio = profile.bio.map((para) =>
   para.split(/(~?\[[^\]]+\]\([^)]+\)|\*\*[^*]+\*\*)/).filter(Boolean).map((part) => {
     const link = part.match(/^~?\[([^\]]+)\]\(([^)]+)\)$/);
-    if (link) return { text: link[1], href: link[2], quiet: part.startsWith('~') };
+    if (link)
+      return {
+        href: link[2],
+        quiet: part.startsWith('~'),
+        segs: link[1].split(/(\*\*[^*]+\*\*)/).filter(Boolean).map((seg) => {
+          const s = seg.match(/^\*\*([^*]+)\*\*$/);
+          return s ? { text: s[1], strong: true } : { text: seg };
+        }),
+      };
     const strong = part.match(/^\*\*([^*]+)\*\*$/);
     return strong ? { text: strong[1], strong: true } : { text: part };
   })
@@ -52,7 +61,9 @@ const nav = [
         </ul>
         <div class="bio">
           {bio.map((para) => (
-            <p>{para.map((b) => (b.href ? <a href={b.href} class={b.quiet ? 'quiet' : undefined}>{b.text}</a> : b.strong ? <b>{b.text}</b> : b.text))}</p>
+            <p>{para.map((b) => (b.href ? (
+              <a href={b.href} class={b.quiet ? 'quiet' : undefined}>{b.segs.map((s) => (s.strong ? <b>{s.text}</b> : s.text))}</a>
+            ) : b.strong ? <b>{b.text}</b> : b.text))}</p>
           ))}
         </div>
         <p class="hero-links">
