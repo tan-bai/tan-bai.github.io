@@ -60,7 +60,7 @@ export const profile = {
   nameEn: 'Jiahui Fang',
   // 每项一段；[文字](#id) 渲染为指向下方项目的链接，**文字** 渲染为加粗
   bio: [
-    '我目前在探索两个方向：**具身智能**，包括视觉语言导航（VLN）与世界模型（World\u00A0Model）；以及 **AI for AI**，包括自动化科研（Auto Research）与递归自我改进（RSI）。本科期间加入机器人与智能制造实验室；此后在[浙江大学 FAST Lab](#badminton) 科研实习，2026 年夏在上海侏罗兽科技担任算法实习生。',
+    '我目前在探索两个方向：**具身智能**，包括视觉语言导航（VLN）与世界模型（World\u00A0Model）；以及 **AI for AI**，涵盖自动化科研与递归自我改进（RSI）。本科期间加入机器人与智能制造实验室；此后在[浙江大学 FAST Lab](#badminton) 科研实习，2026 年夏在上海侏罗兽科技担任算法实习生。',
     '在视觉感知方向，我的代表工作是[复杂场景下无人机架空输电线路覆冰检测](#icing)（项目负责人）与[基于曲率感知和高斯对齐的红外小目标检测网络 LCGA-Net](#lcga-net)。在机器人方向，我在[宇树 G1](#unitree) 与[智元灵犀 X2](#humanoid-pipeline) 人形机器人真机上做过开发与部署。在 AI for AI 方向，参与了[明镜](#mingjing)（字节跳动 AI 全栈挑战赛）与 [Proma](#proma)（挑战杯 · 阿里云榜题）。',
   ],
   education: [
