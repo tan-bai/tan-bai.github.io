@@ -158,21 +158,21 @@ b { font-weight: 600; }
 
 .hero {
   display: grid;
-  grid-template-columns: minmax(0, 1fr) 320px;
-  grid-template-areas:
-    'text photo'
-    'text heat'
-    'arc  arc';
-  grid-template-rows: auto 1fr auto;
-  gap: 0 48px;
-  align-items: start;
-  padding-top: calc(var(--nav-h) + 96px);
+  /* 左栏保持 688px，与简介中手动调好的断行一致；右栏 328px */
+  grid-template-columns: minmax(0, 1fr) 328px;
+  grid-template-areas: 'text aside';
+  gap: 0 40px;
+  padding-top: calc(var(--nav-h) + 40px);
 }
 .hero-text { grid-area: text; }
-/* 右栏：照片与热力图同宽，左右边线对齐；照片裁成 5:4，让右栏与左栏文字等高 */
-.hero-photo { grid-area: photo; width: 100%; }
-.hero > .heatmap { grid-area: heat; width: 100%; margin-top: 20px; }
-.hero > .heatmap .hm-month { font-size: 14px; } /* 窄栏中缩放后约 10px */
+/*
+ * 右栏与左栏文字等高：照片顶边对齐状态行，热力图底边对齐联系方式。
+ * 照片占满热力图以上的剩余高度，左栏文字增减时自动缩放。
+ */
+.hero-aside { grid-area: aside; display: flex; flex-direction: column; gap: 22px; }
+.hero-photo { grid-area: photo; position: relative; flex: 1 1 auto; min-height: 260px; }
+.hero-aside .heatmap { grid-area: heat; flex: none; width: 100%; }
+.hero-aside .heatmap .hm-month { font-size: 13px; } /* 窄栏中缩放后约 10px */
 /* 状态行：绿色小点 + 绿字，保留跳转联系区的链接行为 */
 .status {
   display: inline-flex;
@@ -207,6 +207,7 @@ b { font-weight: 600; }
 .bio { max-width: 44em; margin-top: 28px; color: var(--ink-soft); font-size: 16px; line-height: 1.9; }
 .bio p { text-wrap: pretty; }
 .bio p + p { margin-top: 12px; }
+.bio .keep { white-space: nowrap; }
 .bio b, .bio a {
   font-family: var(--kai);
   font-weight: 500;
@@ -244,12 +245,16 @@ b { font-weight: 600; }
 .hero-links { display: flex; flex-wrap: wrap; gap: 8px 28px; margin-top: 24px; font-size: 14.5px; }
 .hero-links span, .links span, .contact-links span { margin-left: 2px; font-size: 0.85em; }
 
-/* 证件照为透明底抠图：不加底色面板，人像在右栏居中、立于热力图上方 */
-.hero-photo { display: flex; justify-content: center; align-items: flex-end; aspect-ratio: 5 / 4; }
+/* 证件照：在右栏居中，高度随剩余空间伸缩，保持原始比例 */
 .hero-photo img {
+  position: absolute;
+  inset: 0;
   width: auto;
+  max-width: 100%;
   height: 100%;
+  margin: 0 auto;
   aspect-ratio: 295 / 399;
+  object-fit: cover;
   border-radius: var(--r);
   filter: grayscale(0.15);
 }
@@ -281,39 +286,52 @@ b { font-weight: 600; }
 .js .heatmap rect { opacity: 0; transition: opacity 0.5s var(--ease) calc(var(--i) * 16ms + 0.15s); }
 .js .heatmap.in rect { opacity: 1; }
 
-/* The four-stage arc, a preview of the timeline */
-.arc {
-  grid-area: arc;
-  display: grid;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
-  margin-top: 56px;
-  border-top: 1px solid var(--ink);
+/* ---------- 右侧浮动目录（宽屏） ---------- */
+
+.toc { display: none; }
+@media (min-width: 1320px) {
+  .toc {
+    position: fixed;
+    top: 50%;
+    right: max(20px, calc((100vw - var(--w)) / 2 - 112px));
+    z-index: 40;
+    display: flex;
+    flex-direction: column;
+    transform: translateY(-50%);
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.35s var(--ease);
+  }
+  .toc.is-visible { opacity: 1; pointer-events: auto; }
+  .toc a {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 5px 0;
+    color: var(--ink-faint);
+    font-size: 12.5px;
+    letter-spacing: 0.04em;
+    transition: color 0.25s;
+  }
+  .toc a::before {
+    content: '';
+    flex: none;
+    width: 12px;
+    height: 1px;
+    background: var(--line);
+    transition: width 0.3s var(--ease), background 0.3s;
+  }
+  .toc a:hover { color: var(--ink); text-decoration: none; }
+  .toc a.is-active { color: var(--ink); }
+  .toc a.is-active::before { width: 24px; background: var(--ink); }
+  .toc .toc-gap { margin-top: 12px; }
 }
-.arc li { position: relative; }
-.arc li + li::before {
-  content: '→';
-  position: absolute;
-  left: -0.6em;
-  top: 14px;
-  color: var(--ink-faint);
-  font-size: 13px;
-}
-.arc a {
-  display: block;
-  padding: 14px 18px 0;
-  color: var(--ink-soft);
-  font-size: 14px;
-  letter-spacing: 0.04em;
-}
-.arc li:first-child a { padding-left: 0; }
-.arc a:hover { color: var(--ink); text-decoration: none; }
-.arc-no { margin-right: 10px; color: var(--ink-faint); font-family: var(--serif); font-style: italic; }
 
 /* ---------- Sections ---------- */
 
 .section { padding-top: 136px; }
-/* 首屏底部已有 arc 粗线收尾，第一个章节收紧衔接 */
-#work { padding-top: 96px; }
+/* 首屏下方紧接第一个方向，桌面端打开即可看到机器人项目 */
+#work { padding-top: 56px; }
 .section-head { display: flex; flex-wrap: wrap; align-items: baseline; gap: 8px 24px; padding-bottom: 18px; border-bottom: 1px solid var(--ink); }
 .section-head h2 { font-family: var(--serif); font-size: 32px; font-weight: 500; line-height: 1.3; letter-spacing: 0.08em; }
 .section-head p { color: var(--ink-faint); font-size: 14px; }
@@ -730,12 +748,13 @@ a.row-title:hover { color: var(--accent); }
 /* ---------- Responsive ---------- */
 
 @media (max-width: 1000px) {
-  .hero { grid-template-columns: 1fr; grid-template-areas: 'photo' 'text' 'heat' 'arc'; grid-template-rows: auto; gap: 28px; }
-  .hero-photo { aspect-ratio: auto; justify-self: start; width: 112px; }
-  .hero-photo img { width: 100%; height: auto; }
-  .hero > .heatmap { margin-top: 0; }
-  .hero > .heatmap .hm-month { font-size: 11px; }
-  .arc { margin-top: 8px; }
+  /* 单栏：照片缩为右上角小像，与状态行顶边对齐；热力图移到文字下方 */
+  .hero { position: relative; grid-template-columns: 1fr; grid-template-areas: 'text' 'heat'; gap: 36px; }
+  .hero-aside { display: contents; }
+  .hero-photo { position: absolute; top: calc(var(--nav-h) + 40px); right: 0; width: 128px; min-height: 0; aspect-ratio: 295 / 399; }
+  .hero-photo img { position: static; width: 100%; height: 100%; }
+  .hero-aside .heatmap { max-width: 480px; }
+  .hero-aside .heatmap .hm-month { font-size: 11px; }
   .grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .grid--compact { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .stage { grid-template-columns: 1fr; gap: 20px; }
@@ -751,17 +770,18 @@ a.row-title:hover { color: var(--accent); }
   .nav.is-stuck .nav-inner { max-width: 100%; padding: 0 4px 0 14px; }
   .nav-links a { padding: 6px 9px; }
   .nav-links { gap: 20px; font-size: 13.5px; letter-spacing: 0.04em; }
-  .hero { padding-top: calc(var(--nav-h) + 48px); }
+  .hero { padding-top: calc(var(--nav-h) + 40px); }
   .hero h1 span { display: block; margin: 6px 0 0; vertical-align: 0; font-size: 17px; }
   .section-head h2 { letter-spacing: 0.06em; }
   .edu-logo { width: 36px; height: 36px; }
   .edu li { gap: 14px; }
   .edu-text { padding-left: 14px; }
-  .arc { grid-template-columns: repeat(2, minmax(0, 1fr)); row-gap: 4px; }
-  .arc li:nth-child(3) a { padding-left: 0; }
-  .arc li:nth-child(3)::before { display: none; }
+  .hero-photo { width: 88px; }
+  .bio .keep { white-space: normal; } /* 窄屏上长词组整体换行会留下大段空白 */
+  .hero { gap: 32px; }
+  .hero-aside .heatmap .hm-month { font-size: 14px; } /* 热力图缩小约 0.78 倍 */
   .section { padding-top: 96px; }
-  #work { padding-top: 72px; }
+  #work { padding-top: 56px; }
   .section-head h2 { font-size: 27px; }
   .pillar { padding-top: 56px; }
   .pillar-head { grid-template-columns: 40px minmax(0, 1fr); }
@@ -771,7 +791,7 @@ a.row-title:hover { color: var(--accent); }
   .more-label { margin-top: 56px; }
   .project--feature .project-title { font-size: 23px; }
   .statpanel, .project--card .statpanel { aspect-ratio: auto; padding: 24px; gap: 14px; }
-  .project--feature > .media, .project--feature > .statpanel { position: static; }
+  .project--feature > .media, .project--feature > .statpanel { position: relative; top: auto; } /* 取消吸顶，但保留定位，让「1 / 3」角标仍贴在图上 */
   .placard { aspect-ratio: auto; min-height: 140px; padding: 24px; }
   .grid, .grid--even { grid-template-columns: 1fr; gap: 44px; margin-top: 44px; }
   .grid--compact { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 28px 16px; }

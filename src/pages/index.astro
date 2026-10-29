@@ -2,6 +2,7 @@
 import Base from '../layouts/Base.astro';
 import Project from '../components/Project.astro';
 import Heatmap from '../components/Heatmap.astro';
+import Keep from '../components/Keep.astro';
 import CertificateWall from '../components/CertificateWall.astro';
 import { profile, pillars, lineage, timeline, honors, awards, patents } from '../data/site';
 
@@ -24,6 +25,15 @@ const bio = profile.bio.map((para) =>
   })
 );
 
+// 右侧浮动目录：四个方向用短名，之后是三个章节
+const tocShort: Record<string, string> = { robotics: '机器人', agents: 'AI for AI', vision: '视觉感知', hardware: '硬件' };
+const toc = [
+  ...pillars.map((pl) => ({ href: `#${pl.id}`, label: tocShort[pl.id] ?? pl.name })),
+  { href: '#path', label: '成长路径', gap: true },
+  { href: '#recognition', label: '荣誉' },
+  { href: '#contact', label: '联系' },
+];
+
 const nav = [
   { href: '#work', label: '项目' },
   { href: '#path', label: '路径' },
@@ -40,6 +50,10 @@ const nav = [
         {nav.map((n) => <a href={n.href}>{n.label}</a>)}
       </div>
     </div>
+  </nav>
+
+  <nav class="toc" aria-label="本页目录">
+    {toc.map((t) => <a href={t.href} class={t.gap ? 'toc-gap' : undefined}>{t.label}</a>)}
   </nav>
 
   <main class="page">
@@ -62,8 +76,8 @@ const nav = [
         <div class="bio">
           {bio.map((para) => (
             <p>{para.map((b) => (b.href ? (
-              <a href={b.href} class={b.quiet ? 'quiet' : undefined}>{b.segs.map((s) => (s.strong ? <b>{s.text}</b> : s.text))}</a>
-            ) : b.strong ? <b>{b.text}</b> : b.text))}</p>
+              <a href={b.href} class={b.quiet ? 'quiet' : undefined}>{b.segs.map((s) => (s.strong ? <b><Keep text={s.text} /></b> : <Keep text={s.text} />))}</a>
+            ) : b.strong ? <b><Keep text={b.text} /></b> : <Keep text={b.text} />))}</p>
           ))}
         </div>
         <p class="hero-links">
@@ -72,16 +86,12 @@ const nav = [
           <a href={profile.blog} target="_blank" rel="noopener noreferrer">博客<span aria-hidden="true">↗</span></a>
         </p>
       </div>
-      <figure class="hero-photo">
-        <img src={profile.photo} alt={`${profile.name}的照片`} width="295" height="399" fetchpriority="high" />
-      </figure>
-      <Heatmap />
-
-      <ol class="arc" aria-label="成长路径">
-        {timeline.map((s) => (
-          <li><a href="#path"><span class="arc-no">{s.no}</span>{s.name}</a></li>
-        ))}
-      </ol>
+      <div class="hero-aside">
+        <figure class="hero-photo">
+          <img src={profile.photo} alt={`${profile.name}的照片`} width="295" height="399" fetchpriority="high" />
+        </figure>
+        <Heatmap />
+      </div>
     </header>
 
     <!-- ============================ Work ============================ -->

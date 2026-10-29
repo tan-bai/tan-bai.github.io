@@ -1,0 +1,12 @@
+---
+/*
+ * 简介中用 U+2060（单词连接符）连起来的词组：桌面端整体不断行，窄屏允许断开。
+ * 连接符本身会被去掉，词组包进 <span class="keep">，断行规则交给 CSS 按屏宽决定。
+ */
+interface Props {
+  text: string;
+}
+// split 带捕获组：奇数位是连起来的词组，偶数位是普通文本（链接后紧跟的单个连接符原样保留）
+const parts = Astro.props.text.split(/((?:[^\s⁠]⁠)+[^\s⁠])/);
+---
+{parts.map((p, i) => (i % 2 ? <span class="keep">{p.replaceAll('⁠', '')}</span> : p))}

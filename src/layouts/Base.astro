@@ -107,6 +107,30 @@ const {
         { passive: true }
       );
 
+      /* 右侧目录：离开首屏后出现，高亮当前所在的方向或章节 */
+      const toc = document.querySelector<HTMLElement>('.toc');
+      if (toc) {
+        const hero = document.querySelector<HTMLElement>('.hero');
+        const tocLinks = [...toc.querySelectorAll<HTMLAnchorElement>('a')];
+        const sections = tocLinks
+          .map((a) => document.querySelector<HTMLElement>(a.getAttribute('href')!))
+          .filter((el): el is HTMLElement => !!el);
+        const mark = (id: string) =>
+          tocLinks.forEach((a) => a.classList.toggle('is-active', a.getAttribute('href') === `#${id}`));
+        // 当前项：顶边已越过视口 40% 处的最后一个章节；滚到页底时取最后一项
+        const onTocScroll = () => {
+          const line = window.innerHeight * 0.4;
+          toc.classList.toggle('is-visible', !hero || hero.getBoundingClientRect().bottom < window.innerHeight * 0.5);
+          let current = '';
+          for (const s of sections) if (s.getBoundingClientRect().top < line) current = s.id;
+          if (window.scrollY + window.innerHeight >= document.documentElement.scrollHeight - 2)
+            current = sections[sections.length - 1].id;
+          mark(current);
+        };
+        onTocScroll();
+        window.addEventListener('scroll', onTocScroll, { passive: true });
+      }
+
       /* Videos play only while on screen */
       const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
       if (!reduced) {
