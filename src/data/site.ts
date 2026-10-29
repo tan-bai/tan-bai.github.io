@@ -108,13 +108,12 @@ const humanoid: Project = {
 const robotics: Project[] = [
   {
     id: 'badminton',
-    title: '人形机器人羽毛球',
+    title: '羽毛球轮足机器人',
     org: '浙江大学 FAST Lab',
     role: '科研实习生',
     date: '2025.08 – 2026.01',
-    // NOTE: 需求写的是“人形”；旧版站点描述为逐际动力轮足平台。
     summary:
-      '受 ETH Zürich 羽毛球足式机器人启发，团队研发能回击高速来球的机器人。我负责动捕数据一侧：大规模动捕数据处理与动作映射，为来球轨迹预测与击球控制提供数据支撑。',
+      '受 ETH Zürich 羽毛球足式机器人启发，团队研发能回击高速来球的轮足机器人，与人真实对打。我负责动捕数据一侧：大规模动捕数据处理与动作映射，为来球轨迹预测与击球控制提供数据支撑。',
     points: [
       '使用 MOKKA 与 PlotJuggler 完成动捕轨迹校验与多源时序数据对齐。',
       '把采集到的动作转为机器人可用的参考数据，并产出供控制调试的可视化视图。',
@@ -424,7 +423,7 @@ export const timeline: Stage[] = [
     items: [
       { date: '2024.08 – 2024.09', title: '上师大机器人实验室', detail: '从零搭建宇树人形机器人仿真环境', href: '#unitree' },
       { date: '2025.07', title: 'ROS 暑期学校', detail: '宇树 G1 真机调试与操作', href: '#unitree' },
-      { date: '2025.08 – 2026.01', title: '浙江大学 FAST Lab', detail: '人形机器人羽毛球：动捕数据处理与动作映射', href: '#badminton' },
+      { date: '2025.08 – 2026.01', title: '浙江大学 FAST Lab', detail: '羽毛球轮足机器人：动捕数据处理与动作映射', href: '#badminton' },
       { date: '2026.07 – 2026.08', title: '上海侏罗兽', detail: '牵头打通从视频到 Sim2Real 的人形机器人链路', href: '#humanoid-pipeline' },
     ],
   },
