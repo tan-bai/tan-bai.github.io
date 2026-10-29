@@ -5,20 +5,15 @@ import Heatmap from '../components/Heatmap.astro';
 import CertificateWall from '../components/CertificateWall.astro';
 import { profile, pillars, lineage, timeline, honors, awards, patents } from '../data/site';
 
-// bio 每段中的 [文字](#id) 拆成项目链接，**文字** 拆成加粗；段落以 ~ 开头则整段静音（链接用普通样式）
-const bio = profile.bio.map((raw) => {
-  const quiet = raw.startsWith('~');
-  const para = quiet ? raw.slice(1) : raw;
-  return {
-    quiet,
-    parts: para.split(/(\[[^\]]+\]\([^)]+\)|\*\*[^*]+\*\*)/).filter(Boolean).map((part) => {
-      const link = part.match(/^\[([^\]]+)\]\(([^)]+)\)$/);
-      if (link) return { text: link[1], href: link[2] };
-      const strong = part.match(/^\*\*([^*]+)\*\*$/);
-      return strong ? { text: strong[1], strong: true } : { text: part };
-    }),
-  };
-});
+// bio 每段中的 [文字](#id) 拆成项目链接，**文字** 拆成加粗；~[文字](#id) 为静音链接（正文样式，无高亮）
+const bio = profile.bio.map((para) =>
+  para.split(/(~?\[[^\]]+\]\([^)]+\)|\*\*[^*]+\*\*)/).filter(Boolean).map((part) => {
+    const link = part.match(/^~?\[([^\]]+)\]\(([^)]+)\)$/);
+    if (link) return { text: link[1], href: link[2], quiet: part.startsWith('~') };
+    const strong = part.match(/^\*\*([^*]+)\*\*$/);
+    return strong ? { text: strong[1], strong: true } : { text: part };
+  })
+);
 
 const nav = [
   { href: '#work', label: '项目' },
@@ -57,7 +52,7 @@ const nav = [
         </ul>
         <div class="bio">
           {bio.map((para) => (
-            <p class={para.quiet ? 'quiet' : undefined}>{para.parts.map((b) => (b.href ? <a href={b.href}>{b.text}</a> : b.strong ? <b>{b.text}</b> : b.text))}</p>
+            <p>{para.map((b) => (b.href ? <a href={b.href} class={b.quiet ? 'quiet' : undefined}>{b.text}</a> : b.strong ? <b>{b.text}</b> : b.text))}</p>
           ))}
         </div>
         <p class="hero-links">

@@ -222,14 +222,14 @@ b { font-weight: 600; }
 }
 .bio a:hover { color: var(--annotate-strong); text-decoration: none; background-size: 100% 1px; }
 @media (prefers-reduced-motion: reduce) { .bio a { transition: none; } }
-.bio p.quiet a {
+.bio a.quiet {
   font-family: inherit;
   font-size: 1em;
-  font-weight: 400;
-  color: var(--accent);
+  font-weight: inherit;
+  color: inherit;
   background: none;
 }
-.bio p.quiet a:hover { color: var(--ink); background: none; }
+.bio a.quiet:hover { color: inherit; background: none; }
 /* 学校署名：校徽 + 细竖线 + 两行文字（中英校名 / 专业与学位） */
 .edu { margin-top: 22px; }
 .edu li { display: flex; align-items: center; gap: 16px; }
