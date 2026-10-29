@@ -94,10 +94,10 @@ const humanoid: Project = {
   pipeline: [
     { title: '动作提取', detail: 'GVHMR / PromptHMR 从单目人体视频中恢复 SMPL 人体动作。' },
     { title: '动作重定向', detail: 'AMASS 格式动作映射到 X2 运动学结构，生成 Isaac / MuJoCo 参考轨迹。' },
-    { title: '强化学习训练', detail: '基于 HumanoidPolicyLab 在 MuJoCo 中训练动作跟踪策略，单次约 4.5 小时。' },
+    { title: '强化学习训练', detail: '基于 HumanoidPolicyLab 在 MuJoCo 中训练动作跟踪策略，单次约 4.5 小时；在 32 卡 H200 集群上完成多卡训练与任务调度。' },
     { title: 'Sim2Real 部署', detail: '导出 ONNX 策略，经 AIMDK 部署至 X2 控制器；以真机日志与故障信息驱动诊断。' },
   ],
-  tags: ['智元 X2', 'GVHMR', 'PromptHMR', 'SMPL / AMASS', 'MuJoCo', 'Isaac', '强化学习', 'ONNX', 'AIMDK'],
+  tags: ['智元 X2', 'GVHMR', 'PromptHMR', 'SMPL / AMASS', 'MuJoCo', 'Isaac', '强化学习', 'ONNX', 'AIMDK', '32×H200'],
   media: [
     { video: '/media/x2-realrobot.mp4', caption: '智元 X2 真机行走与转向，实验室部署现场实录。' },
     { video: '/media/x2-internship.mp4', caption: 'MuJoCo 回放：X2 跟踪重定向后的参考动作。' },
