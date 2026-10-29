@@ -722,11 +722,12 @@ a.row-title:hover { color: var(--accent); }
 /* ---------- Responsive ---------- */
 
 @media (max-width: 1000px) {
-  .hero { grid-template-columns: minmax(0, 1fr) 180px; grid-template-areas: 'text photo' 'heat heat' 'arc arc'; grid-template-rows: auto; gap: 0 48px; }
-  .hero-photo { aspect-ratio: auto; }
+  .hero { grid-template-columns: 1fr; grid-template-areas: 'photo' 'text' 'heat' 'arc'; grid-template-rows: auto; gap: 28px; }
+  .hero-photo { aspect-ratio: auto; justify-self: start; width: 112px; }
   .hero-photo img { width: 100%; height: auto; }
-  .hero > .heatmap { justify-self: start; margin-top: 40px; }
+  .hero > .heatmap { margin-top: 0; }
   .hero > .heatmap .hm-month { font-size: 11px; }
+  .arc { margin-top: 8px; }
   .grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .grid--compact { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .stage { grid-template-columns: 1fr; gap: 20px; }
@@ -742,16 +743,7 @@ a.row-title:hover { color: var(--accent); }
   .nav.is-stuck .nav-inner { max-width: 100%; padding: 0 4px 0 14px; }
   .nav-links a { padding: 6px 9px; }
   .nav-links { gap: 20px; font-size: 13.5px; letter-spacing: 0.04em; }
-  .hero {
-    grid-template-columns: 1fr;
-    grid-template-areas: 'photo' 'text' 'heat' 'arc';
-    grid-template-rows: auto;
-    gap: 28px;
-    padding-top: calc(var(--nav-h) + 48px);
-  }
-  .hero-photo { justify-self: start; width: 112px; }
-  .hero > .heatmap { margin-top: 0; }
-  .arc { margin-top: 8px; }
+  .hero { padding-top: calc(var(--nav-h) + 48px); }
   .hero h1 span { display: block; margin: 6px 0 0; vertical-align: 0; font-size: 17px; }
   .section-head h2 { letter-spacing: 0.06em; }
   .edu-logo { width: 36px; height: 36px; }
