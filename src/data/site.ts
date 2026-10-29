@@ -235,21 +235,6 @@ const agents: Project[] = [
 
 const vision: Project[] = [
   {
-    id: 'icing',
-    title: '无人机输电线路覆冰检测',
-    role: '项目负责人',
-    date: '2024.10 – 2025.10',
-    summary:
-      '端云协同巡检：无人机端 Jetson AGX Xavier 部署剪枝与 PPQ 量化后的 YOLOv12-tiny，在雨雪雾霾中定位覆冰；云端以 QLoRA 微调的多模态大模型结合 RAGFlow，判别覆冰类型并生成除冰方案。',
-    stats: [
-      { value: '98.4%', label: 'mAP50' },
-      { value: '30M', label: '量化后模型' },
-    ],
-    outcome: '“挑战杯”上海市一等奖（第一完成人）· 软件著作权授权',
-    links: [{ label: 'detection-web', url: 'https://github.com/20bytes/detection-web' }],
-    media: [{ image: '/media/powerline-icing.webp', caption: '端云协同覆冰检测系统。' }],
-  },
-  {
     id: 'lcga-net',
     title: '红外小目标检测',
     role: '核心成员',
@@ -276,6 +261,21 @@ const vision: Project[] = [
       { value: '+4.27%', label: 'APs 相对提升' },
     ],
     outcome: '毕业论文获评 A',
+  },
+  {
+    id: 'icing',
+    title: '无人机输电线路覆冰检测',
+    role: '项目负责人',
+    date: '2024.10 – 2025.10',
+    summary:
+      '端云协同巡检：无人机端 Jetson AGX Xavier 部署剪枝与 PPQ 量化后的 YOLOv12-tiny，在雨雪雾霾中定位覆冰；云端以 QLoRA 微调的多模态大模型结合 RAGFlow，判别覆冰类型并生成除冰方案。',
+    stats: [
+      { value: '98.4%', label: 'mAP50' },
+      { value: '30M', label: '量化后模型' },
+    ],
+    outcome: '“挑战杯”上海市一等奖（第一完成人）· 软件著作权授权',
+    links: [{ label: 'detection-web', url: 'https://github.com/20bytes/detection-web' }],
+    media: [{ image: '/media/powerline-icing.webp', caption: '端云协同覆冰检测系统。' }],
   },
   {
     id: 'posture',
