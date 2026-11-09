@@ -1,0 +1,11 @@
+{
+  "original_assets_unchanged": true,
+  "sha256": {
+    "block_metadata.json": "2cc4fc0ba0261bdae78115eede27341b134317ef2bb4037f454c5934d71e5aa8",
+    "context_metadata.json": "0aa8dc9c1184b40e1393870585057c21ad817b7ba53e00f0031ecf17a33a5b2b",
+    "reference_overlay.svg": "c8839e9730e9bd813bb88a8ae9653b0d5d0ee54f11a98620f456f2380a525786",
+    "reference_1600m.png": "9030d184511337015db12371959639797e3706b7c0e9e3790e30b3ee57d4da27",
+    "models/jining_block_v02.glb": "1af4b88e5ccc39a9b5bde4dbb37e4747a23fd8d1b2b93b8600750ca55744c918",
+    "models/jining_context_v02.glb": "015b5d8f50deab4e343ea528942173315ed971f6b0d89371f523d818486446b9"
+  }
+}

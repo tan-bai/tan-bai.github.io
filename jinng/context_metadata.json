@@ -1,0 +1,15 @@
+{
+  "full_width_m": 1600,
+  "v01_building_count": 1321,
+  "outside_building_ids": 1299,
+  "centre_relative_to_block": [
+    -280.0,
+    100.0
+  ],
+  "outside_height_method": "V01_uniform_12m_placeholder",
+  "split_area_error_m2": 2.326942194486037e-09,
+  "source": "/home/tanbai/Desktop/city_code/reconstruction/data/scene.json",
+  "park_water_occlusion_removed_m2": 10955.011473145421,
+  "reference_priority": "User Google Earth satellite screenshot; vectors remain pending image-by-image verification.",
+  "explanation": "Complete V01 footprint and waterway coverage retained; 240m trial geometry replaces only its own interior. Park surfaces are cut around water to prevent the northern lake being hidden."
+}

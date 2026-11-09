@@ -1,0 +1,34 @@
+<!doctype html>
+<html lang="zh-CN">
+<head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="theme-color" content="#e9eee5"><title>济宁 · 运河街区 / Urban Atlas</title><link rel="stylesheet" href="/src/style.css"></head>
+<body>
+<header><a class="brand" href="./" aria-label="济宁城市形态研究首页"><span class="brand-mark">JN<span>↗</span></span><span>URBAN ATLAS<small>城市形态研究 · 济宁</small></span></a><div class="header-right"><span class="live-dot"></span>可编辑三维样方<span class="version">EXPERIMENT 02</span></div></header>
+<div class="workspace">
+<aside class="sidebar"><p class="eyebrow">SHANDONG / JINING</p><h1>以卫星为据，<br>重建济宁。</h1><p class="intro">Google Earth 影像作为平面核对依据。<br>先核对建筑与水系，再完善三维高度。</p>
+<div class="metrics"><div><strong id="count">1321</strong><span>现有轮廓 · 待核对</span></div><div><strong><span id="sample-width" style="display:inline;font:inherit;color:inherit">1600</span><em>m</em></strong><span>研究边长</span></div></div>
+<div class="scope-buttons" role="group" aria-label="查看范围"><button id="scope-full" class="secondary" aria-pressed="true">1600 米全样方</button><button id="scope-trial" class="secondary" aria-pressed="false">240 米试验区</button></div>
+<div class="display-buttons" role="group" aria-label="参考与模型"><button id="show-reference" class="secondary" aria-pressed="true">Google Earth 对照</button><button id="show-model" class="secondary" aria-pressed="false">三维模型</button></div>
+<p id="scope-note" class="scope-note">现有矢量作为待核对图层；金色框为原 240 米试验区。</p>
+<div class="section-label">01 <span>三维模式 · 高度暂作辅助</span></div>
+<div class="mode-list" role="group" aria-label="模型显示方式">
+<button class="mode active" data-mode="detail" aria-pressed="true"><span class="mode-icon">◈</span><span>空间展示<small>试验区的程序化外观示意</small></span><span class="mode-arrow">↗</span></button>
+<button class="mode" data-mode="height" aria-pressed="false"><span class="mode-icon">▥</span><span>高度分析<small>仅 240 米试验区的 36 个轮廓</small></span><span class="mode-arrow">↗</span></button>
+<button class="mode" data-mode="baseline" aria-pressed="false"><span class="mode-icon">▤</span><span>V01 高度对照<small>统一 12 米，核对平面分布</small></span><span class="mode-arrow">↗</span></button>
+</div>
+<div class="section-label">02 <span>视角与光线</span></div><div class="button-row"><button id="overview" class="secondary">鸟瞰</button><button id="top" class="secondary">俯视</button><button id="tour" class="secondary" aria-pressed="false">环绕</button></div>
+<label class="light-label" for="sun">日照方向 <span id="sun-label">西南</span></label><input type="range" id="sun" min="0" max="360" value="225" aria-label="日照方向">
+<p class="note">影像中可见的建筑与河流优先。现有轮廓、河宽尚未逐项校正；屋顶和窗户均为示意。</p><button id="about" class="text-link">数据与建模说明 <span>↗</span></button></aside>
+<main class="stage"><canvas id="scene" aria-label="济宁运河街区三维模型，可拖动旋转、滚轮缩放"></canvas>
+<section id="reference-panel" aria-label="Google Earth 卫星图核对">
+<div class="reference-controls"><label><input id="overlay-buildings" type="checkbox" checked>建筑轮廓</label><label><input id="overlay-water" type="checkbox" checked>水体轮廓</label><span>青色为现有矢量 · 金框为试验区</span></div>
+<div class="reference-scroll"><div id="reference-map"><img src="/reference_1600m.png" alt="用户提供的 Google Earth 济宁 1600 米样方卫星截图"><div id="reference-overlay"></div></div></div>
+<p class="reference-caption">Google Earth / 用户截图 · 近似配准，仅作图像核对；橙色填充与文字来自原截图。</p></section>
+<div class="stage-tag"><span class="live-dot"></span><span id="view-label">空间展示</span><span class="separator">/</span><span id="scope-label">1600 米全样方</span></div><div class="compass"><span>N</span><div id="north-arrow">↑</div></div>
+<div class="map-tools" id="map-tools"><label class="base-toggle"><input type="checkbox" id="satellite-base" checked>影像底图</label><select id="building-select" aria-label="选择建筑"><option value="">选择建筑</option></select><button id="zoom-in" aria-label="放大模型">＋</button><button id="zoom-out" aria-label="缩小模型">−</button></div>
+<div id="loader"><span class="loader-ring"></span><b id="loading-text">正在载入街区</b><small>建筑轮廓 · GBA 高度 · Blosm 屋顶</small></div>
+<div id="selection" class="selection" hidden><button id="close-selection" aria-label="关闭建筑详情">×</button><span class="eyebrow">BUILDING PROFILE</span><h2 id="building-name">JN-001</h2><div class="building-numbers"><div><b id="building-height">—</b><span>估计高度 / m</span></div><div><b id="building-area">—</b><span>轮廓面积 / m²</span></div></div><p id="building-method"></p><small id="building-roof"></small></div>
+<div class="stage-bottom"><div class="gesture"><span>⤢</span>拖动旋转 · 滚轮缩放 · 点击建筑</div><div class="scale"><i></i><span id="scale-label">50 m</span></div></div>
+<div id="height-legend" class="legend" hidden><span>估计高度</span><i></i><div><span id="height-low">2.6 m</span><span id="height-high">10.5 m</span></div></div></main></div>
+<footer><span>影像依据：Google Earth 用户截图 · 矢量：待逐项校正</span><span>BLENDER / BLOSM / THREE.JS<span class="footer-dot">·</span>V02 LOCAL STUDY</span></footer>
+<dialog id="about-dialog"><button id="close-about" class="dialog-close" aria-label="关闭说明">×</button><p class="eyebrow">ABOUT THIS STUDY</p><h2>模型从哪里来？</h2><dl><dt>建筑轮廓</dt><dd>以用户 Google Earth 影像核对平面形态。V01 的 1321 个轮廓恢复到完整 1600 米样方；它们仍是待核对的公开数据，不能视为已逐栋重建。金框内为 240 米试验区。</dd><dt>建筑高度</dt><dd>仅试验区内的 36 个轮廓从 GlobalBuildingAtlas 官方 GBA.Height 3 米栅格提取建筑轮廓内像元中位数。它是估计值，不是实测或官方逐栋 LoD1 结果。其余体块仍统一为 12 米占位。</dd><dt>屋顶与立面</dt><dd>实际调用 Blosm 屋顶生成代码；屋顶类型、窗户、铺装为示意假设。高度分析模式隐藏这些细节。</dd><dt>网页展示</dt><dd>基于 Blender Web 3D 项目的导出、优化、质量控制和后处理组件（当前固定画质）改造。模型高度不做夸张。</dd></dl><p>已修复绿地覆盖北侧湖面的显示问题。河道宽度仍需按影像描绘，部分建筑院落边界也待校正。截图为近似配准，地面采用平面。</p><div class="sources"><a href="https://github.com/zhu-xlab/GlobalBuildingAtlas" target="_blank" rel="noreferrer">GlobalBuildingAtlas ↗</a><a href="https://github.com/vvoovv/blosm" target="_blank" rel="noreferrer">Blosm ↗</a><a href="https://github.com/czlonkowski/blender-web-3d-skill" target="_blank" rel="noreferrer">Blender Web 3D ↗</a></div><p class="license">GBA.Height：CC BY-NC 4.0 · OSM：ODbL · 其他上游数据许可见项目来源记录。</p></dialog>
+<script type="module" src="/src/main.js"></script></body></html>
