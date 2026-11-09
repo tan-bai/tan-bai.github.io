@@ -1,3 +1,4 @@
+import {loadFunctions} from './functional.js';
 // Jining adaptation of the MIT Blender Web 3D template. Upstream quality and post
 // components are retained. GIS building identities are deliberately not batched away.
 import * as THREE from 'three';
@@ -74,6 +75,11 @@ async function start(){
   for(const [id,n] of roots){const option=document.createElement('option');option.value=id;option.textContent=`${n.userData.display_id} · ${Number(n.userData.height_m).toFixed(1)} m`;$('building-select').append(option);}
   const low=new THREE.Color('#bfd5a1'),high=new THREE.Color('#154647');
   groups.Analysis.traverse(n=>{if(n.isMesh&&n.userData.building_id){n.material=new THREE.MeshStandardMaterial({color:low.clone().lerp(high,(n.userData.height_m-meta.height_min_m)/(meta.height_max_m-meta.height_min_m)),roughness:.88});}});
+  let functions=null,functionLayer=null,functionZones=null;
+  try {
+    functions=await loadFunctions(asset,$('function-host'),contextMeta.v01_building_count);
+    functionLayer=functions.prisms([-280,-100]);functionZones=functions.zones([-280,-100]);scene.add(functionLayer,functionZones);
+  } catch(e) { console.error(e);const button=document.querySelector('[data-mode="function"]');button.disabled=true;button.title=e.message; }
   let mode='detail',selection=null,animation=null,disposed=false;
   const highlight=new THREE.Box3Helper(new THREE.Box3(),0xb99554);highlight.visible=false;scene.add(highlight);
   function showSelection(node){
@@ -88,9 +94,15 @@ async function start(){
     $('building-roof').textContent=mode==='baseline'?'当前对照体块显示 12 m；上方数值仍为 GBA 估计高度。':`屋顶：${b.roof_type==='gabled'?'坡屋顶':'平屋顶'}（示意假设）${b.clipped_at_sample_edge?' · 样方边缘已裁切':''}`;
   }
   function setMode(next){
+    if(next==='function'&&!functions)return;
+    if(next==='function'&&scope!=='full')setScope('full');
+    const functional=next==='function';
+    if(functionLayer){functionLayer.visible=functional;functionZones.visible=functional;functions.setVisible(functional&&!isReference);functions.select(null);}
+    context.getObjectByName('Context_building').visible=!functional;
+    $('building-select').disabled=functional;trialBoundary.visible=scope==='full'&&!functional;
     mode=next;groups.Architecture.visible=next==='detail';groups.Details.visible=next==='detail';groups.Analysis.visible=next==='height';groups.Baseline.visible=next==='baseline';
     document.querySelectorAll('[data-mode]').forEach(b=>{const active=b.dataset.mode===next;b.classList.toggle('active',active);b.setAttribute('aria-pressed',active);});
-    $('view-label').textContent=isReference?'Google Earth 影像核对':{detail:'空间展示',height:'36 个轮廓 · GBA 估计',baseline:'平面核对 · 统一 12 米'}[next];$('height-legend').hidden=next!=='height'||isReference;
+    $('view-label').textContent=isReference?'Google Earth 影像核对':{function:'功能线索 · 公开数据初判',detail:'空间展示',height:'36 个轮廓 · GBA 估计',baseline:'平面核对 · 统一 12 米'}[next];$('height-legend').hidden=next!=='height'||isReference;
     showSelection(null);sun.shadow.needsUpdate=true;
   }
   setMode('baseline');
@@ -114,19 +126,22 @@ async function start(){
   canvas.addEventListener('pointerup',e=>{
     if(!down||Math.hypot(e.clientX-down[0],e.clientY-down[1])>5)return;
     const r=canvas.getBoundingClientRect();raycaster.setFromCamera(new THREE.Vector2((e.clientX-r.left)/r.width*2-1,-(e.clientY-r.top)/r.height*2+1),camera);
+    if(mode==='function'){const hit=raycaster.intersectObject(functionLayer,true)[0];functions.select(hit?.object.userData.functionId);highlight.visible=!!hit;if(hit)highlight.box.setFromObject(hit.object);return;}
     const group=groups[{detail:'Architecture',height:'Analysis',baseline:'Baseline'}[mode]];
     const hit=raycaster.intersectObject(group,true).find(x=>x.object.userData.building_id);showSelection(hit?.object||null);
   });
   const resize=()=>{const width=canvas.clientWidth,height=canvas.clientHeight;if(!width||!height)return;const aspect=width/height;const half=scope==='full'?(aspect<1?1300/aspect:1120): (aspect<1?180/aspect:170);camera.left=-half*aspect;camera.right=half*aspect;camera.top=half;camera.bottom=-half;camera.updateProjectionMatrix();renderer.setSize(width,height,false);composer.setSize(width,height);};
   function setReference(show){
+    if(functions)functions.setVisible(!show&&mode==='function');
     isReference=show;$('reference-panel').hidden=!show;document.querySelector('.stage').classList.toggle('reference-active',show);
     $('show-reference').setAttribute('aria-pressed',show);$('show-model').setAttribute('aria-pressed',!show);
     if(show&&scope!=='full')setScope('full');
-    $('view-label').textContent=show?'Google Earth 影像核对':{detail:'空间展示',height:'36 个轮廓 · GBA 估计',baseline:'平面核对 · 统一 12 米'}[mode];
+    $('view-label').textContent=show?'Google Earth 影像核对':{function:'功能线索 · 公开数据初判',detail:'空间展示',height:'36 个轮廓 · GBA 估计',baseline:'平面核对 · 统一 12 米'}[mode];
     $('height-legend').hidden=show||mode!=='height';showSelection(null);
   }
   function setScope(next){
-    scope=next;const full=next==='full';context.visible=full;trialBoundary.visible=full;model.getObjectByName('Base').visible=!full;satelliteBase.visible=full&&$('satellite-base').checked;
+    if(next==='trial'&&mode==='function')setMode('baseline');
+    scope=next;const full=next==='full';context.visible=full;trialBoundary.visible=full&&mode!=='function';model.getObjectByName('Base').visible=!full;satelliteBase.visible=full&&$('satellite-base').checked;
     $('count').textContent=full?contextMeta.v01_building_count:meta.building_count;$('sample-width').textContent=full?'1600':'240';
     $('scope-full').setAttribute('aria-pressed',full);$('scope-trial').setAttribute('aria-pressed',!full);
     $('scope-label').textContent=full?'1600 米全样方':'240 米试验区';
@@ -134,7 +149,7 @@ async function start(){
     if(!full)setReference(false);showSelection(null);resize();view('overview');sunlight(Number($('sun').value));
   }
   $('scope-full').onclick=()=>setScope('full');$('scope-trial').onclick=()=>setScope('trial');
-  $('show-reference').onclick=()=>setReference(true);$('show-model').onclick=()=>setReference(false);
+  $('show-reference').onclick=()=>setReference(true);$('show-model').onclick=()=>{if(mode==='function')setMode('baseline');setReference(false);};
   const observer=new ResizeObserver(resize);observer.observe(canvas);setScope('full');setReference(true);resize();
   const governor=createQualityGovernor({initial:1,locked:true,onChange:t=>{renderer.setPixelRatio(Math.min(devicePixelRatio,t.pixelRatio));renderer.shadowMap.enabled=t.shadows;sun.shadow.needsUpdate=true;resize();}});
   let last=performance.now();

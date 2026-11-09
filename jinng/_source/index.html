@@ -1,6 +1,6 @@
 <!doctype html>
 <html lang="zh-CN">
-<head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="theme-color" content="#e9eee5"><title>济宁 · 运河街区 / Urban Atlas</title><link rel="stylesheet" href="/src/style.css"></head>
+<head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="theme-color" content="#e9eee5"><title>济宁 · 运河街区 / Urban Atlas</title><link rel="stylesheet" href="/src/style.css"><link rel="stylesheet" href="/src/functional.css"></head>
 <body>
 <header><a class="brand" href="./" aria-label="济宁城市形态研究首页"><span class="brand-mark">JN<span>↗</span></span><span>URBAN ATLAS<small>城市形态研究 · 济宁</small></span></a><div class="header-right"><span class="live-dot"></span>可编辑三维样方<span class="version">EXPERIMENT 02</span></div></header>
 <div class="workspace">
@@ -11,11 +11,12 @@
 <p id="scope-note" class="scope-note">现有矢量作为待核对图层；金色框为原 240 米试验区。</p>
 <div class="section-label">01 <span>三维模式 · 高度暂作辅助</span></div>
 <div class="mode-list" role="group" aria-label="模型显示方式">
+<button class="mode" data-mode="function" aria-pressed="false"><span class="mode-icon">▦</span><span>功能分类<small>公开数据初判 · 保留待核验</small></span><span class="mode-arrow">↗</span></button>
 <button class="mode active" data-mode="detail" aria-pressed="true"><span class="mode-icon">◈</span><span>空间展示<small>试验区的程序化外观示意</small></span><span class="mode-arrow">↗</span></button>
 <button class="mode" data-mode="height" aria-pressed="false"><span class="mode-icon">▥</span><span>高度分析<small>仅 240 米试验区的 36 个轮廓</small></span><span class="mode-arrow">↗</span></button>
 <button class="mode" data-mode="baseline" aria-pressed="false"><span class="mode-icon">▤</span><span>V01 高度对照<small>统一 12 米，核对平面分布</small></span><span class="mode-arrow">↗</span></button>
 </div>
-<div class="section-label">02 <span>视角与光线</span></div><div class="button-row"><button id="overview" class="secondary">鸟瞰</button><button id="top" class="secondary">俯视</button><button id="tour" class="secondary" aria-pressed="false">环绕</button></div>
+<div id="function-host"></div><div class="section-label">02 <span>视角与光线</span></div><div class="button-row"><button id="overview" class="secondary">鸟瞰</button><button id="top" class="secondary">俯视</button><button id="tour" class="secondary" aria-pressed="false">环绕</button></div>
 <label class="light-label" for="sun">日照方向 <span id="sun-label">西南</span></label><input type="range" id="sun" min="0" max="360" value="225" aria-label="日照方向">
 <p class="note">影像中可见的建筑与河流优先。现有轮廓、河宽尚未逐项校正；屋顶和窗户均为示意。</p><button id="about" class="text-link">数据与建模说明 <span>↗</span></button></aside>
 <main class="stage"><canvas id="scene" aria-label="济宁运河街区三维模型，可拖动旋转、滚轮缩放"></canvas>

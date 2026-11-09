@@ -2,7 +2,7 @@
 
 目标地址：https://tan-bai.github.io/qufu/
 
-本目录是可直接部署的静态成品。原模型、卫星地面与屋顶贴图、界面均保留；仅适配子路径。GitHub Pages 当前由仓库所有者关闭，需重新启用后才可在线访问。
+本目录是可直接部署的静态成品。原模型与卫星地面、屋顶贴图保持原样。GitHub Pages 已启用，新增功能分类切换、图例与逐栋依据。
 
 换电脑预览：在仓库根目录运行 `python3 -m http.server 8000`，打开 `http://127.0.0.1:8000/qufu/`。
 
@@ -12,3 +12,5 @@
 
 代码：https://github.com/czlonkowski/blender-web-3d-skill · https://github.com/vvoovv/blosm
 数据：https://github.com/zhu-xlab/GlobalBuildingAtlas · https://www.openstreetmap.org/copyright · https://zenodo.org/records/8174931
+
+新增功能分类：点击“功能分类”查看颜色与依据；点击卫星对照返回原影像。[方法与来源](FUNCTIONS.md)。
